@@ -1,0 +1,60 @@
+version: '3'
+services:
+  # ---------------------------------------- DB
+  # IMPORTANT NOTE: 
+  # DO NOT USE ROOT as a user
+  # DO NOT USE INSECURE password
+  db:
+    restart: unless-stopped
+    image: mysql:5.7
+    environment:
+      MYSQL_USER: ${WP_DB_USER} 
+      MYSQL_PASSWORD: ${WP_DB_USER_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${WP_DB_USER_PASSWORD}
+      MYSQL_DATABASE: ${WP_DB_NAME}
+    ports:
+      - 3360:3306
+    volumes: 
+      - .\db\export.sql:/docker-entrypoint-initdb.d/export.sql
+      - .\db\mysql:/var/lib/mysql
+    networks: 
+      - back
+  # ----------------------------------------
+  # Always use this for admin: 
+  # Wordpress: dev/dev_2019!
+  # ----------------------------------------
+
+  wp:
+    depends_on: 
+      - db
+    restart: unless-stopped
+    image: wordpress:${WP_VERSION}
+    ports:
+      - ${WP_PORT}:80
+    environment:
+      WORDPRESS_DB_PASSWORD: ${WP_DB_USER_PASSWORD}
+      WORDPRESS_DB_NAME: ${WP_DB_NAME}
+      WORDPRESS_DB_USER: ${WP_DB_USER}
+      WORDPRESS_TABLE_PREFIX: ${WP_DB_TABLE_PREFIX}
+      WORDPRESS_DB_HOST: db
+    volumes: 
+      - .\${WP_THEME}:/var/www/html/wp-content/themes/${WP_THEME}
+      - .\${WP_THEME}-cb:/var/www/html/wp-content/plugins/${WP_THEME}-cb
+      - .\wp:/var/www/html/
+      - .\logs\wp:/var/log/apache2/
+    networks: 
+      - back
+  # ---------------------------------------- PHPMYADMIN
+  phpmyadmin:
+      depends_on: 
+        - db
+      image: phpmyadmin/phpmyadmin
+      ports:
+        - ${WP_PHPMYADMIN_PORT}:80
+      environment:
+        MYSQL_ROOT_PASSWORD: ${WP_DB_USER_PASSWORD}
+        PMA_HOST: db
+      networks: 
+        - back
+networks:
+  back:
