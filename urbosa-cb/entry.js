@@ -1,1 +1,1 @@
-import './src/Blocks/CustomBlock';
+import './src/Blocks/blocks';

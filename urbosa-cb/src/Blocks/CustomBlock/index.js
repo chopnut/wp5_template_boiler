@@ -1,30 +1,52 @@
-import './style.scss'
-import './editor.scss'
+const { registerBlockType } = wp.blocks
+const { InspectorControls, RichText, PlainText } = wp.editor
+const { PanelBody, SelectControl, ServerSideRender } = wp.components
+const { Fragment, Component } = wp.element
+const { withSelect } = wp.data;
 
-const { __ }                        = wp.i18n
-const { registerBlockType }         = wp.blocks
-const { InspectorControls }         = wp.editor
-const { PanelBody, SelectControl  } = wp.components
-const { Fragment, Component  }      = wp.element
-
-registerBlockType( 'urbosa-cb/c', {
-  title: __(' Block Name', 'Urbosa - Custom Block'),
-  icon: 'dashIcon',
-  category: 'common',
+registerBlockType('urbosa-cb/urbosa-custom', {
+  title: 'Urbosa - Custom',
+  icon: 'screenoptions',
+  category: 'urbosa-blocks',
   keywords: [
-    __('Urbosa')
+    'Urbosa'
   ],
-  attributes: {
-    test:
-      {
-        type: 'string',
-      default: ''
+  edit: withSelect(select => {
+    const coreEditor = select('core/editor')
+    const post = coreEditor.getCurrentPost()
+    return { post }
+  })(class extends Component {
+    constructor() {
+      super(...arguments);
     }
-  },
-  edit: props => {
-    return (<div>Edit</div>)
-  },
+    componentDidMount() {
+      console.log('REACT CUSTOM: ', this.props);
+    }
+    content = () => {
+      if (this.props.isSelected) {
+        return <div>
+          Content editing.
+        </div>
+      } else {
+        return <ServerSideRender
+          block="urbosa-cb/urbosa-custom"
+          attributes={this.props.attributes}
+        />
+      }
+    }
+    render() {
+      return <div>
+        <InspectorControls>
+          <PanelBody>
+            Test
+          </PanelBody>
+        </InspectorControls>
+        {this.content()}
+      </div>
+    }
+  }
+  ),
   save: props => {
-    return (<div>Saved</div>)
+    return null;
   }
 })

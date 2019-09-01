@@ -6,11 +6,9 @@ module.exports = env => {
   return {
     entry: {
       bundle: __dirname + "/entry.js",
-      style: __dirname + `/src/sass/index.scss`,
     },
     output: {
       path: __dirname + `/dist/`,
-      filename: "js/[name].js?[hash]"
     },
     devtool: (env.development) ? "source-map" : false,
     module: {
@@ -71,7 +69,6 @@ module.exports = env => {
     plugins: [
       new MiniCssExtractPlugin({
         filename: "css/style.css",
-        chunkFilename: "css/[id].css"
       }),
       new webpack.ProvidePlugin({
         $: "jquery",
@@ -82,7 +79,7 @@ module.exports = env => {
         port: 3000,
         proxy: `http://localhost:8182`,
         files: [
-          `./`, // Will watch any changes from this folder
+          `./set-folder-here`, // Set the watch folder to reload
           "!./node_modules/",
         ],
         notify: false,

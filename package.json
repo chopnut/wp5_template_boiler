@@ -1,18 +1,17 @@
 {
-  "name": "urbosa-cb",
+  "name": "website-reloader",
   "version": "1.0.0",
-  "description": "Custom block for Urbosa template.",
+  "description": "Reloader setup",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack -w --mode=development --env.development --config ./webpack.config.js --host 0.0.0.0 --disable-host-check",
-    "build": "webpack --mode=production --env.production --config ./webpack.config.js",
+    "dev": "webpack -w --mode=development --env.development --config ./webpack.reloader.js --host 0.0.0.0 --disable-host-check",
+    "build": "webpack --mode=production --env.production --config ./webpack.reloader.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.4.5",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.6.0",

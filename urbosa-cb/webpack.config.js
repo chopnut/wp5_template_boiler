@@ -6,6 +6,7 @@ module.exports = env => {
   return {
     entry: {
       bundle: __dirname + "/entry.js",
+      css: __dirname + "/src/Blocks/css.js",
     },
     output: {
       path: __dirname + `/dist/`,
@@ -18,41 +19,40 @@ module.exports = env => {
     //-----------------------
 
     optimization: {
-      splitChunks:{
-        cacheGroups:{
+      splitChunks: {
+        cacheGroups: {
           style: {
-              name: 'style',
-              test: /style\.s?css$/,
-              chunks: 'all',
-              enforce: true,
+            name: 'style',
+            test: /style\.s?[ac]ss$/,
+            chunks: 'all',
+            enforce: true,
           },
           editor: {
-              name: 'editor',
-              test: /editor\.s?css$/,
-              chunks: 'all',
-              enforce: true,
+            name: 'editor',
+            test: /editor\.s?[ac]ss$/,
+            chunks: 'all',
+            enforce: true,
           },
         }
       }
     },
-    //-----------------------
-    //  All test modules
-    //-----------------------
+
     module: {
       rules: [
         {
-          test: /\.scss$/,
+          test: /\.s?[ac]ss$/,
           use: [
             {
               loader: MiniCssExtractPlugin.loader,
               options: {
-                publicPath: './',
+                publicPath: '../',
               }
             },
             {
               loader: "css-loader",
               options: {
-                sourceMap: true
+                sourceMap: true,
+                url: false,
               }
             },
             {
@@ -79,36 +79,28 @@ module.exports = env => {
           test: /\.js?$/,
           exclude: /node_modules/,
           loader: "babel-loader",
-          query: {
-            presets: ["@babel/preset-env","@babel/preset-react"],
-          }
-        },
-        {
-          test: /\.(png|jpg|gif|svg)$/,
-          loader: "url-loader",
           options: {
-            outputPath: "img/", // Where to put any resource file
-          }
-        },
-        {
-          test: /\.(eot|woff2|woff|ttf)$/,
-          loader: "url-loader",
-          options: {
-            outputPath: "fonts/", // Where to put any resource file
+            presets: [
+              "@babel/preset-env",
+              "@babel/preset-react",
+            ],
+            plugins: [
+              "@babel/plugin-proposal-class-properties"
+            ]
           }
         },
         {
           test: require.resolve('jquery'),
           use: [{
-              loader: 'expose-loader',
-              options: '$'
+            loader: 'expose-loader',
+            options: '$'
           }]
         },
       ]
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: "blocks.[name].build.css",
+        filename: "blocks.[name].build.css", // coming from cacheGroups
       }),
       new webpack.ProvidePlugin({
         $: "jquery",
@@ -117,7 +109,7 @@ module.exports = env => {
       new BrowserSyncPlugin({
         host: "localhost",
         port: 3000,
-        proxy: `http://localhost:${process.env.WP_PORT}`,
+        proxy: `http://localhost:8182`,
         files: [
           `./`, // Will watch any changes from this folder
           "!./node_modules/",

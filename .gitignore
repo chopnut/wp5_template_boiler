@@ -1,5 +1,8 @@
 /urbosa/node_modules/
-/urbosa-cb/node_modules/
 /urbosa/semantic/
+/urbosa/dist/
+/urbosa-cb/node_modules/
+/urbosa-cb/dist/
 /wp/
 /logs/
+/db/*
