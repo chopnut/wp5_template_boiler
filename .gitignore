@@ -3,6 +3,7 @@
 /urbosa/dist/
 /urbosa-cb/node_modules/
 /urbosa-cb/dist/
+/node_modules/
 /wp/
 /logs/
 /db/*
