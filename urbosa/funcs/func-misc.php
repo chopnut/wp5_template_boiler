@@ -84,7 +84,7 @@ add_filter('authenticate', 'verify_user_pass', 10, 3);
  ******************************************************************/
 function prevent_admin_access_role()
 {
-  if (current_user_can('custome_role') && is_admin()) {
+  if (current_user_can('custom_role') && is_admin()) {
     // Redirect to home
     wp_redirect(home_url('/'));
   }
@@ -98,7 +98,7 @@ function my_add_role_function()
 {
   $roles_set = get_option('urbosa_role_setup');
   if (!$roles_set) {
-    add_role('custome_role', 'Custom Role', array(
+    add_role('custom_role', 'Custom Role', array(
       'read' => true,
       'edit_posts' => false,
       'delete_posts' => false,
