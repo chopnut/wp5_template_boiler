@@ -1,6 +1,8 @@
+ARG WP_VERSION
 FROM wordpress:${WP_VERSION}
-RUN rm /etc/apt/preferences.d/no-debian-php \
-  && apt-get update -y \
+# If you run any issues below just remove the line
+RUN rm /etc/apt/preferences.d/no-debian-php
+RUN apt-get update -y \
   && apt-get install -y \
     libxml2-dev \
     php-soap \
