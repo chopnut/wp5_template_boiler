@@ -88,9 +88,24 @@ if(!function_exists('getPosts')){
     
   }
 }
-
+// Return or display the current template being included
+if(!function_exists('getCurrentTemplate')){
+  add_filter( 'template_include', 'var_template_include', 1000 );
+  function var_template_include( $t ){
+      $GLOBALS['current_theme_template'] = basename($t);
+      return $t;
+  }
+  function getCurrentTemplate( $echo = false ) {
+      if( !isset( $GLOBALS['current_theme_template'] ) )
+          return false;
+      if( $echo )
+          echo $GLOBALS['current_theme_template'];
+      else
+          return $GLOBALS['current_theme_template'];
+  }
+}
+// Return WP objects of children categories
 if(!function_exists('getChildrenCategories')){
-  // Return WP objects of children categories
   function getChildrenCategories($parent_slug_or_id, $hide_empty = false)
   {
     $parent_id = 0;
@@ -122,6 +137,7 @@ if(!function_exists('getChildrenCategories')){
   }
 }
 
+// getWidget based on the ID of the widget
 if(!function_exists('getWidgetArray')){
   function getWidgetArray($widget_id){
     global $wp_registered_widgets;
