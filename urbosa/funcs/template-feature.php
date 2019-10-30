@@ -1,7 +1,7 @@
 <?php
 
 //===============================================
-if (function_exists('widget_theme_feature')) {
+if (!function_exists('widget_theme_feature')) {
   // Adding footer widgets
   function widget_theme_feature()
   {
@@ -16,7 +16,7 @@ if (function_exists('widget_theme_feature')) {
   add_action('widgets_init', 'widget_theme_feature');
 }
 //===============================================
-if (function_exists('register_my_setting')) {
+if (!function_exists('register_my_setting')) {
   // Register phone number to the general settings
   function register_my_setting()
   {
