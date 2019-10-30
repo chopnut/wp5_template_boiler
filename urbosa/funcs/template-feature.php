@@ -1,14 +1,5 @@
 <?php
-//===============================================
-if (function_exists('wpb_custom_new_menu')) {
-  // Adding menu location
-  function wpb_custom_new_menu()
-  {
-    register_nav_menu('main-menu', __('My main menu'));
-    add_theme_support('post-thumbnails'); // enable feature image
-  }
-  add_action('init', 'wpb_custom_new_menu');
-}
+
 //===============================================
 if (function_exists('widget_theme_feature')) {
   // Adding footer widgets
@@ -52,7 +43,8 @@ if (function_exists('register_my_setting')) {
 function urbosa_theme_setup()
 {
   add_theme_support('align-wide');
-  add_theme_support('post-thumbnails');
+  add_theme_support('post-thumbnails'); // enable feature image
+  register_nav_menu('main-menu', __('My main menu'));
 }
 add_action('after_setup_theme', 'urbosa_theme_setup');
 //===============================================
