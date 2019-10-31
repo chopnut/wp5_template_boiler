@@ -26,14 +26,16 @@ if(!function_exists('objectToArray')){
 }
 if(!function_exists('getPosts')){
   function getPosts(
-    $post_type, 
-    $perPage = -1, 
+    $post_type='post', 
+    $slug='',
+    $acfFields = array(), 
     $categories = array(), 
+    $perPage = -1, 
     $offset = 0,
     $metaArray = array(), 
-    $fields = array(), 
     $orderby = 'menu_order', 
-    $order = 'DESC')
+    $order = 'DESC'
+    )
   {
     $args = array(
       'post_type' => $post_type,
@@ -47,6 +49,9 @@ if(!function_exists('getPosts')){
   
     if (count($categories) > 0) {
       $args['category_name'] = implode(',', $categories);
+    }
+    if(!empty($slug)){
+      $args['name'] = $slug;
     }
   
     if (count($metaArray) > 0) {
@@ -69,7 +74,7 @@ if(!function_exists('getPosts')){
     foreach ($dataItems as $data) {
       $thisID = $data['ID'];
   
-      foreach ($fields as $field) {
+      foreach ($acfFields as $field) {
         $data[$field] = get_field($field, $thisID);
 
         if (stripos($field, 'image') !== false) {
