@@ -1,18 +1,45 @@
-const webpack = require("webpack");
-const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const webpack = require('webpack')
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = env => {
+  var plugins = [
+    new MiniCssExtractPlugin({
+      filename: 'css/style.css',
+      chunkFilename: 'css/[id].css'
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
+    })
+  ]
+  // When watch is called only monitor the change without autoloading
+  if (!env.watch) {
+    plugins.push(
+      new BrowserSyncPlugin({
+        host: 'localhost',
+        port: 3000,
+        proxy: `http://localhost:8182`,
+        files: [
+          `./`, // Will watch any changes from this folder
+          '!./node_modules/'
+        ],
+        notify: false,
+        reloadDelay: 0
+      })
+    )
+  }
+
   return {
     entry: {
-      bundle: __dirname + "/entry.js",
-      style: __dirname + `/src/sass/index.scss`,
+      bundle: __dirname + '/entry.js',
+      style: __dirname + `/assets/sass/index.scss`
     },
     output: {
-      path: __dirname + `/dist/`,
-      filename: "js/[name].js?[hash]"
+      path: __dirname + `/assets/dist/`,
+      filename: 'js/[name].js?[hash]'
     },
-    devtool: (env.development) ? "source-map" : false,
+    devtool: env.development ? 'source-map' : false,
     module: {
       rules: [
         {
@@ -21,32 +48,32 @@ module.exports = env => {
             {
               loader: MiniCssExtractPlugin.loader,
               options: {
-                publicPath: '../../',
+                publicPath: '../../'
               }
             },
             {
-              loader: "css-loader",
+              loader: 'css-loader',
               options: {
                 sourceMap: true,
-                url: false,
+                url: false
               }
             },
             {
-              loader: "postcss-loader",
+              loader: 'postcss-loader',
               options: {
-                plugins: () => [require("autoprefixer")]
+                plugins: () => [require('autoprefixer')]
               }
             },
             {
-              loader: "resolve-url-loader",
+              loader: 'resolve-url-loader',
               options: {
                 debug: true
               }
             },
             {
-              loader: "sass-loader",
+              loader: 'sass-loader',
               options: {
-                sourceMap: true,
+                sourceMap: true
               }
             }
           ]
@@ -54,40 +81,22 @@ module.exports = env => {
         {
           test: /\.js?$/,
           exclude: /node_modules/,
-          loader: "babel-loader",
+          loader: 'babel-loader',
           query: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
+            presets: ['@babel/preset-env', '@babel/preset-react']
           }
         },
         {
           test: require.resolve('jquery'),
-          use: [{
-            loader: 'expose-loader',
-            options: '$'
-          }]
-        },
+          use: [
+            {
+              loader: 'expose-loader',
+              options: '$'
+            }
+          ]
+        }
       ]
     },
-    plugins: [
-      new MiniCssExtractPlugin({
-        filename: "css/style.css",
-        chunkFilename: "css/[id].css"
-      }),
-      new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery",
-      }),
-      new BrowserSyncPlugin({
-        host: "localhost",
-        port: 3000,
-        proxy: `http://localhost:8182`,
-        files: [
-          `./`, // Will watch any changes from this folder
-          "!./node_modules/",
-        ],
-        notify: false,
-        reloadDelay: 0,
-      })
-    ]
+    plugins: plugins
   }
 }

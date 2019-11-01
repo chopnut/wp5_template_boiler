@@ -10,7 +10,7 @@
    * Use this in your plugin to load the theme template file first before 
    * loading your default template file.Returns '' empty string if not found
    */
-  require_once(locate_template(['page-templates/parts/custom-login.php']));
+  require_once(locate_template(['funcs/page-templates/parts/custom-login.php']));
 
 
   ?>
