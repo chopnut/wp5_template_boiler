@@ -19,7 +19,7 @@ module.exports = env => {
       new BrowserSyncPlugin({
         host: 'localhost',
         port: 3000,
-        proxy: `http://localhost:8182`,
+        proxy: `http://localhost:8191`,
         files: [
           `./`, // Will watch any changes from this folder
           '!./node_modules/'
