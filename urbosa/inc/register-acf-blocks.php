@@ -1,6 +1,6 @@
 <?php 
 /* Register blocks ACF only */
-if(!function_exists('acf_register_block')){
+if(function_exists('acf_register_block')){
   //----------------------------------------------
   function register_blocks(){
     /* 
