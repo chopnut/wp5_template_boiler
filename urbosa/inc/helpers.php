@@ -170,13 +170,22 @@ if(!function_exists('getWidgetArray')){
         $content = ob_get_clean();
 
       }else if(isset($data['nav_menu'])){
-        $menuTitle = strtolower($data['title']);
+        
         $menuID = $data['nav_menu'];
         ob_start();
-        wp_nav_menu(array('menu_id'=>$menuID,'menu_class'=>"menu $menuTitle"));
+        wp_nav_menu(array('menu_id'=>$menuID));
         $content = ob_get_clean();
         
       }
+      $menuTitle = strtolower($data['title']);
+      ob_start();
+      ?>
+      <div class="widget <?=$menuTitle?>">
+        <div class="widget-title"><?=$data['title']?></div>
+        <div class="widget-content"><?=$content?></div>
+      </div>
+      <?php
+      $content = ob_get_clean();
       $data['content'] = $content; 
       $final[] = $data;
     }
