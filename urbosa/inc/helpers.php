@@ -163,7 +163,10 @@ if(!function_exists('getWidgetArray')){
       // make sure "content" has values cause sometimes , "text" has it.
       $data    = $widget_instances[$key];
       if(!isset($data['content'])){
-        $data['content'] = $data['text']; 
+        ob_start();
+        do_shortcode(wpautop($data['text']));
+        $content = ob_get_clean();
+        $data['content'] = $content; 
       }
       $final[] = $data;
     }
