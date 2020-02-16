@@ -159,15 +159,25 @@ if(!function_exists('getWidgetArray')){
       $option_name = $wp_registered_widgets[$widget]['callback'][0]->option_name;
       $key = $wp_registered_widgets[$widget]['params'][0]['number'];
       $widget_instances = get_option($option_name);
-
+      
       // make sure "content" has values cause sometimes , "text" has it.
       $data    = $widget_instances[$key];
-      if(!isset($data['content'])){
+      $content = '';
+      
+      if(!isset($data['content']) && !isset($data['nav_menu'])){
         ob_start();
         do_shortcode(wpautop($data['text']));
         $content = ob_get_clean();
-        $data['content'] = $content; 
+
+      }else if(isset($data['nav_menu'])){
+        $menuTitle = strtolower($data['title']);
+        $menuID = $data['nav_menu'];
+        ob_start();
+        wp_nav_menu(array('menu_id'=>$menuID,'menu_class'=>"menu $menuTitle"));
+        $content = ob_get_clean();
+        
       }
+      $data['content'] = $content; 
       $final[] = $data;
     }
     return $final;
