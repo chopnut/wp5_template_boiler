@@ -17,10 +17,20 @@ function register_blocks(){
     'title'=> __('Custom Block Example'),
     'description'=>__('My example block'),
     'render_template'=> 'inc/acf-blocks/cb_example.php',
-    'category'=> 'formatting',
+    'category'=> 'urbosa-blocks',
     'icon'	=> 'layout',
     'keywords'=> array( 'Example' ),
   ));
 }
 add_action('acf/init', 'register_blocks');
+
+function theme_category_block($categories,$post){
+  return array_merge($categories, array(
+    array(
+      'slug'=>'urbosa-blocks',
+      'title'=>__('Theme','urbosa-blocks')
+    )
+    ));
+}
+add_filter('block_categories','theme_category_block',10,2);
 ?>
