@@ -53,3 +53,6 @@ add_action('after_setup_theme', 'urbosa_theme_setup');
  * Use this EP: /wp-json/wp/v2/search?search=sample
  * reference: https://developer.wordpress.org/rest-api/reference/search-results/
  */
+if(function_exists('acf_add_options_page')){
+  acf_add_options_page();
+}
