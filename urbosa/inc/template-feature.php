@@ -56,3 +56,9 @@ add_action('after_setup_theme', 'urbosa_theme_setup');
 if(function_exists('acf_add_options_page')){
   acf_add_options_page();
 }
+//===============================================
+// Adds reusable blocks menu to the admin
+function be_reusable_blocks_admin_menu() {
+  add_menu_page( 'Reusable Blocks', 'Reusable Blocks', 'edit_posts', 'edit.php?post_type=wp_block', '', 'dashicons-editor-table', 22 );
+}
+add_action( 'admin_menu', 'be_reusable_blocks_admin_menu' );
