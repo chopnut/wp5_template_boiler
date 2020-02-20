@@ -109,6 +109,7 @@ if(!function_exists('getCurrentTemplate')){
           return $GLOBALS['current_theme_template'];
   }
 }
+
 // Return WP objects of children categories
 if(!function_exists('getChildrenCategories')){
   function getChildrenCategories($parent_slug_or_id, $hide_empty = false)
@@ -154,6 +155,7 @@ if(!function_exists('getWidgetArray')){
     $widgets = $sidebars_widgets[$widget_id]; 
     
     $final  = [];
+   
     foreach ($widgets as $widget) {
 
       $option_name = $wp_registered_widgets[$widget]['callback'][0]->option_name;
@@ -166,16 +168,16 @@ if(!function_exists('getWidgetArray')){
       
       if(!isset($data['content']) && !isset($data['nav_menu'])){
         ob_start();
-        do_shortcode(wpautop($data['text']));
+        echo do_shortcode(wpautop($data['text']));
         $content = ob_get_clean();
 
       }else if(isset($data['nav_menu'])){
-        
+        // Grab the menu object by slug as to make sure you are grabbing the correct one
         $menuID = $data['nav_menu'];
         ob_start();
-        wp_nav_menu(array('menu_id'=>$menuID));
+        $menuObject = wp_get_nav_menu_object($menuID);
+        wp_nav_menu(array('menu'=>$menuObject->slug));
         $content = ob_get_clean();
-        
       }
       $menuTitle = strtolower($data['title']);
       ob_start();
