@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 module.exports = env => {
   var plugins = [
     new MiniCssExtractPlugin({
-      filename: 'css/style.css',
+      filename: 'css/[name].css',
       chunkFilename: 'css/[id].css'
     }),
     new webpack.ProvidePlugin({
@@ -33,7 +33,9 @@ module.exports = env => {
   return {
     entry: {
       bundle: __dirname + '/entry.js',
-      style: __dirname + `/assets/sass/index.scss`
+      style: __dirname + `/assets/sass/index.scss`,
+      blocks: __dirname + `/assets/sass/_blocks.scss`,
+      template: __dirname + `/assets/sass/_template.scss`
     },
     output: {
       path: __dirname + `/assets/dist/`,

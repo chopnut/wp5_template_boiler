@@ -44,6 +44,8 @@ function urbosa_theme_setup()
 {
   add_theme_support('align-wide');
   add_theme_support('post-thumbnails'); // enable feature image
+  add_theme_support( 'title-tag' );
+  add_image_size( 'urbosa_size', 1500, 1500 );
   register_nav_menu('main-menu', __('My main menu'));
 }
 add_action('after_setup_theme', 'urbosa_theme_setup');
