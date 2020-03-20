@@ -13,7 +13,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${WP_DB_USER_PASSWORD}
       MYSQL_DATABASE: ${WP_DB_NAME}
     ports:
-      - 3361:3306
+      - ${DB_PORT}:3306
     volumes: 
       - .\db\export.sql:/docker-entrypoint-initdb.d/export.sql
       - .\db\mysql:/var/lib/mysql
