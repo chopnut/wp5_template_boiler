@@ -304,7 +304,7 @@ if(!function_exists('pregMatchGrouping')){
     return $tmp;
   }
 }
-if(!function_exists('getFeatureImageSrc')){  
+if(!function_exists('getFeatureImage')){  
   /**
    * getFeatureImageSrc of a post
    *
@@ -312,8 +312,14 @@ if(!function_exists('getFeatureImageSrc')){
    * @param  mixed $size eg: 'thumbnail','medium','large','full'
    * @return string
    */
-  function getFeatureImageSrc($postID, $size='medium'){
-    $url = wp_get_attachment_image_src( get_post_thumbnail_id( $postID), $size );
+  function getFeatureImage($postID=null, $size='medium'){
+    $pID = 0;
+    if($postID){
+      $pID = $postID;
+    } else {
+      $pID = get_the_ID();
+    }
+    $url = wp_get_attachment_image_src( get_post_thumbnail_id( $pID), $size );
     if(is_array($url) && count($url)>0){
       return $url[0];
     }
