@@ -11,3 +11,4 @@
 </head>
 
 <body <?php body_class('page-' . $post->post_name); ?>>
+  <?php echo 'Template: '.getCurrentTemplate().'</br>'; ?>

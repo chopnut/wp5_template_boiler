@@ -5,8 +5,8 @@
  */
 
 /*******************************************************************
- *            Setting up a custom admin login page
- *            changing logo and styling it
+ *            Setting up a custom admin logo page
+ *               changing logo and styling it
  *******************************************************************/
 function my_login_logo()
 {
@@ -14,30 +14,30 @@ function my_login_logo()
   <style type="text/css">
     #login h1 a,
     .login h1 a {
-      background-image: url(<?php echo get_template_directory_uri(); ?>/img/sample.jpg);
+      background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/sample.jpg);
       width: 200px;
       background-size: contain;
       background-repeat: no-repeat;
     }
-
     body.login {
       background-color: #eee;
     }
   </style>
 <?php
 }
-
 add_action('login_enqueue_scripts', 'my_login_logo');
 
 /*******************************************************************
  *              Setting up custom login behaviour 
+ * Scenario: If you have a custom page and login form, you will redirect
+ * them to the core login php and authenticate using it. Depending on status
+ * further below is functions where to take them upon successful login
  *******************************************************************/
 // When login successfully
 function redirect_login_page()
 {
   $referrer = $_SERVER['HTTP_REFERER'];
   $url      = add_query_arg('login', 'success', $referrer);
-
 
   // If you are in the admin login go directly to wp-admin
   if (strpos($referrer, 'wp-login.php') !== false) {
@@ -75,7 +75,7 @@ add_action('wp_logout', 'logout_redirect');
 // Checking the fields data before loggin in
 function verify_user_pass($user, $username, $password)
 {
-  // Pre-validationg
+  // Pre-validating
 }
 add_filter('authenticate', 'verify_user_pass', 10, 3);
 

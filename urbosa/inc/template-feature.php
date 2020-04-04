@@ -12,6 +12,8 @@ if (!function_exists('widget_theme_feature')) {
         'id' => 'footer_section',
       )
     );
+     // This will enable excerpt on a page type.
+    add_post_type_support( 'page', 'excerpt' );
   }
   add_action('widgets_init', 'widget_theme_feature');
 }
@@ -44,11 +46,15 @@ function urbosa_theme_setup()
 {
   add_theme_support('align-wide');
   add_theme_support('post-thumbnails'); // enable feature image
-  add_theme_support( 'title-tag' );
+  add_theme_support('title-tag' );
+  add_theme_support('woocommerce' );
   add_image_size( 'urbosa_size', 1500, 1500 );
   register_nav_menu('main-menu', __('My main menu'));
 }
 add_action('after_setup_theme', 'urbosa_theme_setup');
+function urbosa_menu_by_location($themeLocation = 'main-menu'){
+  wp_nav_menu(array('theme_location' => $themeLocation,'container_class'=>'nav-container')); 
+}
 //===============================================
 //  How to search using rest api with JS
 /**
