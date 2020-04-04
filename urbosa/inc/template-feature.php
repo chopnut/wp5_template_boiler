@@ -56,11 +56,7 @@ function urbosa_menu_by_location($themeLocation = 'main-menu'){
   wp_nav_menu(array('theme_location' => $themeLocation,'container_class'=>'nav-container')); 
 }
 //===============================================
-//  How to search using rest api with JS
-/**
- * Use this EP: /wp-json/wp/v2/search?search=sample
- * reference: https://developer.wordpress.org/rest-api/reference/search-results/
- */
+// Add option page
 if(function_exists('acf_add_options_page')){
   acf_add_options_page();
 }
@@ -70,3 +66,29 @@ function be_reusable_blocks_admin_menu() {
   add_menu_page( 'Reusable Blocks', 'Reusable Blocks', 'edit_posts', 'edit.php?post_type=wp_block', '', 'dashicons-editor-table', 22 );
 }
 add_action( 'admin_menu', 'be_reusable_blocks_admin_menu' );
+//===============================================
+// Enable exact search by phrase by setting $_GET['exact']
+function urbosa_exact_search($search, $wp_query){
+  global $wpdb;
+  if(empty($search)) return $search;
+  if(isset($_GET['exact']) && $_GET['exact']==1){
+    $q = $wp_query->query_vars;
+    $search = $searchand = '';
+
+    foreach((array)$q['search_terms'] as $term) :
+        $term = esc_sql(like_escape($term));
+        $search.= "{$searchand}($wpdb->posts.post_title REGEXP '[[:<:]]{$term}[[:>:]]') OR ($wpdb->posts.post_content REGEXP '[[:<:]]{$term}[[:>:]]')";
+        $searchand = ' AND ';
+    endforeach;
+
+    if(!empty($search)) :
+        $search = " AND ({$search}) ";
+        if(!is_user_logged_in())
+            $search .= " AND ($wpdb->posts.post_password = '')";
+    endif;
+    return $search;
+  }
+  return $search;
+}
+// Enable exact search feature: Uncomment below
+// add_filter('posts_search', 'urbosa_exact_search', 20, 2);

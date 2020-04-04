@@ -108,17 +108,23 @@ function my_add_role_function()
   }
 }
 /******************************************************************
- *                           Ajax call
+ *                    Rest API/Ajax call
  ******************************************************************/
+/**
+ * How to search using rest api with JS
+ * Use this EP: /wp-json/wp/v2/search?search=sample
+ * Rest Api Reference: https://developer.wordpress.org/rest-api/reference/search-results/
+ */
+
 function urbosa_get_post($data){
   /* 
   AJAX_CALL: HOW TO CALL FROM JS
   function callAjax(){
-      var data = {
-        page: 1,
-        color: 'blue'
-      }
-      $.ajax({
+    var data = {
+      page: 1,
+      color: 'blue'
+    }
+    $.ajax({
       url: '/wp-admin/admin-ajax.php',
       type: 'POST',
       data: 'action=urbosa_get_post&data=' + JSON.stringify(data),
@@ -134,3 +140,70 @@ function urbosa_get_post($data){
 }
 add_action('wp_ajax_urbosa_get_post', 'urbosa_get_post');
 add_action('wp_ajax_nopriv_urbosa_get_post', 'urbosa_get_post');//for users that are not logged in.
+
+
+/******************************************************************
+ *                    Custom Search
+ ******************************************************************/
+/**
+ * This is how to create custom search a simple reference of what can be done
+ */
+  function urbosa_custom_search( $query )
+  {
+    if(is_search() && $query->is_main_query() && !is_admin()){
+
+      $orderBy  = (isset($_GET['sortBy'])?$_GET['sortBy']:'');
+      $s        = strtolower((isset($_GET['s'])?$_GET['s']:''));
+      $categories  = [];
+      $termIDS = [];
+
+
+      if(count($categories)>0) {
+        foreach ($categories as $cat) {
+          $termIDS[] = $cat->term_id;
+        }
+      }
+      $query->set('tax_query', array(
+        'relation' => 'OR',
+        array(
+          'taxonomy' => 'category',
+          'field' => 'term_id',
+          'terms' => $termIDS,
+          'include_children' => true
+        )
+      ));
+  
+      $query->set('orderby','date');
+      $query->set('post_type','post');
+      $query->set('post_status','publish');
+      $query->set('posts_per_page',10);
+
+  
+      switch($orderBy){
+        case 'newest':
+          $query->set('order','DESC');
+        break;
+        case 'oldest':
+          $query->set('order','ASC');
+  
+        break;
+        case 'popular':
+          $query->set('orderBy', 'meta_value_num');
+          $query->set('order', 'DESC');
+          $query->set('meta_key','page_view_counter');
+        break;
+        default:
+      }
+  
+      if(strpos($s,'author:')!==false && isset($_GET['author']) && !empty($_GET['author'])){
+        $authorID = $_GET['author'];
+        $query->set('s','');
+        $query->set('author',$authorID);
+      }else{
+        $query->set('author','');
+  
+      }
+    }
+  }
+  // Uncomment below to enable: Custom search
+  // add_action( 'pre_get_posts', 'urbosa_custom_search' );
