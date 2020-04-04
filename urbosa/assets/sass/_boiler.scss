@@ -99,9 +99,3 @@
 .ratio.small::after { clear: left; content: " "; display: table; }
 .ratio.strip::before { content: ""; float: left;padding-bottom: 62.5%; }
 .ratio.strip::after { clear: left; content: " "; display: table; }
-
-.col3{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-.col3 >div{ position: relative;}
