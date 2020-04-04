@@ -1,16 +1,16 @@
-const webpack = require("webpack");
-const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const webpack = require('webpack')
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = env => {
   return {
     entry: {
-      bundle: __dirname + "/entry.js",
+      bundle: __dirname + '/entry.js'
     },
     output: {
-      path: __dirname + `/dist/`,
+      path: __dirname + `/dist/`
     },
-    devtool: (env.development) ? "source-map" : false,
+    devtool: env.development ? 'source-map' : false,
     module: {
       rules: [
         {
@@ -19,32 +19,32 @@ module.exports = env => {
             {
               loader: MiniCssExtractPlugin.loader,
               options: {
-                publicPath: '../../',
+                publicPath: '../../'
               }
             },
             {
-              loader: "css-loader",
+              loader: 'css-loader',
               options: {
                 sourceMap: true,
-                url: false,
+                url: false
               }
             },
             {
-              loader: "postcss-loader",
+              loader: 'postcss-loader',
               options: {
-                plugins: () => [require("autoprefixer")]
+                plugins: () => [require('autoprefixer')]
               }
             },
             {
-              loader: "resolve-url-loader",
+              loader: 'resolve-url-loader',
               options: {
                 debug: true
               }
             },
             {
-              loader: "sass-loader",
+              loader: 'sass-loader',
               options: {
-                sourceMap: true,
+                sourceMap: true
               }
             }
           ]
@@ -52,38 +52,40 @@ module.exports = env => {
         {
           test: /\.js?$/,
           exclude: /node_modules/,
-          loader: "babel-loader",
+          loader: 'babel-loader',
           query: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
+            presets: ['@babel/preset-env', '@babel/preset-react']
           }
         },
         {
           test: require.resolve('jquery'),
-          use: [{
-            loader: 'expose-loader',
-            options: '$'
-          }]
-        },
+          use: [
+            {
+              loader: 'expose-loader',
+              options: '$'
+            }
+          ]
+        }
       ]
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: "css/style.css",
+        filename: 'css/style.css'
       }),
       new webpack.ProvidePlugin({
-        $: "jquery",
-        jQuery: "jquery",
+        $: 'jquery',
+        jQuery: 'jquery'
       }),
       new BrowserSyncPlugin({
-        host: "localhost",
+        host: 'localhost',
         port: 3000,
-        proxy: `http://localhost:8182`,
+        proxy: `http://localhost:8191`,
         files: [
-          `./set-folder-here`, // Set the watch folder to reload
-          "!./node_modules/",
+          `./urbosa`, // Set the watch folder to reload
+          '!./node_modules/'
         ],
         notify: false,
-        reloadDelay: 0,
+        reloadDelay: 0
       })
     ]
   }
