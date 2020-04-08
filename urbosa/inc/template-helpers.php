@@ -364,3 +364,12 @@ if(!function_exists('youtubeEmbed')){
     }
   }
 }
+if(!function_exists('urbosa_make_parallax')){
+
+}
+if(!function_exists('urbosa_make_curtain')){
+
+}
+if(!function_exists('urbosa_make_sticky')){
+
+}

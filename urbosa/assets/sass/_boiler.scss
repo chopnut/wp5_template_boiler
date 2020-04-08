@@ -1,65 +1,27 @@
 @import '../lib/slick/slick.css';
 
 /* Youtube Video Background */
-.video-background {
-  background: #000;
-  top: 0; right: 0; bottom: 0; left: 0;
-}
-.video-foreground,
-.video-background iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
+.video-background { background: #000; top: 0; right: 0; bottom: 0; left: 0;}
+  .video-foreground, .video-background iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;}
 @media (min-aspect-ratio: 16/9) {
   .video-foreground { height: 300%; top: -100%; }
 }
 @media (max-aspect-ratio: 16/9) {
   .video-foreground { width: 300%; left: -100%; }
 }
+
 /* YouTube Video Normal */
-.video-container {
-  position: relative;
-  width: 100%;
-  height: 0;
-  padding-bottom: 56.25%;
-  iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-}
+.video-container { position: relative; width: 100%; height: 0; padding-bottom: 56.25%;}
+  .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%;}
 
 /* Slick theme */
-.slick-sliders{
-  width:100%;
-  border:1px solid black;
-  height: 250px;
-  position: relative;
-  >div{
-    height: 100%;
-    z-index: 1;
-  }
-  .slick-arrow{
-    position: absolute;
-    top: calc(50% - 1em);
-    display: block;
-    z-index: 2;
-  }
-  .slick-prev{
-    left: 0px;  
-    right: auto;
-  }
-  .slick-next{
-    left: auto; 
-    right: 0px;
-  }
-}
+.slick-sliders{ width:100%; border:1px solid black; height: 250px; position: relative; }
+  .slick-sliders >div{  height: 100%; z-index: 1; }
+    .slick-sliders .slick-arrow{  position: absolute; top: calc(50% - 1em); display: block; z-index: 2;}
+    .slick-sliders .slick-prev{ left: 0px;  right: auto; }
+    .slick-sliders .slick-next{left: auto; right: 0px;}
+
+
 /* image behave like background */
 .img-bg { position: relative; overflow: hidden; }
   .img-bg.contain img { position: absolute; left:-10000%; right: -10000%;  top: -10000%; bottom: -10000%; margin: auto auto; max-width: 10%; max-height: 10%; -webkit-transform:scale(10); transform: scale(10); }
