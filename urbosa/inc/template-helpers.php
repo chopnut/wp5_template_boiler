@@ -102,9 +102,9 @@ if(!function_exists('getPosts')){
   }
 }
 
-if(!function_exists('getWCPRoducts')){  
+if(!function_exists('getWCProducts')){  
   /**
-   * getWCPRoducts
+   * getWCProducts
    * 
    * @param  mixed $perPage
    * @param  mixed $page
@@ -112,24 +112,29 @@ if(!function_exists('getWCPRoducts')){
    * @param  mixed $categorySlugs   eg: array('slug-1')
    * @param  mixed $attributeSlugs  eg: array('colour' => 'red','size'=> array('small','large'))
    * @param  mixed $minMaxPrice     eg: array(100,500)
+   * @param  mixed $orderby         eg: array('orderby'=>'meta_value_num','order'=>'desc','meta_key'=>'order')
    * @return void
    */
-  function getWCPRoducts($perPage=10,$page=1, $searchTerm='',$categorySlugs=array(), $attributeSlugs=array(),$minMaxPrice=null){
+  function getWCProducts(
+    $perPage=10,
+    $page=1, 
+    $searchTerm='',
+    $categorySlugs=array(), 
+    $attributeSlugs=array(),
+    $minMaxPrice=null,
+    $orderby=null){
+  
     $offset       = ($page-1)*$perPage;
     $argCats      = array();
-    $priceArgs    = array();
-    $searchArgs   = array();
-
-    if(!empty($searchTerm)){
-      $searchArgs = array(
-        'key' => 'post_title',
-        'value' => $searchTerm,
-        'compare' => 'LIKE'
-      );
-    }
-
+    $metaArgs     = array();
+  
+    $argCats[]    = array('relation' => 'AND');
+    $metaArgs[]   = array('relation' => 'AND');
+  
+  
+  
     if($minMaxPrice && count($minMaxPrice)==2){
-      $priceArgs = array(
+      $metaArgs[] = array(
         'key' => '_price',
         'value' => array($minMaxPrice[0], $minMaxPrice[1]),
         'compare' => 'BETWEEN',
@@ -137,11 +142,13 @@ if(!function_exists('getWCPRoducts')){
       );
     }
     foreach($categorySlugs as $cat){
-      $argCats[] = array(
-        'taxonomy' => 'product_cat',
-        'field' => 'slug',
-        'terms'=> $cat
-      );
+      if(!empty($cat)){
+        $argCats[] = array(
+          'taxonomy' => 'product_cat',
+          'field' => 'slug',
+          'terms'=> $cat
+        );
+      }
     }
     foreach($attributeSlugs as $attSlug=>$attValue){
       $argCats[] = array(
@@ -159,14 +166,21 @@ if(!function_exists('getWCPRoducts')){
       'offset'                => $offset,
       'orderby' => 'post_date',
       'order' => 'DESC',
-      'tax_query' => array('relation' => 'AND', 
-        $argCats),
-      'meta_query' => array(
-        'relation' => 'AND',
-        $priceArgs,
-        $searchArgs
-       ),
+      'meta_key' => '',
+      'tax_query' => $argCats,
+      'meta_query'=> $metaArgs,
+      's'=>$searchTerm
     );
+  
+    if($orderby){
+      if(isset($orderby['orderby']) && isset($orderby['meta_key']) && isset($orderby['order'])){
+        $args['orderby']  = $orderby['orderby'];
+        $args['meta_key'] = $orderby['meta_key'];
+        $args['order']    = $orderby['order'];
+      }
+    }
+  
+  
     return new WP_Query($args); 
   }
 }
