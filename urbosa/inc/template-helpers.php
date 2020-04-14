@@ -107,29 +107,34 @@ if(!function_exists('getWCProducts')){
    * getWCProducts
    * 
    * @param  mixed $perPage
-   * @param  mixed $page
    * @param  mixed $searchTerm      eg: 'cool product'
    * @param  mixed $categorySlugs   eg: array('slug-1')
    * @param  mixed $attributeSlugs  eg: array('colour' => 'red','size'=> array('small','large'))
    * @param  mixed $minMaxPrice     eg: array(100,500)
    * @param  mixed $orderby         eg: array('orderby'=>'meta_value_num','order'=>'desc','meta_key'=>'order')
+   * @param  mixed $inStock         true or false | returns all product in stuck
    * @return void
    */
   function getWCProducts(
     $perPage=10,
-    $page=1, 
     $searchTerm='',
     $categorySlugs=array(), 
     $attributeSlugs=array(),
     $minMaxPrice=null,
-    $orderby=null){
+    $orderby=null,
+    $inStock=false){
+    
+    global $paged;
   
-    $offset       = ($page-1)*$perPage;
+    $offset       = ($paged-1)*$perPage;
+    if($offset<=0){
+      $offset = 0;
+    }
     $argCats      = array();
     $metaArgs     = array();
   
-    $argCats[]    = array('relation' => 'AND');
-    $metaArgs[]   = array('relation' => 'AND');
+    $argCats['relation']    = 'AND';
+    $metaArgs['relation']   = 'AND';
   
   
   
@@ -139,6 +144,13 @@ if(!function_exists('getWCProducts')){
         'value' => array($minMaxPrice[0], $minMaxPrice[1]),
         'compare' => 'BETWEEN',
         'type' => 'NUMERIC'
+      );
+    }
+    if($inStock){
+      $metaArgs[]= array(
+        'key' => '_stock_status',
+        'value' => 'instock',
+        'compare' => '=',
       );
     }
     foreach($categorySlugs as $cat){
@@ -151,12 +163,14 @@ if(!function_exists('getWCProducts')){
       }
     }
     foreach($attributeSlugs as $attSlug=>$attValue){
-      $argCats[] = array(
-        'taxonomy'        =>  'pa_'.$attSlug,
-        'field'           => 'slug',
-        'terms'           =>  $attValue,
-        'operator'        => 'IN',
-      );
+      if(!empty($attValue)){
+        $argCats[] = array(
+          'taxonomy'        =>  'pa_'.$attSlug,
+          'field'           => 'slug',
+          'terms'           =>  $attValue,
+          'operator'        => 'IN',
+        );
+      }
     }
     $args = array(
       'post_type'             => 'product',
@@ -169,14 +183,17 @@ if(!function_exists('getWCProducts')){
       'meta_key' => '',
       'tax_query' => $argCats,
       'meta_query'=> $metaArgs,
-      's'=>$searchTerm
+      's'=>$searchTerm,
+      'paged'=>$paged
     );
-  
     if($orderby){
-      if(isset($orderby['orderby']) && isset($orderby['meta_key']) && isset($orderby['order'])){
+      if(isset($orderby['orderby']) && isset($orderby['order'])){
         $args['orderby']  = $orderby['orderby'];
-        $args['meta_key'] = $orderby['meta_key'];
         $args['order']    = $orderby['order'];
+  
+        if(isset($orderby['meta_key'])){
+          $args['meta_key'] = $orderby['meta_key'];
+        }
       }
     }
   
