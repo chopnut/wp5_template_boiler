@@ -108,15 +108,25 @@ if(!function_exists('getWCPRoducts')){
    * 
    * @param  mixed $perPage
    * @param  mixed $page
+   * @param  mixed $searchTerm      eg: 'cool product'
    * @param  mixed $categorySlugs   eg: array('slug-1')
    * @param  mixed $attributeSlugs  eg: array('colour' => 'red','size'=> array('small','large'))
    * @param  mixed $minMaxPrice     eg: array(100,500)
    * @return void
    */
-  function getWCPRoducts($perPage=10,$page=1,$categorySlugs=array(), $attributeSlugs=array(),$minMaxPrice=null){
+  function getWCPRoducts($perPage=10,$page=1, $searchTerm='',$categorySlugs=array(), $attributeSlugs=array(),$minMaxPrice=null){
     $offset       = ($page-1)*$perPage;
     $argCats      = array();
     $priceArgs    = array();
+    $searchArgs   = array();
+
+    if(!empty($searchTerm)){
+      $searchArgs = array(
+        'key' => 'post_title',
+        'value' => $searchTerm,
+        'compare' => 'LIKE'
+      );
+    }
 
     if($minMaxPrice && count($minMaxPrice)==2){
       $priceArgs = array(
@@ -152,7 +162,9 @@ if(!function_exists('getWCPRoducts')){
       'tax_query' => array('relation' => 'AND', 
         $argCats),
       'meta_query' => array(
-        $priceArgs
+        'relation' => 'AND',
+        $priceArgs,
+        $searchArgs
        ),
     );
     return new WP_Query($args); 
