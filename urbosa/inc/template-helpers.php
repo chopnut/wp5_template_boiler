@@ -407,12 +407,77 @@ if(!function_exists('youtubeEmbed')){
     }
   }
 }
-if(!function_exists('urbosa_make_parallax')){
+if(!function_exists('getContentBlocks')){
+    
+  /**
+   * getContentBlocks
+   *
+   * @param  mixed $postID
+   * @param  mixed $blockNames eg: array or string
+   * @param  mixed $getAllOther
+   * @return void
+   */
+  function getContentBlocks( $postID, $blockNames, &$getAllOther= null ) {
+    $post_content = get_post( $postID )->post_content;
+  
+    //get all blocks of requested type
+    $otherBlocks  = array();
+    $blocks       = array();
+    $parseBlocks =  parse_blocks($post_content);
 
-}
-if(!function_exists('urbosa_make_curtain')){
+    foreach($parseBlocks as $parseBlock){
+      $tmpBlock = $parseBlock;
+      if(is_array($blockNames)){
+        $found = 0;
+        foreach ($blockNames as $eachBlockName) {
+          $blockID = str_replace('_','-', $eachBlockName);
+          $acfBlockID = 'acf/'.$blockID;
+          if($blockID==$parseBlock['blockName'] || $acfBlockID==$parseBlock['blockName']){
+            $found = 1;
+          }
+        }
+        // Check for reusable block
+        if( $parseBlock['blockName'] === 'core/block' && ! empty( $parseBlock['attrs']['ref'] ) ){
+          $blockContent = parse_blocks( get_post( $parseBlock['attrs']['ref'] )->post_content );
+          if(is_array($blockContent) && count($blockContent)>0){
+            $blockID       = str_replace('acf/','', $blockContent[0]['blockName']);
+            $blockID       = str_replace('-','_', $blockID);
+  
+            if(in_array($blockID, $blockNames)){
+              $found = 1;
+              $tmpBlock = $blockContent[0];
+            }
+          }
 
-}
-if(!function_exists('urbosa_make_sticky')){
+        }
+        if($found){
+          $blocks[] = $tmpBlock;
+          continue;
+        }else{
+          if(!empty($parseBlock['blockName'])){
+            $otherBlocks[] = $tmpBlock;
+          }
+        }
+      }else{
+        $blockID = str_replace('_','-', $blockNames);
+        $acfBlockID = 'acf/'.$blockID;
+        
+        if($blockID==$parseBlock['blockName'] || $acfBlockID==$parseBlock['blockName']){
+          $blocks[] = $parseBlock;
+        }else{
+          if(!empty($parseBlock['blockName'])){
+            $otherBlocks[] = $parseBlock;
+          }
+        }
+      }
 
+    }
+
+    if(is_array($getAllOther)){
+      foreach ($otherBlocks as $otherBlock) {
+        $getAllOther[] = $otherBlock;
+      }
+    }
+    return $blocks;
+  }
 }

@@ -48,12 +48,12 @@ function urbosa_theme_setup()
   add_theme_support('post-thumbnails'); // enable feature image
   add_theme_support('title-tag' );
   add_theme_support('woocommerce' );
-  add_image_size( 'urbosa_size', 1500, 1500 );
+  add_image_size( 'urbosa_size', 2000, 2000 );
   register_nav_menu('main-menu', __('My main menu'));
 }
 add_action('after_setup_theme', 'urbosa_theme_setup');
-function urbosa_menu_by_location($themeLocation = 'main-menu'){
-  wp_nav_menu(array('theme_location' => $themeLocation,'container_class'=>'nav-container')); 
+function urbosa_menu_by_location($themeLocation = 'main-menu', $menuClass='menu'){
+  wp_nav_menu(array('theme_location' => $themeLocation,'menu_class'=>$menuClass)); 
 }
 //===============================================
 // Add option page

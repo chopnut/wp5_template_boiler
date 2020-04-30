@@ -2,7 +2,7 @@
 //--------------------------------------------------------------------------
 // Create class attribute allowing for custom "className" and "align" values.
 // This will check alignment as well
-$className = 'cb_example';
+$className = basename(__FILE__, '.php'); 
 if( !empty($block['className']) ) {
     $className .= ' ' . $block['className'];
 }
@@ -11,7 +11,8 @@ if( !empty($block['align']) ) {
 }
 //-------------------------------------------------------------------------
 
-
-echo 'Test example block display.';
-
 ?>
+
+<div class="<?=$className?>">
+  Test example goes here
+</div>
