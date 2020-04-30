@@ -35,6 +35,6 @@
     "fomantic-ui": "^2.7.8"
   },
   "dependencies": {
-    "jquery": "^3.4.1"
+    "jquery": "^3.5.0"
   }
 }
