@@ -55,6 +55,7 @@ add_action('after_setup_theme', 'urbosa_theme_setup');
 function urbosa_menu_by_location($themeLocation = 'main-menu', $menuClass='menu'){
   wp_nav_menu(array('theme_location' => $themeLocation,'menu_class'=>$menuClass)); 
 }
+
 //===============================================
 // Add option page
 if(function_exists('acf_add_options_page')){
