@@ -30,16 +30,13 @@
   Maintaining aspect ratio with min-content
 */
 .ratio { width: 100%; position: relative;}
-.ratio.square:not(.force)::before { content: ""; float: left;padding-bottom: 100%; }
-.ratio.square:not(.force)::after { clear: left; content: " "; display: table; }
-.ratio.wide:not(.force)::before { content: ""; float: left;padding-bottom: 56.25%; }
-.ratio.wide:not(.force)::after { clear: left; content: " "; display: table; }
-.ratio.tv:not(.force)::before { content: ""; float: left;padding-bottom: 75%; }
-.ratio.tv:not(.force)::after { clear: left; content: " "; display: table; }
-.ratio.small:not(.force)::before { content: ""; float: left;padding-bottom:  66.6%; }
-.ratio.small:not(.force)::after { clear: left; content: " "; display: table; }
-.ratio.strip:not(.force)::before { content: ""; float: left;padding-bottom: 62.5%; }
-.ratio.strip:not(.force)::after { clear: left; content: " "; display: table; }
+.ratio::after { clear: left; content: " "; display: table; }
+.ratio::before { content: ""; float: left; }
+.ratio.square:not(.force)::before { padding-bottom: 100%; }
+.ratio.wide:not(.force)::before { padding-bottom: 56.25%; }
+.ratio.tv:not(.force)::before { padding-bottom: 75%; }
+.ratio.small:not(.force)::before { padding-bottom:  66.6%; }
+.ratio.strip:not(.force)::before { padding-bottom: 62.5%; }
 .ratio.square.force{ padding-bottom: 100%; }
 .ratio.wide.force{ padding-bottom: 56.25%; }
 .ratio.tv.force{ padding-bottom: 75%; }
