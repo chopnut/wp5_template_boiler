@@ -481,3 +481,68 @@ if(!function_exists('getContentBlocks')){
     return $blocks;
   }
 }
+
+if(!function_exists('getVar')){  
+  /**
+   * get post/get/request if available return default otherwise
+   *
+   * @param  mixed $name
+   * @param  mixed $default
+   * @return void
+   */
+  function getVar($name,$default=''){
+    if(isset($_REQUEST[$name])){
+      return $_REQUEST[$name];
+    }
+    if(isset($_GET[$name])){
+      return $_GET[$name];
+    }
+    if(isset($_POST[$name])){
+      return $_POST[$name];
+    }
+    return $default;
+  }
+}
+if(!function_exists('getACFImage')){  
+  
+  /**
+   * Get the image and return default if acf is not available
+   *
+   * @param  mixed $acfField
+   * @param  mixed $postID
+   * @param  mixed $default
+   * @param  mixed $size
+   * @return void
+   */
+  function getACFImage($acfField,$postID=0,$default='',$size='large'){
+    $acfImage = ($postID)? get_field($acfField,$postID):get_field($acfField);
+    if(!$acfImage || !isset($acfImage['sizes']) || !isset($acfImage['url'])){
+      return $default;
+    }
+    if($size=='full' || $size=='url'){
+      return $acfImage['url'];
+    }
+    if(isset($acfImage['sizes'][$size])){
+      return $acfImage['sizes'][$size];
+    }
+    return $default;
+  }
+}
+if(!function_exists('do_curl')){
+  function doCurl($path,$postParams= null){
+    /* Prep-variables */
+    $ch       = curl_init();
+    /* Initialize CURL set-up */
+    curl_setopt($ch, CURLOPT_URL, $path);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_ENCODING , "");
+  
+    if($postParams){
+      curl_setopt($ch, CURLOPT_POST, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postParams));
+    }
+    $result = json_decode(curl_exec($ch));
+    curl_close($ch);
+    return $result;
+  }
+}

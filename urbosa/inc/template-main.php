@@ -37,15 +37,13 @@ add_action('login_enqueue_scripts', 'my_login_logo');
 function redirect_login_page()
 {
   $referrer = $_SERVER['HTTP_REFERER'];
-  $url      = add_query_arg('login', 'success', $referrer);
-
   // If you are in the admin login go directly to wp-admin
   if (strpos($referrer, 'wp-login.php') !== false) {
     wp_redirect(home_url('/wp-admin'));
     exit;
   } else {
     if (!strstr($referrer, 'incorrect')  && !strstr($referrer, 'empty')) {
-      wp_redirect($url);
+      wp_redirect($referrer);
       exit;
     }
   }
@@ -56,8 +54,7 @@ add_action('wp_login', 'redirect_login_page');
 function login_failed()
 {
   $referrer = $_SERVER['HTTP_REFERER'];
-  $url      = add_query_arg('login', 'failed', $referrer);
-  wp_redirect($url);
+  wp_redirect($referrer);
   exit;
 }
 add_action('wp_login_failed', 'login_failed');
@@ -65,19 +62,28 @@ add_action('wp_login_failed', 'login_failed');
 // When user logout
 function logout_redirect()
 {
-
   $referrer = $_SERVER['HTTP_REFERER'];
-  $url      = add_query_arg('login', 'logout', $referrer);
-  wp_redirect($url);
+  wp_redirect($referrer);
   exit;
 }
 add_action('wp_logout', 'logout_redirect');
-// Checking the fields data before loggin in
+
+// @verify_user_pass()
+// You can check $user here if there is an error authenticating
+// And redirect manually as needed.
+
 function verify_user_pass($user, $username, $password)
 {
   // Pre-validating
+  if(is_wp_error($user)){
+    // Error
+    $error_codes = join( ',', $user->get_error_codes() );
+  }else{
+    // Good
+  }
+  return $user;
 }
-add_filter('authenticate', 'verify_user_pass', 10, 3);
+add_filter('authenticate', 'verify_user_pass', 101, 3);
 
 /******************************************************************
  *                        Prevent admin
