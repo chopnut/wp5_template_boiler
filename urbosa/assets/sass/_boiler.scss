@@ -18,27 +18,33 @@
 .slick-sliders{ width:100%; border:1px solid black; height: 100%; position: relative; }
   .slick-sliders >div,.slick-sliders >div>div {  height: 100%; z-index: 1; }
     .slick-sliders .slick-arrow{  position: absolute; top: calc(50% - 1em); display: block; z-index: 2;}
-    .slick-sliders .slick-prev{ left: 0px;  right: auto; }
-    .slick-sliders .slick-next{left: auto; right: 0px;}
+    .slick-sliders .slick-nav-prev{ left: 0px;  right: auto; }
+    .slick-sliders .slick-nav-next{left: auto; right: 0px;}
 
 
 /* image behave like background */
 .img-bg { position: relative; overflow: hidden; }
   .img-bg.contain img { position: absolute; left:-10000%; right: -10000%;  top: -10000%; bottom: -10000%; margin: auto auto; max-width: 10%; max-height: 10%; -webkit-transform:scale(10); transform: scale(10); }
   .img-bg.cover img { position: absolute; left:-10000%; right: -10000%;  top: -10000%; bottom: -10000%; margin: auto auto; min-width: 1000%; min-height: 1000%; -webkit-transform:scale(0.1); transform: scale(0.1); }
+
 /* 
-  Maintaining aspect ratio with min-content
+  Maintaining aspect ratio wrapping long content
+  eg:
+  <div class="ratio">
+    <div class="container-flex">
+      <div class="container-flex-child">
+         <div class="my-content-div-that-can-take-up-whole-height"></div>
+      </div>
+    </div>
+  </div>
 */
-.ratio { width: 100%; position: relative;}
+.ratio { width: 100%; position: relative; display: flex;}
+.ratio>*{width: 100%;}
+.ratio>*>*{height: 100%;}
 .ratio::after { clear: left; content: " "; display: table; }
 .ratio::before { content: ""; float: left; }
-.ratio.square:not(.force)::before { padding-bottom: 100%; }
-.ratio.wide:not(.force)::before { padding-bottom: 56.25%; }
-.ratio.tv:not(.force)::before { padding-bottom: 75%; }
-.ratio.small:not(.force)::before { padding-bottom:  66.6%; }
-.ratio.strip:not(.force)::before { padding-bottom: 62.5%; }
-.ratio.square.force{ padding-bottom: 100%; }
-.ratio.wide.force{ padding-bottom: 56.25%; }
-.ratio.tv.force{ padding-bottom: 75%; }
-.ratio.small.force{ padding-bottom: 66.6%; }
-.ratio.strip.force{ padding-bottom: 62.5%; }
+.ratio.square::before { padding-bottom: 100%; }
+.ratio.wide::before { padding-bottom: 56.25%; }
+.ratio.tv::before { padding-bottom: 75%; }
+.ratio.small::before { padding-bottom:  66.6%; }
+.ratio.strip::before { padding-bottom: 62.5%; }
