@@ -1,3 +1,14 @@
 @import './theme';
 @import './fonts';
 @import './mixins';
+
+
+
+/* desktop */
+@media (max-width: 1025px){}
+/* tablet */
+@media (max-width: 1024px){}
+/* mobile */
+@media (max-width: 768px){
+
+}

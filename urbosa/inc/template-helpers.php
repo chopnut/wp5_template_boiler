@@ -325,21 +325,25 @@ if(!function_exists('pregMatchGrouping')){
    *
    * @param  mixed $exp
    * @param  mixed $subject
+   * @param  bool $unique = if values needs to be unique
    * @return array
    */
-  function pregMatchGrouping($exp, $subject){
+  function pregMatchGrouping($exp, $subject, $unique= true){
     preg_match_all($exp,$subject, $matches);
-    $tmp = array();
+    $tmp = $unique = array();
+
     if($matches && count($matches)>0){
       for ($i=0; $i < count($matches); $i++) { 
         $match = $matches[$i];
-  
         for ($n=0; $n < count($match); $n++) { 
-          if(!isset($tmp[$n])){
-            $tmp[$n] = array();
-            $tmp[$n][] = $match[$n];
-          }else{
-            $tmp[$n][] = $match[$n];
+          if(!isset($unique[$match[$n]])){
+            $unique[$match[$n]] = true;
+            if(!isset($tmp[$n])){
+              $tmp[$n] = array();
+              $tmp[$n][] = $match[$n];
+            }else{
+              $tmp[$n][] = $match[$n];
+            }
           }
         }
       }
@@ -541,7 +545,7 @@ if(!function_exists('do_curl')){
       curl_setopt($ch, CURLOPT_POST, 1);
       curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postParams));
     }
-    $result = json_decode(curl_exec($ch));
+    $result = curl_exec($ch);
     curl_close($ch);
     return $result;
   }
