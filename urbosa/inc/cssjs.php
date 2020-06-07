@@ -43,7 +43,7 @@ function load_admin_style()
 add_action( 'admin_enqueue_scripts', 'load_admin_style' );
 function add_style_sheet_attr($html, $handle){
   // Preload main critical layout
-  if($handle == ('main' || 'other')){
+  if($handle == ('main' || 'other' || 'dashicons')){
     $tempHtml  =str_replace("rel='stylesheet'","rel='preload' as='style'",$html);
     $tempHtml .=str_replace("rel='stylesheet'","rel='stylesheet' media='print' onload=\"this.media='all'\"",$html);
     $tempHtml  = str_replace("media=''",'',$tempHtml);
