@@ -49,9 +49,8 @@
         function inc_minify_style($html,$handle){
           global $itself, $tmpMinifyCSSExceptions;
           $newHtml = $html;
-          $matches = pregMatchGrouping('/href=["|\'](.*?)["|\']/',$html);
-  
           if(!in_array($handle, $tmpMinifyCSSExceptions)){
+            $matches = pregMatchGrouping('/href=["|\'](.*?)["|\']/',$html);  
             if(count($matches)){
               foreach($matches as $match){
                 $toReplace = $match[1];
