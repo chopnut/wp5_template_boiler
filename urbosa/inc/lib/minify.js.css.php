@@ -3,7 +3,6 @@
   // ini_set('display_startup_errors', 1);
   // error_reporting(E_ALL);
   require __DIR__ . '/vendor/autoload.php';
-  require __DIR__ . '/Snoopy.class.php';
   use MatthiasMullie\Minify;
 
   /* Set these variables outside if you like to override */
