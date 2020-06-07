@@ -44,7 +44,7 @@
     if($strPos!==false){
       $itself = home_url('/').substr(__FILE__,$strPos);
       /* Minify resources only when $live=true or $live is not set */
-      if(!isset($live) || (isset($live)) && $live){
+      if((!isset($live) || (isset($live) && $live)) && !is_user_logged_in()){
         // minify css
         function inc_minify_style($html,$handle){
           global $itself, $tmpMinifyCSSExceptions;
