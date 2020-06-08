@@ -72,6 +72,6 @@ add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
 
 
 /* Optimisation */
-require_once('lib/minify.html.php');
-require_once('lib/minify.js.css.php');
+require_once(__DIR__.'/../assets/lib/minify/minify.html.php');
+require_once(__DIR__.'/../assets/lib/minify/minify.js.css.php');
 

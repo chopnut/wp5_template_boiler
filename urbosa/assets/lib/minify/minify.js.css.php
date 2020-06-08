@@ -9,7 +9,7 @@
   global $minifyCSSExceptions, $minifyJSExceptions;
   /* ------------------------------------------------------ */
   $tmpMinifyCSSExceptions = ['wp-block-library','dashicons'];
-  $tmpMinifyJSExceptions  = ['jquery'];
+  $tmpMinifyJSExceptions  = ['jquery','googleapi'];
   
   if(isset($minifyCSSExceptions)) $tmpMinifyCSSExceptions = array_merge($tmpMinifyCSSExceptions, $minifyCSSExceptions);
   if(isset($minifyJSExceptions)) $tmpMinifyJSExceptions = array_merge($tmpMinifyJSExceptions, $minifyJSExceptions);
@@ -50,12 +50,21 @@
           global $itself, $tmpMinifyCSSExceptions;
           $newHtml = $html;
           if(!in_array($handle, $tmpMinifyCSSExceptions)){
-            $matches = pregMatchGrouping('/href=["|\'](.*?)["|\']/',$html);  
-            if(count($matches)){
-              foreach($matches as $match){
-                $toReplace = $match[1];
-                $replacedBy = $itself.'?path='.$toReplace;
-                $newHtml = str_replace($toReplace,$replacedBy, $newHtml);
+            $minify = true;
+            foreach ($tmpMinifyCSSExceptions as $exc) {
+              if(strpos($html,$exc) >=0){
+                $minify = false;
+                break;
+              }
+            }
+            if($minify){
+              $matches = pregMatchGrouping('/href=["|\'](.*?)["|\']/',$html);  
+              if(count($matches)){
+                foreach($matches as $match){
+                  $toReplace = $match[1];
+                  $replacedBy = $itself.'?path='.$toReplace;
+                  $newHtml = str_replace($toReplace,$replacedBy, $newHtml);
+                }
               }
             }
           }
@@ -67,12 +76,21 @@
           global $itself, $tmpMinifyJSExceptions;
           $newHtml = $html;
           if(!in_array($handle, $tmpMinifyJSExceptions)){
-            $matches = pregMatchGrouping('/src=["|\'](.*?)["|\']/',$html);
-            if(count($matches)){
-              foreach($matches as $match){
-                $toReplace = $match[1];
-                $replacedBy = $itself.'?path='.$toReplace;
-                $newHtml = str_replace($toReplace,$replacedBy, $newHtml);
+            $minify = true;
+            foreach ($tmpMinifyJSExceptions as $exc) {
+              if(strpos($html,$exc) >=0){
+                $minify = false;
+                break;
+              }
+            }
+            if($minify){
+              $matches = pregMatchGrouping('/src=["|\'](.*?)["|\']/',$html);
+              if(count($matches)){
+                foreach($matches as $match){
+                  $toReplace = $match[1];
+                  $replacedBy = $itself.'?path='.$toReplace;
+                  $newHtml = str_replace($toReplace,$replacedBy, $newHtml);
+                }
               }
             }
           }
