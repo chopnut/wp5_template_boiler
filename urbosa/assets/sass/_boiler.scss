@@ -15,11 +15,11 @@
   .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%;}
 
 /* Slick theme */
-.slick-sliders{ width:100%; border:1px solid black; height: 100%; position: relative; }
+.slick-sliders{ width:100%; height: 100%; position: relative; }
   .slick-sliders >div,.slick-sliders >div>div {  height: 100%; z-index: 1; }
-    .slick-sliders .slick-arrow{  position: absolute; top: calc(50% - 1em); display: block; z-index: 2;}
-    .slick-sliders .slick-nav-prev{ left: 0px;  right: auto; }
-    .slick-sliders .slick-nav-next{left: auto; right: 0px;}
+    .slick-sliders .slick-arrow{ cursor: pointer; position: absolute; top: calc(50% - 1em); display: block; z-index: 2;}
+    .slick-sliders .slick-nav-prev{ left: 1rem;  right: auto; }
+    .slick-sliders .slick-nav-next{left: auto; right: 1rem;}
 
 
 /* image behave like background */

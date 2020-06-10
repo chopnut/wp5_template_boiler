@@ -1,7 +1,5 @@
 <?php 
-  // ini_set('display_errors', 1);
-  // ini_set('display_startup_errors', 1);
-  // error_reporting(E_ALL);
+
   require __DIR__ . '/vendor/autoload.php';
   use MatthiasMullie\Minify;
 
@@ -47,14 +45,27 @@
       if((!isset($live) || (isset($live) && $live)) && !is_user_logged_in()){
         // minify css
         function inc_minify_style($html,$handle){
-          global $itself, $tmpMinifyCSSExceptions;
+          global $itself, $tmpMinifyCSSExceptions, $minifyCSS;
           $newHtml = $html;
           if(!in_array($handle, $tmpMinifyCSSExceptions)){
+            /* exceptions */
             $minify = true;
             foreach ($tmpMinifyCSSExceptions as $exc) {
-              if(strpos($html,$exc) >=0){
+              $pos = strpos($html,$exc);
+              if($pos!==false){
                 $minify = false;
                 break;
+              }
+            }
+            /* include only */
+            if(isset($minifyCSS) && is_array($minifyCSS)){
+              $minify = false;
+              foreach ($minifyCSS as $inc ) {
+                $pos = strpos($html,$inc);
+                if($pos!==false){
+                  $minify = true;
+                  break;
+                }
               }
             }
             if($minify){
@@ -71,16 +82,30 @@
           return $newHtml;
         }
         add_filter('style_loader_tag', 'inc_minify_style', 10,2);
+
         // minify js
         function inc_minify_javascript($html,$handle){
-          global $itself, $tmpMinifyJSExceptions;
+          global $itself, $tmpMinifyJSExceptions, $minifyJS;
           $newHtml = $html;
           if(!in_array($handle, $tmpMinifyJSExceptions)){
+            /* exceptions */
             $minify = true;
             foreach ($tmpMinifyJSExceptions as $exc) {
-              if(strpos($html,$exc) >=0){
+              $pos = strpos($html,$exc);
+              if($pos!==false){
                 $minify = false;
                 break;
+              }
+            }
+            /* include only */
+            if(isset($minifyJS) && is_array($minifyJS)){
+              $minify = false;
+              foreach ($minifyJS as $inc ) {
+                $pos = strpos($html,$inc);
+                if($pos!==false){
+                  $minify = true;
+                  break;
+                }
               }
             }
             if($minify){
