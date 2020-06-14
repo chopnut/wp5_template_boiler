@@ -1,9 +1,6 @@
 <?php 
   /* 
     Facebook integration 
-    Prerequisite:
-    - Have a developer FB account and get APPID
-    - Have page ID
   */
   class Facebook {
     private $html;
@@ -12,6 +9,7 @@
     function __construct($appID='',$version='v7.0'){
       ob_start();
       ?>
+      <div class="fb-root"></div>
       <script>
         window.fbAsyncInit = function() {
           FB.init({
@@ -22,14 +20,6 @@
           });
           FB.AppEvents.logPageView();   
         };
-
-        (function(d, s, id){
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) {return;}
-          js = d.createElement(s); js.id = id;
-          js.src = "https://connect.facebook.net/en_US/sdk.js";
-          fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
       </script>
       <?php
       $this->html = ob_get_clean();
@@ -43,12 +33,19 @@
     public function messenger(){
       /* Add facebook messenger to the page */
       ?>
+      <script>
+        (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
+      <!-- Your Chat Plugin code -->
       <div class="fb-customerchat"
-          page_id="<?=$this->messengerPageID?>"
-          logged_in_greeting="How can we help you shop today?"
-          logged_out_greeting="How can we help you shop today?"
-          theme_color="<?=$this->messengerThemeColor?>"
-      >
+        attribution=setup_tool
+        page_id="<?=$this->messengerPageID?>"
+        theme_color="<?=$this->messengerThemeColor?>">
       </div>
       <?php
     }
@@ -56,7 +53,7 @@
 
     }
     /* Public */
-    public function addMessenger($pageID='',$themeColor='#5c9165'){
+    public function addMessenger($pageID='',$themeColor='#0084ff'){
       $this->messengerPageID = $pageID;
       $this->messengerThemeColor = $themeColor;
       add_action('wp_body_open', array($this,'messenger'));

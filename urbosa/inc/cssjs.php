@@ -81,6 +81,5 @@ require_once($dir.'/minify.js.css.php');
 
 /* Facebook Messenger */
 require_once('facebook/facebook.php');
-$facebook = new Facebook('738665340214554');
-$facebook->addMessenger('227105627324818');
+$facebook = new Facebook();
 
