@@ -72,8 +72,15 @@ add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
 
 
 /* Optimisation */
-$minifyJS  =['urbosa'];
-$minifyCSS =['urbosa'];
-require_once('lib/minify.html.php');
-require_once('lib/minify.js.css.php');
+$minifyJS  =['urbosa']; $minifyCSS =['urbosa'];
+
+$dir = __DIR__.'/../assets/lib/minify';
+require_once($dir.'/minify.html.php');
+require_once($dir.'/minify.js.css.php');
+require_once($dir.'/minify.js.css.php');
+
+/* Facebook Messenger */
+require_once('facebook/facebook.php');
+$facebook = new Facebook('738665340214554');
+$facebook->addMessenger('227105627324818');
 

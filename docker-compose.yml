@@ -3,10 +3,12 @@ services:
   # ---------------------------------------- DB
   # IMPORTANT NOTE: 
   # DO NOT USE ROOT as a user
-  # DO NOT USE INSECURE password
+  # DO NOT USE INSECURE password 
+
   db:
     restart: unless-stopped
     image: mysql:5.7
+    command: --max_allowed_packet=1024M
     environment:
       MYSQL_USER: ${WP_DB_USER} 
       MYSQL_PASSWORD: ${WP_DB_USER_PASSWORD}
@@ -19,11 +21,6 @@ services:
       - .\db\mysql:/var/lib/mysql
     networks: 
       - back
-  # ----------------------------------------
-  # Always use this for admin: 
-  # Wordpress: dev/dev_2019!
-  # ----------------------------------------
-
   wp:
     depends_on: 
       - db

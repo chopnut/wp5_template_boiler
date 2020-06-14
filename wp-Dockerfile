@@ -9,8 +9,9 @@ RUN rm /etc/apt/preferences.d/no-debian-php
 #  && apt-get clean -y \
 #  && docker-php-ext-install soap
 RUN echo "file_uploads = On\n" \
-         "memory_limit = 500M\n" \
+         "memory_limit = 1024M\n" \
+         "post_max_size = 1024M\n" \
          "upload_max_filesize = 500M\n" \
-         "post_max_size = 500M\n" \
          "max_execution_time = 600\n" \
+         "max_input_time = 600\n" \
          > /usr/local/etc/php/conf.d/uploads.ini
