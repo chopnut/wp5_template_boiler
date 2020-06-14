@@ -6,6 +6,8 @@
     private $html;
     private $messengerPageID;
     private $messengerThemeColor;
+    private $host;
+
     function __construct($appID='',$version='v7.0'){
       ob_start();
       ?>
@@ -23,15 +25,24 @@
       </script>
       <?php
       $this->html = ob_get_clean();
-      add_action('wp_body_open', array($this,'after_body'));
+      add_action('wp_body_open', array($this,'init'));
+
+      /* Get host */
+      if(isset($_SERVER['HTTP_X_ORIGINAL_HOST'])){
+        $this->host = $_SERVER['HTTP_X_ORIGINAL_HOST'];
+      }else{
+        $this->host = $_SERVER['HTTP_HOST'];
+      }
       
     }
-    /* Private */
-    public function after_body(){ 
+    public function init(){ 
       echo $this->html;
     }
     public function messenger(){
       /* Add facebook messenger to the page */
+      /* Prerequisite: 
+         Get facebook page id, and whitelist domain
+      */
       ?>
       <script>
         (function(d, s, id) {
@@ -49,10 +60,7 @@
       </div>
       <?php
     }
-    public function _login(){
-
-    }
-    /* Public */
+    public function login(){}
     public function addMessenger($pageID='',$themeColor='#0084ff'){
       $this->messengerPageID = $pageID;
       $this->messengerThemeColor = $themeColor;
