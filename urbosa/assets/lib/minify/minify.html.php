@@ -126,7 +126,11 @@
     {
     ob_start('flhm_wp_html_compression_finish');
     }
-    if(!is_user_logged_in()){
+    global $live;
+    if(
+      (!is_user_logged_in() && !isset($live)) || 
+      (!is_user_logged_in() && isset($live) && $live)
+    ){
       add_action('get_header', 'flhm_wp_html_compression_start');
     }
 ?>

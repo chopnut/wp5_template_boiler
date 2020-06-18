@@ -48,3 +48,8 @@
 .ratio.tv::before { padding-bottom: 75%; }
 .ratio.small::before { padding-bottom:  66.6%; }
 .ratio.strip::before { padding-bottom: 62.5%; }
+
+/* animated underline  */
+  a.urbosa.underline{  display: inline-block;  position: relative; text-decoration: none; padding-bottom: .5em; }
+  a.urbosa.underline:after{background: none repeat scroll 0 0 transparent;bottom: 0;content: "";display: block;height: 2px;left: 50%;position: absolute;background: $secondaryColor;transition: width 0.3s ease 0s, left 0.3s ease 0s;width: 0;}
+  a.urbosa.underline:hover:after{ width: 100%;  left: 0;  }

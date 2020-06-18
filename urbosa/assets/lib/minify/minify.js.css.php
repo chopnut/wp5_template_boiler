@@ -157,8 +157,12 @@
         } 
         curl_close($ch);
         if(!empty($content)){
-          if($type=='js') $minifier = new Minify\JS();
           if($type=='css') $minifier = new Minify\CSS();
+          if($type=='js') {
+            $minifier = new Minify\JS();
+            $type = 'javascript';
+          
+          }
           header('Content-type: text/'.$type);
           // header('Content-encoding: gzip'); enable this if server supports it
           header('Cache-control: max-age=2592000, must-revalidate');

@@ -77,7 +77,6 @@ $minifyJS  =['urbosa']; $minifyCSS =['urbosa'];
 $dir = __DIR__.'/../assets/lib/minify';
 require_once($dir.'/minify.html.php');
 require_once($dir.'/minify.js.css.php');
-require_once($dir.'/minify.js.css.php');
 
 /* Facebook Messenger */
 require_once('facebook/facebook.php');
