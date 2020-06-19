@@ -1,12 +1,11 @@
 {
-  "name": "wp-theme",
+  "name": "website-reloader",
   "version": "1.0.0",
-  "description": "Another wordpress set up",
+  "description": "Reloader setup",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack -w --mode=development --env.development --config ./webpack.config.js --host 0.0.0.0 --disable-host-check",
-    "watch": "webpack -w --mode=development --env.watch --config ./webpack.config.js",
-    "build": "webpack --mode=production --env.production --config ./webpack.config.js",
+    "dev": "webpack -w --mode=development --env.development --config ./webpack.reloader.js --host 0.0.0.0 --disable-host-check",
+    "build": "webpack --mode=production --env.production --config ./webpack.reloader.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -22,9 +21,8 @@
     "css-loader": "^3.0.0",
     "dotenv": "^8.0.0",
     "expose-loader": "^0.7.5",
-    "fomantic-ui": "^2.7.8",
     "mini-css-extract-plugin": "^0.7.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^4.12.0",
     "postcss-loader": "^3.0.0",
     "resolve-url-loader": "^3.1.0",
     "sass-loader": "^7.1.0",
@@ -32,9 +30,9 @@
     "url-loader": "^2.0.0",
     "webpack": "^4.34.0",
     "webpack-cli": "^3.3.4",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
-    "jquery": "^3.5.1"
+    "jquery": "^3.4.1"
   }
 }
