@@ -9,6 +9,5 @@
   <?php wp_head(); ?>
 
 </head>
-
 <body <?php body_class('page-' . $post->post_name); ?>>
- <?php wp_body_open(); ?>
+ 

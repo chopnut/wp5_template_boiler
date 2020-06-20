@@ -4,6 +4,8 @@
  * Version: 2
  * Copyright 2011, Victor Coulon (http://victorcoulon.fr)
  * Released under the MIT Licence
+ * Sample: https://llidesign.co.uk/iconic-furniture/#section-6
+ * Doc: https://github.com/Victa/curtain.js/
  */
 ;(function ($, window, document, undefined) {
   var pluginName = 'curtain',

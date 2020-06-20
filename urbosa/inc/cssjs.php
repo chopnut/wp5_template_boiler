@@ -11,8 +11,10 @@ function theme_setup()
   // JS
   wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=', array(), null, false);
   wp_enqueue_script('lib', get_template_directory_uri() . "/assets/dist/js/bundle.js", array(), null, false);   // SemanticUI/JQuery/Slick
-  wp_enqueue_script('custom', get_template_directory_uri() . "/assets/js/custom.js$suffix" , array(), null, true);       // Any custom/override changes
+  
+  // ESSENTIALS
   wp_enqueue_script('blocks', get_template_directory_uri() . "/assets/js/blocks.js$suffix" , array(), null, true);
+  wp_enqueue_script('custom', get_template_directory_uri() . "/assets/js/custom.js$suffix" , array(), null, true);       // Any custom/override changes
   
   // CSS
   wp_enqueue_style('main', get_template_directory_uri() . "/assets/dist/css/layout.css$suffix" , array(), null, false); // Main critical layout
@@ -64,10 +66,11 @@ function defer_js($url,$handle){
   if(is_user_logged_in() || 
     strpos($url, '.js') === false || 
     strpos($url, 'jquery') || 
-    $handle==('lib')
+    $handle=='lib'
     ){
     return $url;
   }
+  if($handle=='custom') return str_replace(' src', ' defer src', $url);
   return str_replace(' src', ' async defer src', $url);
 }
 add_filter('script_loader_tag', 'defer_js', 11, 2);
@@ -81,11 +84,12 @@ function urbosa_add_custom_to_footer() {
 };
 add_action( 'get_footer', 'urbosa_add_custom_to_footer' );
 
-enableProgressiveBG();
+
 $minifyJS  =['urbosa']; $minifyCSS =['urbosa'];
 $dir  = __DIR__.'/../assets/lib/minify';
 require_once($dir.'/minify.html.php');
 require_once($dir.'/minify.js.css.php');
+
 
 //--------------------------------------------------//
 /*                    Others                        */
