@@ -91,5 +91,6 @@ function urbosa_exact_search($search, $wp_query){
   }
   return $search;
 }
+
 // Enable exact search feature: Uncomment below
 // add_filter('posts_search', 'urbosa_exact_search', 20, 2);

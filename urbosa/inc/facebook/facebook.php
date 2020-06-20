@@ -46,6 +46,7 @@
       /* Prerequisite: 
          Get facebook page id, and whitelist domain
          More options: https://developers.facebook.com/docs/messenger-platform/discovery/customer-chat-plugin
+         To test on localhost: Use Ngrok to make tunnel of your local site
       */
       ?>
       <script>

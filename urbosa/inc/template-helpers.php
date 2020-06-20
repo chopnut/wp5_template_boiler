@@ -532,7 +532,7 @@ if(!function_exists('getACFImage')){
     return $default;
   }
 }
-if(!function_exists('do_curl')){
+if(!function_exists('doCurl')){
   function doCurl($path,$postParams= null){
     /* Prep-variables */
     $ch       = curl_init();
@@ -548,5 +548,95 @@ if(!function_exists('do_curl')){
     $result = curl_exec($ch);
     curl_close($ch);
     return $result;
+  }
+}
+/* 
+  Progressive background
+  How to use: 
+  1. Call enableProgressiveBG() 
+  2. Use progressive_landscape/progressive_portrait image size for lowResImageURL
+  3. Set your element eg: <div class="progressive" data-low="<?=encodeDataImage(lowResImageURL)?>" data-high="{highResImageURL}"></div>
+*/
+if(!function_exists('progressiveBG') && !function_exists('enableProgressiveBG')){
+  function progressiveBG(){
+    ?>
+<script>
+jQuery(document).ready(function($){
+  for (let n = 0; n < $('.progressive').length; n++) {
+    var svgblur =`<svg xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        width="1500" height="823"
+        viewBox="0 0 1500 823">
+      <filter id="blur" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feGaussianBlur stdDeviation="100 100" edgeMode="duplicate" />
+        <feComponentTransfer>
+          <feFuncA type="discrete" tableValues="1 1" />
+        </feComponentTransfer>
+      </filter>
+      <image filter="url(#blur)" xlink:href="REPLACEME" x="0" y="0" height="100%" width="100%"/>
+    </svg>`
+    // Load low-res
+    var el = $('.progressive')[n];
+    var base64Image = $(el).data('low')
+    var all = `url(data:image/svg+xml;base64,${window.btoa(svgblur.replace('REPLACEME', base64Image ))})`
+    $(el).css('background-image',all);
+    // Load hi-res
+    var high = $(el).data('high')
+    var imgHigh = new Image();
+    imgHigh.onload = function() {
+      $(el).css('background-image',`url(${high})`).addClass('enhanced')
+    };
+    if (high) { imgHigh.src = high; }
+  }
+})
+</script>
+<style>
+.progressive { background-size: cover; transform: translateZ(0); transition: filter .5s ease-in; filter: blur(4px);}
+.progressive.enhanced{ filter: blur(0px); }
+</style>
+    <?php
+  }
+  function enableProgressiveBG($lowResImageSize='progressive'){
+    add_image_size( $lowResImageSize.'_landscape', 40, 22 );
+    add_image_size( $lowResImageSize.'_portrait', 22, 40 );
+    add_action('wp_footer', 'progressiveBG');
+  }
+}
+if(!function_exists('urbosaLoader')){
+  function urbosaLoader($color='#000',$width="20"){
+    $svg = '<svg width="'.$width.'" height="'.$width.'" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" stroke="'.$color.'">
+          <g fill="none" fill-rule="evenodd">
+              <g transform="translate(5 5)" stroke-width="5">
+                  <circle stroke-opacity=".5" cx="18" cy="18" r="18"/>
+                  <path d="M36 18c0-9.94-8.06-18-18-18">
+                      <animateTransform
+                          attributeName="transform"
+                          type="rotate"
+                          from="0 18 18"
+                          to="360 18 18"
+                          dur="1s"
+                          repeatCount="indefinite"/>
+                  </path>
+              </g>
+          </g>
+      </svg>';
+    return "data:image/svg+xml;base64,".base64_encode($svg);
+  }
+}
+if(!function_exists('removePortFromPath')){
+  function removePortFromPath($tmpPath){
+    $p     = parse_url($tmpPath);
+    $path = $p['scheme'].'://'.$p['host'].$p['path'];
+    if(!empty($p['query'])) $path .= '?'.$p['query'];
+    return $path;
+  }
+}
+if(!function_exists('encodeDataImage')){
+  function encodeDataImage($path,$removePort=true){
+    $tmpPath = $path;
+    if($removePort) $tmpPath = removePortFromPath($tmpPath);
+    $type = pathinfo($tmpPath, PATHINFO_EXTENSION);
+    $data = file_get_contents($tmpPath);
+    return 'data:image/' . $type . ';base64,' . base64_encode($data);
   }
 }

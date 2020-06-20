@@ -33,10 +33,10 @@ module.exports = env => {
   return {
     entry: {
       bundle: __dirname + '/entry.js',
-      style: __dirname + `/assets/sass/_style.scss`,
-      layout: __dirname + `/assets/sass/_layout.scss`,
-      blocks: __dirname + `/assets/sass/_blocks.scss`,
-      template: __dirname + `/assets/sass/_template.scss`
+      style: __dirname + `/assets/sass/level/_style.scss`,
+      layout: __dirname + `/assets/sass/level/_layout.scss`,
+      blocks: __dirname + `/assets/sass/level/_blocks.scss`,
+      template: __dirname + `/assets/sass/level/_template.scss`
     },
     output: {
       path: __dirname + `/assets/dist/`,

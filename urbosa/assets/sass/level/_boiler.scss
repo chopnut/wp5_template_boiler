@@ -1,4 +1,4 @@
-@import '../lib/slick/slick.min.css';
+@import '../../lib/slick/slick.min.css';
 
 /* Youtube Video Background */
 .video-background { background: #000; top: 0; right: 0; bottom: 0; left: 0;}
@@ -29,14 +29,6 @@
 
 /* 
   Maintaining aspect ratio wrapping long content
-  eg:
-  <div class="ratio">
-    <div class="container-flex">
-      <div class="container-flex-child">
-         <div class="my-content-div-that-can-take-up-whole-height"></div>
-      </div>
-    </div>
-  </div>
 */
 .ratio { width: 100%; position: relative; display: flex;}
 .ratio>*{width: 100%;}
@@ -51,5 +43,5 @@
 
 /* animated underline  */
   a.urbosa.underline{  display: inline-block;  position: relative; text-decoration: none; padding-bottom: .5em; }
-  a.urbosa.underline:after{background: none repeat scroll 0 0 transparent;bottom: 0;content: "";display: block;height: 2px;left: 50%;position: absolute;background: $secondaryColor;transition: width 0.3s ease 0s, left 0.3s ease 0s;width: 0;}
+  a.urbosa.underline:after{background: none repeat scroll 0 0 transparent;bottom: 0;content: "";display: block;height: 2px;left: 50%;position: absolute;background: white;transition: width 0.3s ease 0s, left 0.3s ease 0s;width: 0;}
   a.urbosa.underline:hover:after{ width: 100%;  left: 0;  }

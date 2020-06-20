@@ -1,9 +1,9 @@
 <?php
-/* ----------------------------- */
+//--------------------------------------------------//
 $live = false;
-/* ----------------------------- */
-
-
+//--------------------------------------------------//
+/*        Main Resource Injection                   */
+//--------------------------------------------------//
 global $suffix; $suffix = ''; if(!$live) $suffix ='?'.time();
 function theme_setup()
 {
@@ -16,11 +16,6 @@ function theme_setup()
   
   // CSS
   wp_enqueue_style('main', get_template_directory_uri() . "/assets/dist/css/layout.css$suffix" , array(), null, false); // Main critical layout
-  wp_enqueue_style('other', get_template_directory_uri() . "/assets/dist/css/style.css$suffix" , array(), null, false); // Other layouts/blocks/page specifics/elements etc
-  wp_enqueue_style('custom', get_template_directory_uri() . "/assets/css/custom.css$suffix" , array(), null, false);    // Custom CSS
-  
-  // Enable dashicons
-  wp_enqueue_style('dashicons'); 
   // Inject local js
   wp_localize_script('custom', 'websiteData', array(
     'is_search' => is_search(),
@@ -41,13 +36,26 @@ function load_admin_style()
   ));
 }
 add_action( 'admin_enqueue_scripts', 'load_admin_style' );
+
+//--------------------------------------------------//
+/*        Resource loader optimisation              */
+//--------------------------------------------------//
 function add_style_sheet_attr($html, $handle){
-  // Preload main critical layout
-  if($handle == ('main' || 'other' || 'dashicons')){
-    $tempHtml  =str_replace("rel='stylesheet'","rel='preload' as='style'",$html);
-    $tempHtml .=str_replace("rel='stylesheet'","rel='stylesheet' media='print' onload=\"this.media='all'\"",$html);
-    $tempHtml  = str_replace("media=''",'',$tempHtml);
-    return $tempHtml;
+  switch($handle){
+    case 'main':
+      // Preload main critical layout
+      $tempHtml  =str_replace("rel='stylesheet'","rel='preload' as='style'",$html);
+      $tempHtml .=str_replace("rel='stylesheet'","rel='stylesheet' media='print' onload=\"this.media='all'\"",$html);
+      $tempHtml  = str_replace("media=''",'',$tempHtml);
+      return $tempHtml;
+    case 'dashicons':
+    case 'other':
+    case 'custom':
+      // Async other CSS
+      $tempHtml  = str_replace("rel='stylesheet'","rel='stylesheet' media='print' onload=\"this.media='all'\"",$html);
+      $tempHtml  = str_replace("media=''",'',$tempHtml);
+      return $tempHtml;
+    break;
   }
   return $html;
 }
@@ -63,22 +71,28 @@ function defer_js($url,$handle){
   return str_replace(' src', ' async defer src', $url);
 }
 add_filter('script_loader_tag', 'defer_js', 11, 2);
+function deregister_dashicons()    {  wp_deregister_style( 'dashicons' ); }
+add_action( 'wp_print_styles', 'deregister_dashicons' );
+function urbosa_add_custom_to_footer() {
+  global $suffix;
+  wp_enqueue_style('dashicons','/wp-includes/css/dashicons.min.css'); 
+  wp_enqueue_style('other', get_template_directory_uri() . "/assets/dist/css/style.css$suffix" , array(), null, false); // Other layouts/blocks/page specifics/elements etc
+  wp_enqueue_style('custom', get_template_directory_uri() . "/assets/css/custom.css$suffix" , array(), null, false);    // Custom CSS
+};
+add_action( 'get_footer', 'urbosa_add_custom_to_footer' );
+
+enableProgressiveBG();
+$minifyJS  =['urbosa']; $minifyCSS =['urbosa'];
+$dir  = __DIR__.'/../assets/lib/minify';
+require_once($dir.'/minify.html.php');
+require_once($dir.'/minify.js.css.php');
+
+//--------------------------------------------------//
+/*                    Others                        */
+//--------------------------------------------------//
 //ACF Google Map API Key
 function my_acf_google_map_api( $api ){
 	$api['key'] = '';
 	return $api;
 }
 add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
-
-
-/* Optimisation */
-$minifyJS  =['urbosa']; $minifyCSS =['urbosa'];
-
-$dir = __DIR__.'/../assets/lib/minify';
-require_once($dir.'/minify.html.php');
-require_once($dir.'/minify.js.css.php');
-
-/* Facebook Messenger */
-require_once('facebook/facebook.php');
-$facebook = new Facebook();
-

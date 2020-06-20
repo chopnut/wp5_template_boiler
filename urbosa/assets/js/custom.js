@@ -1,4 +1,8 @@
 $(document).ready(function () {
+  initSliders()
+  initLazyLoadImage()
+})
+function initSliders () {
   $('.slick-sliders').slick({
     slidesToShow: 1,
     nextArrow:
@@ -9,4 +13,11 @@ $(document).ready(function () {
     autoplay: true,
     autoplaySpeed: 5000
   })
-})
+}
+function initLazyLoadImage () {
+  $('img.lazy-load').visibility({
+    type: 'image',
+    transition: 'fade in',
+    duration: 1000
+  })
+}

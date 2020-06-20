@@ -2,10 +2,11 @@
 @import './fonts';
 @import './mixins';
 
-
+.urbosa-block{
+}
 
 /* desktop */
-@media (max-width: 1025px){}
+@media (min-width: 1025px){}
 /* tablet */
 @media (max-width: 1024px){}
 /* mobile */
