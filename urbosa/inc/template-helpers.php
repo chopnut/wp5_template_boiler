@@ -562,6 +562,10 @@ if(!function_exists('progressiveBG') && !function_exists('enableProgressiveBG'))
     ?>
 <script>
 jQuery(document).ready(function($){
+  /* 
+    Parallax and Progressive Example
+    <img class="progressive" src="{encodedLowImage}" data-high="{highImageURL}" />
+  */
   for (let n = 0; n < $('.progressive').length; n++) {
     var svgblur =`<svg xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -576,15 +580,25 @@ jQuery(document).ready(function($){
       <image filter="url(#blur)" xlink:href="REPLACEME" x="0" y="0" height="100%" width="100%"/>
     </svg>`
     // Load low-res
-    var el = $('.progressive')[n];
-    var base64Image = $(el).data('low')
+    var $el = $($('.progressive')[n]);
+    var base64Image = $el.data('low')
     var all = `url(data:image/svg+xml;base64,${window.btoa(svgblur.replace('REPLACEME', base64Image ))})`
-    $(el).css('background-image',all);
+
+    if($el.prop('tagName')=='IMG'){
+      $el.prop('src',all);
+    }else{
+      $el.css('background-image',all);
+    }
     // Load hi-res
-    var high = $(el).data('high')
+    var high = $el.data('high')
     var imgHigh = new Image();
     imgHigh.onload = function() {
-      $(el).css('background-image',`url(${high})`).addClass('enhanced')
+      if($el.prop('tagName')=='IMG'){
+        $el.prop('src',high);
+      }else{
+        $el.css('background-image',`url(${high})`)
+      }
+      $el.addClass('enhanced')
     };
     if (high) { imgHigh.src = high; }
   }
