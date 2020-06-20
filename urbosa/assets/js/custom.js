@@ -1,6 +1,7 @@
 $(document).ready(function () {
   initSliders()
   initLazyLoadImage()
+  initParallax()
 })
 function initSliders () {
   $('.slick-sliders').slick({
@@ -20,4 +21,14 @@ function initLazyLoadImage () {
     transition: 'fade in',
     duration: 1000
   })
+}
+function initParallax () {
+  var parallaxClass = 'parallax'
+  if (
+    $('.' + parallaxClass).length > 0 &&
+    typeof simpleParallax === 'function'
+  ) {
+    var image = document.getElementsByClassName(parallaxClass)
+    new simpleParallax(image)
+  }
 }

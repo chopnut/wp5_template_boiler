@@ -585,7 +585,7 @@ jQuery(document).ready(function($){
     var all = `url(data:image/svg+xml;base64,${window.btoa(svgblur.replace('REPLACEME', base64Image ))})`
 
     if($el.prop('tagName')=='IMG'){
-      $el.prop('src',all);
+      $el.attr('src',all);
     }else{
       $el.css('background-image',all);
     }
@@ -594,7 +594,7 @@ jQuery(document).ready(function($){
     var imgHigh = new Image();
     imgHigh.onload = function() {
       if($el.prop('tagName')=='IMG'){
-        $el.prop('src',high);
+        $el.attr('src',high);
       }else{
         $el.css('background-image',`url(${high})`)
       }
