@@ -123,26 +123,11 @@ function my_add_role_function()
  */
 
 function urbosa_get_post($data){
-  /* 
-  AJAX_CALL: HOW TO CALL FROM JS
-  function callAjax(){
-    var data = {
-      page: 1,
-      color: 'blue'
-    }
-    $.ajax({
-      url: '/wp-admin/admin-ajax.php',
-      type: 'POST',
-      data: 'action=urbosa_get_post&data=' + JSON.stringify(data),
-      success: function (results) {
-        $('#container').html(results);
-      }
-    })
-  }
-  */
   if(isset($_POST['data'])){
-    $filter = json_decode(stripslashes($_POST['data']),true);
+    $allData = json_decode(stripslashes($_POST['data']),true);
+    echo '<script>foundPosts=0</script>'; // always return overall total posts found
   }
+  exit;
 }
 add_action('wp_ajax_urbosa_get_post', 'urbosa_get_post');
 add_action('wp_ajax_nopriv_urbosa_get_post', 'urbosa_get_post');//for users that are not logged in.

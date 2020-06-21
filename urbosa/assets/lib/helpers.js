@@ -25,6 +25,7 @@ window.setQueryParameter = function ($nameValues = []) {
   $url.search = $param.toString()
   return $url.toString()
 }
+
 /*
   Removes a parameter from the specified URL
   defaults to current URL
@@ -76,4 +77,69 @@ function getCookie (cname) {
     }
   }
   return ''
+}
+function loadAJAXContent (callbackFunction = null) {
+  if (typeof optionData !== 'undefined') {
+    let data = optionData.post
+    let page = optionData.page
+    let contentSelector = optionData.content_container_selector
+    let loadMoreSelector = optionData.load_more_selector
+    let labelLoading = optionData.label_loading
+    let labelNotFound = optionData.label_not_found
+    let perPage = parseInt(optionData.per_page)
+
+    if ($(contentSelector).length > 0 && !optionData.busy) {
+      if ($(contentSelector).html() == '') {
+        $(contentSelector).html(labelLoading)
+      }
+      $(loadMoreSelector).attr('disabled', 'true')
+
+      optionData.busy = true
+      $.ajax({
+        url: '/wp-admin/admin-ajax.php',
+        type: 'POST',
+        data: 'action=' + action + '&data=' + JSON.stringify(optionData),
+        success: function (results) {
+          optionData.page = parseInt(optionData.page) + 1
+          optionData.busy = false
+
+          $(contentSelector).html('')
+          $(contentSelector).append(results)
+
+          if (results == '') {
+            $(loadMoreSelector).remove()
+            if (page == 1) {
+              $(contentSelector).html(
+                `<div class='not-found'>${labelNotFound}</div>`
+              )
+            }
+            optionData.found = 0
+          } else {
+            if (typeof foundPosts !== 'undefined') {
+              pages = Math.ceil(foundPosts / perPage)
+              if (page < pages) {
+                $(loadMoreSelector)
+                  .css('display', 'inline-block')
+                  .attr('disabled', false)
+              } else {
+                $(loadMoreSelector).remove()
+              }
+            }
+            optionData.found = foundPosts
+          }
+          /* URL */
+          replacePageURL(page)
+          if (callbackFunction) {
+            callbackFunction(results, optionData)
+          }
+        }
+      })
+    }
+  }
+}
+window.replacePageURL = function (page) {
+  ar = []
+  ar.push(['pg', page])
+  q = setQueryParameter(ar)
+  window.history.pushState('Page ' + page, '', q)
 }

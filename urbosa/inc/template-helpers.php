@@ -654,3 +654,32 @@ if(!function_exists('encodeDataImage')){
     return 'data:image/' . $type . ';base64,' . base64_encode($data);
   }
 }
+/* Allows you to set AJAX content loading.*/
+if(!function_exists('initAJAXContent')){
+  function initAJAXContent(
+      $action,
+      $contentSelector,
+      $loadMoreSelector, 
+      $postData = array(),
+      $labels= array(
+        'label_loading'=> 'Loading',
+        'label_not_found'=> 'Nothing has been found',
+      )){
+    $defaultData = array(
+      'initial_page' => isset($_GET['pg'])?$_GET['pg']:0,
+      'action' => $action,
+      'content_container_selector'=> $contentSelector,
+      'load_more_selector' => $loadMoreSelector,
+      'page' => 1, // this value will be changed
+      'post'=>$postData,
+      'busy'=> false,
+      'found'=> null,
+      'per_page'=> get_option('posts_per_page'),
+      'label_loading' => $labels['label_loading'],
+      'label_not_found' => $labels['label_not_found'],
+    );
+    ?>
+    <script>var optionData= <?=json_encode($defaultData)?></script>
+    <?php
+  }
+}
