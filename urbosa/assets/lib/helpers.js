@@ -102,10 +102,7 @@ function loadAJAXContent (callbackFunction = null) {
         success: function (results) {
           optionData.page = parseInt(optionData.page) + 1
           optionData.busy = false
-
-          $(contentSelector).html('')
           $(contentSelector).append(results)
-
           if (results == '') {
             $(loadMoreSelector).remove()
             if (page == 1) {
