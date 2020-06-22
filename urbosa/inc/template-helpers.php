@@ -683,3 +683,43 @@ if(!function_exists('initAJAXContent')){
     <?php
   }
 }
+/* 
+  Mailchimp embedded form modification for custom response handling 
+  MCJS callback is: mcFormCallback(result)
+*/
+if(!function_exists('mcForm')){
+  function mcForm($htmlForm,$formID='mc_form_signup',$jsCallback='mcFormCallback'){
+    $html = str_replace('/post?','/post-json?c=?&',$htmlForm);
+    $html = str_replace('method="post','/method="get',$html);
+    $html = str_replace('mc-embedded-subscribe-form',$formID,$html);
+    $html = str_replace('&amp;','&',$html);
+    $html = str_replace('class="validate"','class="validate '.$formID.'"',$html);
+    echo $html;
+    ?>
+    <script>
+    jQuery(document).ready(function($){
+      $('#<?=$formID?>, .<?=$formID?>').submit(function(e){
+        e.preventDefault()
+        register_<?=$formID?>($('#<?=$formID?>'))
+      })
+    })
+    function register_<?=$formID?>($form) {
+        $.ajax({
+            type: $form.attr('method'),
+            url: $form.attr('action'),
+            data: $form.serialize(),
+            cache       : false,
+            dataType    : 'json',
+            contentType: "application/json; charset=utf-8",
+            error       : function(err) { 
+              console.log("MC Error: Could not connect to the registration server. Please try again later."); 
+            },
+            success     : function(data) {
+              <?=$jsCallback?>(data)
+            }
+        });
+    }
+    </script>
+    <?
+  }
+}

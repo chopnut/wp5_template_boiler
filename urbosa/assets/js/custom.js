@@ -32,3 +32,6 @@ function initParallax () {
     new simpleParallax(image)
   }
 }
+function mcFormCallback (result) {
+  console.log('Mailchimp response:', result)
+}

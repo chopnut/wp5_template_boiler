@@ -18,6 +18,6 @@
   "permission": 744,
   "autoInstall": true,
   "rtl": false,
-  "components": ["reset", "container", "grid", "calendar", "modal", "sidebar", "sticky", "transition", "visibility"],
+  "components": ["reset", "container", "modal", "transition", "dimmer"],
   "version": "2.7.8"
 }
