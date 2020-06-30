@@ -1,4 +1,4 @@
-window.getParameterByName = function (name, $default = '', url = '') {
+function getParameterByName (name, $default = '', url = '') {
   if (!url) url = window.location.href
   name = name.replace(/[\[\]]/g, '\\$&')
   var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -16,7 +16,7 @@ window.getParameterByName = function (name, $default = '', url = '') {
     )
   return string
  */
-window.setQueryParameter = function ($nameValues = []) {
+function setQueryParameter ($nameValues = []) {
   $url = new URL(window.location.href)
   $param = $url.searchParams
   $nameValues.map(function ($item) {
@@ -30,7 +30,7 @@ window.setQueryParameter = function ($nameValues = []) {
   Removes a parameter from the specified URL
   defaults to current URL
  */
-window.removeURLParameter = function (key, url = '') {
+function removeURLParameter (key, url = '') {
   if (url == '') {
     url = window.location.href
   }
@@ -134,7 +134,7 @@ function loadAJAXContent (callbackFunction = null) {
     }
   }
 }
-window.replacePageURL = function (page) {
+function replacePageURL (page) {
   ar = []
   ar.push(['pg', page])
   q = setQueryParameter(ar)
