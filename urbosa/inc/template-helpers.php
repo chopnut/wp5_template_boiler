@@ -613,6 +613,7 @@ jQuery(document).ready(function($){
   function enableProgressiveBG($lowResImageSize='progressive'){
     add_image_size( $lowResImageSize.'_landscape', 40, 22 );
     add_image_size( $lowResImageSize.'_portrait', 22, 40 );
+    add_image_size( $lowResImageSize.'_square', 40, 40 );
     add_action('wp_footer', 'progressiveBG');
   }
 }
