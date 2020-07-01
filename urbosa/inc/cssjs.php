@@ -20,6 +20,7 @@ function theme_setup()
   wp_enqueue_script('custom', get_template_directory_uri() . "/assets/js/custom.js$suffix" , array(), null, true);       // Any custom/override changes
   
   // css
+  wp_enqueue_style('template', get_template_directory_uri() . "/assets/dist/css/template.css$suffix" , array(), null, false); // Fonts/Common elements
   wp_enqueue_style('main', get_template_directory_uri() . "/assets/dist/css/layout.css$suffix" , array(), null, false); // Main critical layout
   
   // local object
@@ -57,6 +58,7 @@ function add_style_sheet_attr($html, $handle){
     case 'dashicons':
     case 'other':
     case 'custom':
+    case 'template':
       // Async other CSS
       $tempHtml  = str_replace("rel='stylesheet'","rel='stylesheet' media='print' onload=\"this.media='all'\"",$html);
       $tempHtml  = str_replace("media=''",'',$tempHtml);
