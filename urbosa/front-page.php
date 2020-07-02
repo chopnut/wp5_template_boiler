@@ -1,14 +1,12 @@
 <?php get_header(); ?>
-<article>
-  <?php
+<?php
 
-    if(have_posts()){
-      while(have_posts()){
-        the_post();
-        the_content();
-      }
+  if(have_posts()){
+    while(have_posts()){
+      the_post();
+      the_content();
     }
+  }
 
-  ?>
-</article>
+?>
 <?php get_footer(); ?>

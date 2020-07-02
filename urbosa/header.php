@@ -10,3 +10,5 @@
 
 </head>
 <body <?php body_class('page-' . $post->post_name); ?>>
+
+<main>

@@ -7,15 +7,15 @@ if(function_exists('acf_register_block')){
       Instruction: Copy the acf_register_block , 1 per each block set the render template.
       Create the template php file in the blocks folder. Icon should be dashicon of wordpress without the 'dashicons'
     */
-    // 1. Custom block example
+    // 1. Urbosa Panel with options to add images left/right
     acf_register_block(array(
-      'name'=> 'cb_example',
-      'title'=> __('Custom Block Example'),
-      'description'=>__('My example block'),
-      'render_template'=> 'inc/acf-blocks/cb_example.php',
+      'name'=> 'cb_content_panel',
+      'title'=> __('Panel'),
+      'description'=>__('Theme Panel'),
+      'render_template'=> 'inc/acf-blocks/cb_content_panel.php',
       'category'=> 'urbosa-blocks',
       'icon'	=> 'layout',
-      'keywords'=> array( 'Example' ),
+      'keywords'=> array( 'Theme Panel' ),
     ));
   }
 

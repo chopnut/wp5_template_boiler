@@ -3,3 +3,9 @@
 @import './fonts';
 @import './mixins';
 @import './boiler';
+
+.urbosa.container, main>*{
+  max-width: $contentCorridorMaxWidth;
+  padding: 0 $globalPadding;
+  margin: 0 auto;
+}

@@ -3,6 +3,40 @@
 @import './mixins';
 
 .urbosa-block{
+  &.cb_content_panel{
+    &::before{ padding-bottom: 20%;}
+    /* content-holder */
+    .image-left, .image-right{
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      background-repeat: no-repeat;
+      background-position-y: bottom;
+      bottom: 0;
+      transition: opacity .5s ease-in;
+      z-index: 5;
+      opacity: 1;
+      pointer-events: none;
+    }
+    .image-left{
+      background-position-x: left;
+      left: 0%;
+    }
+    .image-right{
+      background-position-x: right;
+      right: 0%;
+    }
+    .content-holder{
+      overflow: hidden;
+      position: relative;
+    }
+    /* actual content container */
+    .content-wrapper{
+      height: 100%;
+      width: 100%;
+      display: flex;
+    }
+  }
 }
 
 /* desktop */
