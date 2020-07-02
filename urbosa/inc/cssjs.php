@@ -9,7 +9,7 @@ function theme_setup()
 {
   global $suffix;
   // js
-  wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=', array(), null, false);
+  // wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key=', array(), null, false);
   wp_enqueue_script('lib', get_template_directory_uri() . "/assets/dist/js/bundle.js", array(), null, false);   // SemanticUI/JQuery/Slick
   
   // features
@@ -43,6 +43,28 @@ function load_admin_style()
   ));
 }
 add_action( 'admin_enqueue_scripts', 'load_admin_style' );
+function urbosa_login_page()
+{
+  global $suffix;
+  ?>
+  <style type="text/css">
+    #login h1 a,
+    .login h1 a {
+      background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/sample.jpg);
+      width: 200px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    body.login {
+      background-color: #eee;
+    }
+  </style>
+  <script>var homeURL = '<?=home_url('/')?>';</script>
+<?php
+  wp_enqueue_script('lib', get_template_directory_uri() . "/assets/dist/js/bundle.js", array(), null, false);   // SemanticUI/JQuery/Slick
+  wp_enqueue_script('custom', get_template_directory_uri() . "/assets/js/custom.js$suffix" , array(), null, true);       // Any custom/override changes
+}
+add_action('login_enqueue_scripts', 'urbosa_login_page');
 
 //--------------------------------------------------//
 /*        Resource loader optimisation              */

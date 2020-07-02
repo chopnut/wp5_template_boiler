@@ -4,28 +4,7 @@
  * Miscellaneous feature that you may use
  */
 
-/*******************************************************************
- *            Setting up a custom admin logo page
- *               changing logo and styling it
- *******************************************************************/
-function my_login_logo()
-{
-  ?>
-  <style type="text/css">
-    #login h1 a,
-    .login h1 a {
-      background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/sample.jpg);
-      width: 200px;
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
-    body.login {
-      background-color: #eee;
-    }
-  </style>
-<?php
-}
-add_action('login_enqueue_scripts', 'my_login_logo');
+ 
 
 /*******************************************************************
  *              Setting up custom login behaviour 

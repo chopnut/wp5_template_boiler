@@ -16,7 +16,7 @@
 
 /* Slick theme */
 .slick-sliders{ width:100%; height: 100%; position: relative; }
-  .slick-sliders >div,.slick-sliders >div>div {  height: 100%; z-index: 1; }
+  .slick-sliders >div,.slick-sliders >div>div {  height: 100%; z-index: 1; outline: none;}
     .slick-sliders .slick-arrow{ cursor: pointer; position: absolute; top: calc(50% - 1em); display: block; z-index: 2;}
     .slick-sliders .slick-nav-prev{ left: 1rem;  right: auto; }
     .slick-sliders .slick-nav-next{left: auto; right: 1rem;}
