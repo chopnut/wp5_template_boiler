@@ -12,6 +12,7 @@ if( !empty($block['align']) ) {
 //-------------------------------------------------------------------------
 // Acf fields
 $jumpID                = get_field('jump_id');
+$minimumHeight         = get_field('minimum_height');
 
 $imageLeft             = get_field('left_image');
 $imageLeftMargin       = get_field('left_image_margin');
@@ -24,11 +25,13 @@ $imageRightBottomMargin = get_field('right_image_bottom_margin');
 $imageRightZIndex       = get_field('right_z_index');
 
 //-------------------------------------------------------------------------
-$blockStyle = '';
-$wrapperStyle = '';
-$leftStyle = '';
-$rightStyle = '';
+$blockStyle         = '';
+$wrapperStyle       = '';
+$contentHolderStyle = '';
+$leftStyle          = '';
+$rightStyle         = '';
 
+if($minimumHeight) {  $contentHolderStyle .= "min-height: $minimumHeight;";  }
 if($imageLeft){ $leftStyle .= "background-image: url(".$imageLeft['url'].");"; }
 if($imageLeftMargin){ $leftStyle .= "left: $imageLeftMargin;"; }
 if($imageLeftBottomMargin){ $leftStyle .= "bottom: ;$imageLeftBottomMargin"; }
@@ -42,7 +45,7 @@ if($imageRightZIndex){ $rightStyle .= "z-index: $imageRightZIndex;"; }
 ?>
 <div class="urbosa-block <?=$className?> ratio <?=$jumpID?>" style="<?=$blockStyle?>">
   <div class="wrapper">
-    <div class="content-holder">
+    <div class="content-holder" style="<?=$contentHolderStyle?>">
       <div class="content-wrapper <?=$columnType?>" style="<?=$wrapperStyle?>">
         <div class="urbosa container">
           { Main Content here }
