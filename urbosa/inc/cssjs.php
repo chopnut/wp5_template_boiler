@@ -1,6 +1,6 @@
 <?php
 //--------------------------------------------------//
-$live = false;
+$live = get_option('urbosa_theme_status');
 //--------------------------------------------------//
 /*        Main Resource Injection                   */
 //--------------------------------------------------//
@@ -32,14 +32,16 @@ add_action('wp_enqueue_scripts', 'theme_setup');
 function load_admin_style()
 {
   global $suffix;
-  wp_enqueue_script('jQuery');
   wp_enqueue_style('admin-template', get_template_directory_uri() . "/assets/dist/css/template.css$suffix" , array(), null, false); // This holds resources/fonts/grids/theme/colors
   wp_enqueue_style('admin-blocks', get_template_directory_uri() . "/assets/dist/css/blocks.css$suffix" , array(), null, false);
-  wp_enqueue_script('admin-blocks', get_template_directory_uri() . "/assets/js/blocks.js$suffix" , array('jQuery'), null, true);
+  wp_enqueue_style('admin-style', get_template_directory_uri() . "/assets/dist/css/admin.css$suffix" , array(), null,false);
+  wp_enqueue_script('admin-blocks', get_template_directory_uri() . "/assets/js/blocks.js$suffix" , array('jquery'), null, true);
+  wp_enqueue_script('admin-js', get_template_directory_uri() . "/assets/js/admin.js$suffix" , array('jquery'), null, true);
   
   // local object
-  wp_localize_script('admin-blocks', 'websiteData', array(
+  wp_localize_script('admin-js', 'websiteData', array(
     'is_admin' => is_admin(),
+    'is_theme_live'=> get_option('urbosa_theme_status')
   ));
 }
 add_action( 'admin_enqueue_scripts', 'load_admin_style' );

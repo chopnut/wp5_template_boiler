@@ -22,7 +22,8 @@ module.exports = env => {
         proxy: `http://localhost:8191`,
         files: [
           `./`, // Will watch any changes from this folder
-          '!./node_modules/'
+          '!./node_modules/',
+          '!./inc/acf/'
         ],
         notify: false,
         reloadDelay: 0
@@ -36,7 +37,8 @@ module.exports = env => {
       style: __dirname + `/assets/sass/level/_style.scss`,
       layout: __dirname + `/assets/sass/level/_layout.scss`,
       blocks: __dirname + `/assets/sass/level/_blocks.scss`,
-      template: __dirname + `/assets/sass/level/_template.scss`
+      template: __dirname + `/assets/sass/level/_template.scss`,
+      admin: __dirname + `/assets/sass/level/_admin.scss`
     },
     output: {
       path: __dirname + `/assets/dist/`,

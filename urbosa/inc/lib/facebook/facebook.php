@@ -4,7 +4,6 @@
   */
   class Facebook {
     private $html;
-    private $host;
     
     /* Messenger options */
     private $messengerPageID;

@@ -351,15 +351,15 @@ if(!function_exists('pregMatchGrouping')){
     return $tmp;
   }
 }
-if(!function_exists('getFeatureImage')){  
+if(!function_exists('getFeaturedImage')){  
   /**
-   * getFeatureImageSrc of a post
+   * getFeaturedImage of a post
    *
    * @param  mixed $postID
    * @param  mixed $size eg: 'thumbnail','medium','large','full'
    * @return string
    */
-  function getFeatureImage($postID=null, $size='medium'){
+  function getFeaturedImage($postID=null, $size='medium'){
     $pID = 0;
     if($postID){
       $pID = $postID;
@@ -684,6 +684,36 @@ if(!function_exists('initAJAXContent')){
     <?php
   }
 }
+if(!function_exists('setQueryURL')){
+  function setQueryURL( $params, $path='') {
+    $url = $path;
+    if(empty($path)){ $url = getCurrentURL(); }
+    $url_parts = parse_url($url);
+    if (isset($url_parts['query'])) {
+        parse_str($url_parts['query'], $tmpParams);
+        $params = $params + $tmpParams;
+    } else if(empty($params)){
+        $params = array();
+    }
+    $url_parts['query'] = http_build_query($params);
+    $port = '';
+    if(isset($url_parts['port'])){
+      $port = ':'.$url_parts['port'];
+    }
+   
+    if(function_exists('http_build_url')){
+      $str = http_build_url($url_parts);
+    }else{
+      $str = $url_parts['scheme'] . '://' . $url_parts['host'] .$port. $url_parts['path'] . (empty($params)?'':'?') . $url_parts['query'];
+    }
+    return $str;
+  }
+}
+if(!function_exists('getCurrentURL')){
+  function getCurrentURL(){
+    return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+  }
+}
 /* 
   Mailchimp embedded form modification for custom response handling 
   MCJS callback is: mcFormCallback(result)
@@ -722,5 +752,54 @@ if(!function_exists('mcForm')){
     }
     </script>
     <?
+  }
+}
+
+if(function_exists('acf_get_field_group')){
+  function urbosa_acf_write_php(){
+
+    // // remove all jsons first
+    $acfGroups =acf_get_field_groups();
+		$str = "<?php if( function_exists('acf_add_local_field_group') ):" . "\r\n" . "\r\n";
+    foreach ($acfGroups as $acf) {
+      $field_group = acf_get_field_group( $acf['key'] );
+      if( empty($field_group) ) continue;
+        $field_group['fields'] = acf_get_fields( $field_group );
+        $field_group = acf_prepare_field_group_for_export( $field_group );
+        $code = var_export($field_group, true);			
+        $str .= "acf_add_local_field_group({$code});" . "\r\n" . "\r\n";
+    }
+    $str .= "endif; ?>";
+    return $str;
+  }
+  function urbosa_acf_write_json_field_group( $field_group, $path='' ) {
+    $file = $field_group['key'] . '.json';
+    $path = untrailingslashit( $path );
+    if( !is_writable($path) ){
+
+      return false;
+    } 
+
+
+    $id = acf_extract_var( $field_group, 'ID' );
+    $field_group = acf_prepare_field_group_for_export( $field_group );
+    $field_group['modified'] = get_post_modified_time('U', true, $id, true);
+    $pathFile = "{$path}/{$file}";
+    $f = fopen($pathFile, 'w');
+    fwrite($f, acf_json_encode( $field_group ));
+    fclose($f);
+    return true;
+  }
+  function urbosa_acf_delete_all_fields(){
+    $acfGroups =acf_get_field_groups();
+    foreach ($acfGroups as $acf) {
+      acf_delete_field_group($acf['ID']);
+    }
+  }
+  function urbosa_acf_trash_all_fields(){
+    $acfGroups =acf_get_field_groups();
+    foreach ($acfGroups as $acf) {
+      acf_trash_field_group($acf['ID']);
+    }
   }
 }

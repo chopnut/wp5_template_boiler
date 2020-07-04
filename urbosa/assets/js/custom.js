@@ -28,7 +28,7 @@ function initSliders () {
 }
 function initLazyLoadImage () {
   if ($.visibility) {
-    $('img.lazy-load').visibility({
+    $('img.urbosa-lazy-load').visibility({
       type: 'image',
       transition: 'fade in',
       duration: 1000

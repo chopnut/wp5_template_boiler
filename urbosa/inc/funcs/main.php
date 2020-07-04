@@ -75,6 +75,40 @@ function prevent_admin_access_role()
   }
 }
 add_action('admin_init', 'prevent_admin_access_role');
+if (!function_exists('register_my_setting')) {
+  // Register phone number to the general settings
+  function register_my_setting()
+  {
+    //-------------------------------------------------
+    add_settings_field( // To display the input field
+      'phone-number-id',
+      'Phone number',
+      'myprefix_setting_callback_function',
+      'general',
+      'default',
+      array('phone_number_name')
+    );
+    register_setting('general', 'phone_number_name', 'esc_attr'); // Register the actual field ID
+    //-------------------------------------------------
+    $themeStatus  = get_option('urbosa_theme_status');
+    if(!$themeStatus && $themeStatus!==0) add_option('urbosa_theme_status', 0);
+    $actioned = false;
+    if(isset($_GET['d']) && ($_GET['d']==1 || $_GET['d']==0)){
+      update_option('urbosa_theme_status',$_GET['d']);
+      $actioned = true;
+    }
+    // urbosa_acf_init_import_export($actioned);
+  }
+  // Print input field to
+  function myprefix_setting_callback_function($args)
+  {
+    $option = get_option($args[0]);
+    echo '<input type="text" id="' . $args[0] . '" name="' . $args[0] . '" value="' . $option . '" />';
+  }
+  add_action('admin_init', 'register_my_setting');
+}
+
+
 /******************************************************************
  *                        Adding user role
  ******************************************************************/
@@ -177,3 +211,83 @@ add_action('wp_ajax_nopriv_urbosa_get_post', 'urbosa_get_post');//for users that
   }
   // Uncomment below to enable: Custom search
   // add_action( 'pre_get_posts', 'urbosa_custom_search' );
+
+add_action( 'admin_bar_menu', 'urbosa_add_items', 250 );
+function urbosa_add_items( $wp_admin_bar ) {
+  $label        = 'DEVELOPMENT'; 
+  $class        = '';
+  $title        = 'Click here to turn LIVE mode on.';
+  $url          = setQueryURL(array('d'=>1));
+  $themeStatus  = get_option('urbosa_theme_status');
+
+  if($themeStatus){
+    $label        = 'LIVE'; 
+    $class        = '-live';
+    $title        = 'Click here to turn DEVELOPMENT mode on.';
+    $url          = setQueryURL(array('d'=>0));
+  }
+  $wp_admin_bar->add_menu( array(
+    'id'    => 'urbosa-theme-status'.$class,
+            'parent' => 'top-secondary',
+    'title' => $label,
+    'href'  => $url,
+    'meta'  => array(
+        'title' => __($title),
+    ),
+  ));       
+}
+add_action('admin_head', 'urbosa_admin_style'); 
+function urbosa_admin_style() {
+    $themeStatus  = get_option('urbosa_theme_status');
+    $style = '';
+    // if($themeStatus) $style ='display: none;';
+  ?>
+  <style>
+    #toplevel_page_edit-post_type-acf-field-group{<?=$style?>}
+    #toplevel_page_cptui_main_menu{<?=$style?>}
+    #adminmenuback{display: none!important;}
+  </style>
+  <?php
+}
+add_filter('acf/settings/save_json', 'urbosa_acf_save_json_folder', 10);
+function urbosa_acf_save_json_folder( $path ) {
+    $path = get_stylesheet_directory() . '/inc/acf/default';
+    return $path;
+}
+add_filter('acf/settings/load_json', 'urbosa_acf_load_points', 10);
+function urbosa_acf_load_points( $paths ) {
+    unset($paths[0]);
+    $paths[] = get_stylesheet_directory() . '/inc/acf/default';
+    return $paths;
+}
+/* this generates acf PHP/import/export */
+function urbosa_acf_init_import_export($actioned){
+  $themeStatus  = get_option('urbosa_theme_status');
+  $themePath =  get_stylesheet_directory();
+  $path    = $themePath.'/inc/acf/copy';
+  $phpFile = $themePath.'/inc/acf/acf-auto.php';
+  //---------------------------------------------------
+  if($actioned){
+    if(function_exists('acf_get_field_group')){
+      $field_groups =acf_get_field_groups();
+      if($themeStatus){ // to live
+        // copy the jsons
+        foreach ($field_groups as $field_group) {
+          urbosa_acf_write_json_field_group($field_group, $path);
+        }
+        // output php file
+        $content = urbosa_acf_write_php();
+        file_put_contents($phpFile, $content);
+      }else{ // to dev
+        // remove php file
+        @unlink($phpFile);
+      }
+    }
+  }
+  //---------------------------------------------------
+  if(!$themeStatus){ // dev
+  }else{ // live
+
+  }
+}
+
