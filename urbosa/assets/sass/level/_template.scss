@@ -4,6 +4,29 @@
 @import './mixins';
 @import './boiler';
 
+/* admin */
+#wp-admin-bar-urbosa-theme-status,#wp-admin-bar-urbosa-theme-status-live{
+  a{
+    padding: 0 .5rem!important;
+    letter-spacing: .1em!important;
+  }
+}
+#wp-admin-bar-urbosa-theme-status{
+  background-color: #444!important;
+  a:hover{
+    color: white!important;
+    background-color: #444!important;
+  }
+}
+#wp-admin-bar-urbosa-theme-status-live{
+  background-color: green!important;
+  a:hover{
+    color: white!important;
+    background-color: green!important;
+  }
+}
+
+/* front-end */
 .urbosa.container, main>*{
   max-width: $contentCorridorMaxWidth;
   padding: 0 $globalPadding;

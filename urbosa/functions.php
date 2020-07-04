@@ -1,7 +1,13 @@
 <?php
+/* classes */
+require_once("inc/acf/urbosa_acf_import_export.php");
+require_once("inc/lib/urbosa_custom_type.php");
+
+/* functions */
 require_once("inc/feature.php");
 require_once("inc/funcs/layouts.php");
-require_once("inc/funcs/helpers.php");
+require_once("inc/funcs/helper.php");
 require_once('inc/funcs/main.php');
 require_once("inc/register-acf-blocks.php");
 require_once("inc/cssjs.php");
+@include_once("inc/acf/acf-auto.php");

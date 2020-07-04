@@ -12,6 +12,3 @@
 <body <?php body_class('page-' . $post->post_name); ?>>
 
 <main>
-<?php 
-urbosa_acf_trash_all_fields();
-?>

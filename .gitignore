@@ -8,3 +8,4 @@
 /logs/
 /db/*
 /dist/
+/urbosa/inc/acf/**/*.json

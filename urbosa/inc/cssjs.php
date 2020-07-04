@@ -36,6 +36,7 @@ function load_admin_style()
   wp_enqueue_style('admin-blocks', get_template_directory_uri() . "/assets/dist/css/blocks.css$suffix" , array(), null, false);
   wp_enqueue_style('admin-style', get_template_directory_uri() . "/assets/dist/css/admin.css$suffix" , array(), null,false);
   wp_enqueue_script('admin-blocks', get_template_directory_uri() . "/assets/js/blocks.js$suffix" , array('jquery'), null, true);
+  wp_enqueue_script('admin-helper', get_template_directory_uri() . "/assets/lib/helper.js$suffix" , array('jquery'), null, true);
   wp_enqueue_script('admin-js', get_template_directory_uri() . "/assets/js/admin.js$suffix" , array('jquery'), null, true);
   
   // local object

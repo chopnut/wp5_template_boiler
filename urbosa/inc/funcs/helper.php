@@ -754,52 +754,20 @@ if(!function_exists('mcForm')){
     <?
   }
 }
-
-if(function_exists('acf_get_field_group')){
-  function urbosa_acf_write_php(){
-
-    // // remove all jsons first
-    $acfGroups =acf_get_field_groups();
-		$str = "<?php if( function_exists('acf_add_local_field_group') ):" . "\r\n" . "\r\n";
-    foreach ($acfGroups as $acf) {
-      $field_group = acf_get_field_group( $acf['key'] );
-      if( empty($field_group) ) continue;
-        $field_group['fields'] = acf_get_fields( $field_group );
-        $field_group = acf_prepare_field_group_for_export( $field_group );
-        $code = var_export($field_group, true);			
-        $str .= "acf_add_local_field_group({$code});" . "\r\n" . "\r\n";
-    }
-    $str .= "endif; ?>";
-    return $str;
-  }
-  function urbosa_acf_write_json_field_group( $field_group, $path='' ) {
-    $file = $field_group['key'] . '.json';
-    $path = untrailingslashit( $path );
-    if( !is_writable($path) ){
-
-      return false;
+if(!function_exists('urbosa_copy_folder')){
+  function urbosa_copy_folder($src,$dst) { 
+    $dir = opendir($src); 
+    @mkdir($dst); 
+    while(false !== ( $file = readdir($dir)) ) { 
+        if (( $file != '.' ) && ( $file != '..' )) { 
+            if ( is_dir($src . '/' . $file) ) { 
+                urbosa_copy_folder($src . '/' . $file,$dst . '/' . $file); 
+            } 
+            else { 
+                copy($src . '/' . $file,$dst . '/' . $file); 
+            } 
+        } 
     } 
-
-
-    $id = acf_extract_var( $field_group, 'ID' );
-    $field_group = acf_prepare_field_group_for_export( $field_group );
-    $field_group['modified'] = get_post_modified_time('U', true, $id, true);
-    $pathFile = "{$path}/{$file}";
-    $f = fopen($pathFile, 'w');
-    fwrite($f, acf_json_encode( $field_group ));
-    fclose($f);
-    return true;
-  }
-  function urbosa_acf_delete_all_fields(){
-    $acfGroups =acf_get_field_groups();
-    foreach ($acfGroups as $acf) {
-      acf_delete_field_group($acf['ID']);
-    }
-  }
-  function urbosa_acf_trash_all_fields(){
-    $acfGroups =acf_get_field_groups();
-    foreach ($acfGroups as $acf) {
-      acf_trash_field_group($acf['ID']);
-    }
-  }
+    closedir($dir); 
+  } 
 }

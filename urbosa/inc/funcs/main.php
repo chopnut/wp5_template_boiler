@@ -72,10 +72,12 @@ function prevent_admin_access_role()
   if (current_user_can('custom_role') && is_admin()) {
     // Redirect to home
     wp_redirect(home_url('/'));
+    die();
   }
 }
 add_action('admin_init', 'prevent_admin_access_role');
 if (!function_exists('register_my_setting')) {
+  
   // Register phone number to the general settings
   function register_my_setting()
   {
@@ -89,15 +91,6 @@ if (!function_exists('register_my_setting')) {
       array('phone_number_name')
     );
     register_setting('general', 'phone_number_name', 'esc_attr'); // Register the actual field ID
-    //-------------------------------------------------
-    $themeStatus  = get_option('urbosa_theme_status');
-    if(!$themeStatus && $themeStatus!==0) add_option('urbosa_theme_status', 0);
-    $actioned = false;
-    if(isset($_GET['d']) && ($_GET['d']==1 || $_GET['d']==0)){
-      update_option('urbosa_theme_status',$_GET['d']);
-      $actioned = true;
-    }
-    // urbosa_acf_init_import_export($actioned);
   }
   // Print input field to
   function myprefix_setting_callback_function($args)
@@ -214,7 +207,7 @@ add_action('wp_ajax_nopriv_urbosa_get_post', 'urbosa_get_post');//for users that
 
 add_action( 'admin_bar_menu', 'urbosa_add_items', 250 );
 function urbosa_add_items( $wp_admin_bar ) {
-  $label        = 'DEVELOPMENT'; 
+  $label        = 'DEV'; 
   $class        = '';
   $title        = 'Click here to turn LIVE mode on.';
   $url          = setQueryURL(array('d'=>1));
@@ -223,7 +216,7 @@ function urbosa_add_items( $wp_admin_bar ) {
   if($themeStatus){
     $label        = 'LIVE'; 
     $class        = '-live';
-    $title        = 'Click here to turn DEVELOPMENT mode on.';
+    $title        = 'Click here to turn DEV mode on.';
     $url          = setQueryURL(array('d'=>0));
   }
   $wp_admin_bar->add_menu( array(
@@ -240,54 +233,45 @@ add_action('admin_head', 'urbosa_admin_style');
 function urbosa_admin_style() {
     $themeStatus  = get_option('urbosa_theme_status');
     $style = '';
-    // if($themeStatus) $style ='display: none;';
+    if($themeStatus) $style ='display: none;';
   ?>
   <style>
     #toplevel_page_edit-post_type-acf-field-group{<?=$style?>}
     #toplevel_page_cptui_main_menu{<?=$style?>}
-    #adminmenuback{display: none!important;}
+    /* #adminmenuback{display: none!important;} */
   </style>
   <?php
 }
-add_filter('acf/settings/save_json', 'urbosa_acf_save_json_folder', 10);
-function urbosa_acf_save_json_folder( $path ) {
-    $path = get_stylesheet_directory() . '/inc/acf/default';
-    return $path;
-}
-add_filter('acf/settings/load_json', 'urbosa_acf_load_points', 10);
-function urbosa_acf_load_points( $paths ) {
-    unset($paths[0]);
-    $paths[] = get_stylesheet_directory() . '/inc/acf/default';
-    return $paths;
-}
-/* this generates acf PHP/import/export */
-function urbosa_acf_init_import_export($actioned){
-  $themeStatus  = get_option('urbosa_theme_status');
-  $themePath =  get_stylesheet_directory();
-  $path    = $themePath.'/inc/acf/copy';
-  $phpFile = $themePath.'/inc/acf/acf-auto.php';
-  //---------------------------------------------------
-  if($actioned){
-    if(function_exists('acf_get_field_group')){
-      $field_groups =acf_get_field_groups();
-      if($themeStatus){ // to live
-        // copy the jsons
-        foreach ($field_groups as $field_group) {
-          urbosa_acf_write_json_field_group($field_group, $path);
-        }
-        // output php file
-        $content = urbosa_acf_write_php();
-        file_put_contents($phpFile, $content);
-      }else{ // to dev
-        // remove php file
-        @unlink($phpFile);
-      }
-    }
-  }
-  //---------------------------------------------------
-  if(!$themeStatus){ // dev
-  }else{ // live
 
-  }
+add_action('init', 'urbosa_theme_init');
+function urbosa_theme_init(){
+  // Process global theme process
+    $themeStatus  = get_option('urbosa_theme_status');
+    if(!$themeStatus && $themeStatus!==0) add_option('urbosa_theme_status', 0);
+    $actioned = false;
+    if(isset($_GET['d']) && ($_GET['d']==1 || $_GET['d']==0)){
+      update_option('urbosa_theme_status',$_GET['d']);
+      $actioned = true;
+    }
+    if(class_exists('Urbosa_ACF_Import_Export')){
+      $urbosaACF = new Urbosa_ACF_Import_Export();
+      $urbosaACF->init();
+      $urbosaACF->process($actioned);
+    }
+
+    if(class_exists('Urbosa_Custom_Type')){
+      // --------------------------------------------
+      $slider = new Urbosa_Custom_Type('theme_slider');
+      $slider->set_label('Slider');
+      $slider->set_icon('dashicons-image-flip-horizontal');
+      $slider->set_menu_under('#urbosa-resources');
+      $slider->initialize();
+      // --------------------------------------------
+      $heroBanner = new Urbosa_Custom_Type('theme_hero_banner');
+      $heroBanner->set_label('Hero Banner');
+      $heroBanner->set_icon('dashicons-format-image');
+      $heroBanner->set_menu_under('#urbosa-resources');
+      $heroBanner->initialize();
+    }
 }
 

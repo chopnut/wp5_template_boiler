@@ -80,7 +80,6 @@ function getCookie (cname) {
 }
 function loadAJAXContent (callbackFunction = null) {
   if (typeof optionData !== 'undefined') {
-    let data = optionData.post
     let page = optionData.page
     let contentSelector = optionData.content_container_selector
     let loadMoreSelector = optionData.load_more_selector
