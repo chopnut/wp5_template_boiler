@@ -32,18 +32,28 @@ add_action('after_setup_theme', 'urbosa_theme_setup');
 function urbosa_menu_by_location($themeLocation = 'main', $containerClass=''){
   wp_nav_menu(array('theme_location' => $themeLocation,'container_class'=>$containerClass)); 
 }
+
 //===============================================
-// Add option page
-if(function_exists('acf_add_options_page')){
-  acf_add_options_page();
-}
-//===============================================
+  // Add option page
+  if(function_exists('acf_add_options_sub_page')){
+    acf_add_options_page(array(
+      'page_title'=>'Theme Options',
+      'menu_title'=>'Theme Options',
+      'menu_slug'=>'urbosa_theme_option',
+      'capability' => 'edit_posts',
+      'parent_slug' => '#urbosa_resources',
+      'icon_url' => '',
+      'post_id' => 'options', // to which post it applies to default to global options
+      'update_button' => __('Update Theme Options', 'acf'),
+      'position' => ''
+    ));
+  }
 // Adds reusable blocks menu to the admin
 function urbosa_theme_menu() {
   global $submenu; 
-  add_menu_page( 'Theme Resources', 'Theme Resources', 'edit_posts', '#urbosa-resources', '', 'dashicons-welcome-widgets-menus', 60 );
-  add_submenu_page( '#urbosa-resources', 'Reusable Blocks', 'Reusable Blocks', 'edit_posts','reusable_block','edit.php?post_type=wp_block',60 );
-  $submenu['#urbosa-resources'][2][2] = 'edit.php?post_type=wp_block';
+  add_menu_page( 'Theme Resources', 'Theme Resources', 'edit_posts', '#urbosa_resources', '', 'dashicons-welcome-widgets-menus', 58 );
+  add_submenu_page( '#urbosa_resources', 'Reusable Blocks', 'Reusable Blocks', 'edit_posts','reusable_block','edit.php?post_type=wp_block',58 );
+  $submenu['#urbosa_resources'][count($submenu['#urbosa_resources'])-1][2] = 'edit.php?post_type=wp_block';
 }
 add_action( 'admin_menu', 'urbosa_theme_menu' );
 //===============================================

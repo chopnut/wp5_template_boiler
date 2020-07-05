@@ -32,3 +32,6 @@
   padding: 0 $globalPadding;
   margin: 0 auto;
 }
+main{
+  >.alignfull { max-width: 100%;}
+}

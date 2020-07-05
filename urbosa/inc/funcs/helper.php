@@ -385,8 +385,11 @@ if(!function_exists('youtubeEmbed')){
    * @param  mixed $srcquery
    * @return void
    */
-  function youtubeEmbed($embed_video,$mode='normal',$properties="width='100%' height='100%' frameborder='0' allowfullscreen",$srcquery="&autoplay=1&controls=0&html5=1&loop=1&mute=1&rel=0"){
+  function youtubeEmbed($embed_video,$mode='normal',$properties="width='100%' height='100%' frameborder='0' allowfullscreen",$srcquery="autoplay=1&controls=0&html5=1&loop=1&mute=1&rel=0"){
     $new_embed = $embed_video;
+
+
+    
     if($mode=='normal'){
       echo '<div class="video-container">';
       echo $new_embed;
@@ -394,11 +397,23 @@ if(!function_exists('youtubeEmbed')){
     }else if($mode=='background'){
       $new_embed = preg_replace('/'.'width=".*?"'.'/','', $new_embed);
       $new_embed = preg_replace('/'.'height=".*?"'.'/','', $new_embed);
-      $new_embed = preg_replace('/'.'<iframe'.'/','<iframe '.$properties, $new_embed);
+
+      if(strpos($new_embed,'?')==false){
+
+        $srcquery = '?'.$srcquery;
+      }else{
+        $srcquery = '&'.$srcquery;
+
+      }
     
       preg_match('/'.'(src=".*?")'.'/',$embed_video,$match);
+
       if($match){
         $src = $match[1];
+        
+        $yID = getYoutubeIdFromUrl($src);
+        $srcquery .= '&playlist='.$yID; // this allow it to loop
+
         $src = substr($src,0,-1);
         $src = $src.$srcquery.'"';
         $new_embed = preg_replace('/'.'src=".*?"'.'/',$src, $new_embed);
@@ -410,6 +425,24 @@ if(!function_exists('youtubeEmbed')){
       echo '</div>';
     }
   }
+
+
+  function getYoutubeIdFromUrl($url) {
+    $parts = parse_url($url);
+    if(isset($parts['query'])){
+        parse_str($parts['query'], $qs);
+        if(isset($qs['v'])){
+            return $qs['v'];
+        }else if(isset($qs['vi'])){
+            return $qs['vi'];
+        }
+    }
+    if(isset($parts['path'])){
+        $path = explode('/', trim($parts['path'], '/'));
+        return $path[count($path)-1];
+    }
+    return false;
+}
 }
 if(!function_exists('getContentBlocks')){
     
@@ -770,4 +803,26 @@ if(!function_exists('urbosa_copy_folder')){
     } 
     closedir($dir); 
   } 
+}
+
+if(!function_exists('getVideoExtMimeType')){
+    function getVideoExtMimeType($path) {
+      $ext = pathinfo($path, PATHINFO_EXTENSION);
+      $mime_map = [
+          '3g2' => 'video/3gpp2'        ,                             
+          '3gp' => 'video/3gp'          ,                             
+          '3gp' => 'video/3gpp'         ,                             
+          'avi' => 'video/avi'          ,                             
+          'flv' => 'video/x-flv'        ,                             
+          'mov' => 'video/quicktime'    ,                             
+          'movie' => 'video/x-sgi-movie',                             
+          'mp4' => 'video/mp4'          ,                             
+          'mpeg' => 'video/mpeg'        ,                             
+          'ogg' => 'video/ogg'          ,                             
+          'webm' => 'video/webm'        ,                             
+          'wmv' => 'video/x-ms-asf'     ,                         
+      ];
+
+      return isset($mime_map[$ext]) ? $mime_map[$ext] : '';
+  }
 }

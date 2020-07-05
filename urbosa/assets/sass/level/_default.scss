@@ -1,0 +1,42 @@
+
+html,body{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: $fontSize;
+  color: $textColor;
+}
+
+h1,h2,h3,h4,h5{}
+h1{ }
+h2{ }
+h3{ }
+h4{ }
+h5{ }
+li,ul{}
+
+a{ 
+  color: $linkColor; 
+  text-decoration: none;
+  &:hover{
+
+  }
+}
+button, input[type=submit]{
+  /* your default styling here */
+  &:hover{
+    
+  }
+}
+input[type=text],
+input[type=search],
+input[type=password],
+input[type=email],
+input[type=number],
+input[type=tel],
+input[type=time],
+input[type=date],
+input[type=datetime-local],
+input[type=color],
+input[type=week],
+textarea{ 
+  /* your default styling here */
+}

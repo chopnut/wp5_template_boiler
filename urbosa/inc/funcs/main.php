@@ -238,7 +238,7 @@ function urbosa_admin_style() {
   <style>
     #toplevel_page_edit-post_type-acf-field-group{<?=$style?>}
     #toplevel_page_cptui_main_menu{<?=$style?>}
-    /* #adminmenuback{display: none!important;} */
+    /* #adminmenuback,#adminmenu{display: none!important;} */
   </style>
   <?php
 }
@@ -259,19 +259,16 @@ function urbosa_theme_init(){
       $urbosaACF->process($actioned);
     }
 
+
     if(class_exists('Urbosa_Custom_Type')){
-      // --------------------------------------------
+
       $slider = new Urbosa_Custom_Type('theme_slider');
       $slider->set_label('Slider');
       $slider->set_icon('dashicons-image-flip-horizontal');
-      $slider->set_menu_under('#urbosa-resources');
-      $slider->initialize();
-      // --------------------------------------------
-      $heroBanner = new Urbosa_Custom_Type('theme_hero_banner');
-      $heroBanner->set_label('Hero Banner');
-      $heroBanner->set_icon('dashicons-format-image');
-      $heroBanner->set_menu_under('#urbosa-resources');
-      $heroBanner->initialize();
+      $slider->set_menu_under('#urbosa_resources');
+      $slider->set_support(array('title'));
+      $slider->disable_editor();
+      $slider->init();
     }
 }
 

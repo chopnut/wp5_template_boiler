@@ -2,8 +2,9 @@
 
 class Urbosa_Custom_Type  
 {
-  // ----- custom post type -------
+  /* common */
   var $name = '';
+  var $type = 'post';
   var $label = '';
   var $ucFirstKeys = array(
     'name',
@@ -16,6 +17,7 @@ class Urbosa_Custom_Type
     'search_items',
     'menu_name'
   );
+  // ----- custom post type -------
   var $labels = array(
     'name'               =>  '{name}s',
     'singular_name'      =>  '{name}',
@@ -35,20 +37,27 @@ class Urbosa_Custom_Type
     'labels'        => array(),
     'description'   => 'Holds our {name}s and {name} specific data',
     'public'        => true,
+    'publicly_queryable' => true,
+    'hierarchical' => false, // parent/child relationship
     'menu_position' => 5,
-    'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments','custom-fields','author','page-attributes' ),
+    'supports'      => array( 
+      'title', 
+      'editor', 
+      'thumbnail', 
+      'excerpt', 
+      'comments',
+      'custom-fields',
+      'author',
+      'page-attributes' 
+    ),
     'has_archive'   => true,
     'menu_icon' => '', // dashicons or URL to the icon image
-
-    //defaults below
-    'publicly_queryable' => true,
-    'show_ui' => true,
-    'show_in_nav_menus' => true,
-    'show_in_rest' => true,// whether allow for REST API
     'exclude_from_search'=> true,
+    'show_ui' => true,
     'show_in_menu' => '', // main menu to put it under
+    'show_in_nav_menus' => true,
     'show_in_menu_string' => '',
-    'hierarchical' => false, // parent/child relationship
+    'show_in_rest' => true,// whether allow for REST API
   );
   // contextual help
   var $page1_main = '';
@@ -57,7 +66,7 @@ class Urbosa_Custom_Type
   //----- custom taxonomy ------.
   var $custom_taxonomy = false; 
   var $tax_label = '';
-  var $taxLabels = array(
+  var $tax_labels = array(
     'name'              => '{tax_name} Categories',
     'singular_name'     => '{tax_name} Category',
     'search_items'      => 'Search {tax_name} Categories',
@@ -70,25 +79,50 @@ class Urbosa_Custom_Type
     'new_item_name'     => 'New {tax_name} Category',
     'menu_name'         => '{tax_name} Categories'
   );
-  var $taxArgs = array(
-    'labels' => array(),
-    'hierarchical' => true,
+  var $tax_args = array(
+    'labels'        => array(),
+    'description'   => 'Holds our {name}s and {name} specific data',
+    'public'        => true,
+    'publicly_queryable' => true,
+    'hierarchical' => false,                // parent/child relationship
+    'show_ui' => true,
+    'show_in_menu' => '',                   // main menu to put it under
+    'show_in_nav_menus' => true,
+    'show_in_rest' => true,                 // whether allow for REST API
+    'show_in_quick_edit' => true,
+    'meta_box_cb' => false,                 // set a string for callback to show in metabox
+    'capabilities' => array(
+      'manage_terms' => 'manage_categories',
+      'edit_terms' => 'manage_categories',
+      'delete_terms' => 'manage_categories',
+      'assign_terms' => 'edit_posts'),
+    'rewrite' => true,                      // (bool|array) allow URL to change, flush after creating
+    'query_var' => true,                    // will change {query_name}=term_slug
   );
 
   function __construct($name){
     $this->name = strtolower($name);
   }
-  function initialize(){
+  function init(){
     if(!empty($this->name)){
       $this->merge();
-
-      register_post_type( $this->name, $this->args );
-
-      if($this->custom_taxonomy){
-        register_taxonomy( $this->name.'_category', $this->name, $this->taxArgs );
+      switch($this->type){
+        case 'post':
+          register_post_type( $this->name, $this->args );
+          if($this->custom_taxonomy){
+            register_taxonomy( $this->name.'_category', $this->name, $this->tax_args );
+          }
+          if(!empty($this->page1_main) && !empty($this->page2_edit)){
+            add_action( 'contextual_help', array($this,'contextual_help'), 10, 3 );
+          }
+        break;
+        case 'taxonomy':
+          if($this->custom_taxonomy){
+            // if set as taxonomy type this becomes the post
+            register_taxonomy( $this->name, $this->custom_taxonomy, $this->tax_args );
+          }
+        default:
       }
-
-      add_action( 'contextual_help', array($this,'contextual_help'), 10, 3 );
     }else{
       echo 'Urbosa_Custom_Type: Name is empty.';
     }
@@ -114,11 +148,11 @@ class Urbosa_Custom_Type
     $this->args = $tmpArgs;
 
     /* taxonomy */
-    $tmpTaxLabels = $this->taxLabels;
-    $tmpArgs      = $this->taxArgs;
-    foreach($this->taxLabels as $key=>$value){
+    $tmpTaxLabels = $this->tax_labels;
+    $tmpArgs      = $this->tax_args;
+    foreach($this->tax_labels as $key=>$value){
       $name = $this->name;
-      if(!empty($this->taxLabel)) $name = $this->taxLabel;
+      if(!empty($this->tax_label)) $name = $this->tax_label;
 
       foreach($this->ucFirstKeys as $ucKey){
         if($ucKey == $key){
@@ -126,15 +160,15 @@ class Urbosa_Custom_Type
           break;
         }
       }
-      $tmpTaxLabels[$key] = str_replace('{tax_name}', $name, $this->taxLabels[$key]);
+      $tmpTaxLabels[$key] = str_replace('{tax_name}', $name, $this->tax_labels[$key]);
     }
     $tmpArgs['labels'] = $tmpTaxLabels;
-    $this->taxArgs = $tmpArgs;
+    $this->tax_args = $tmpArgs;
 
   }
   function getArgs(){
     $this->merge();
-    return array('custom' => $this->args, 'taxonomy'=> $this->taxArgs);
+    return array('custom' => $this->args, 'taxonomy'=> $this->tax_args);
   }
   function contextual_help( $contextual_help, $screen_id, $screen ) { 
     if ( $this->name == $screen->id ) {
@@ -144,19 +178,46 @@ class Urbosa_Custom_Type
     }
     return $contextual_help;
   }
+  /* helpers */
+  function _set_args($val,$key){
+    $argsName = 'args';
+    if($this->type=='taxonomy'){
+      $argsName = 'tax_args';
+    }
+    $this->$argsName[$key]=$val;
+  }
+  function _prefix_disable_gutenberg($current_status, $post_type){
+      // Use your post type key instead of 'product'
+      if ($post_type === $this->name) return false;
+      return $current_status;
+  }
   /* semantic callable settings */
+  function set_as($type){$this->type=$type; }
 
-  function set_archive($val){ $this->args['has_archive'] = $val;}
+  /* common */
   function set_label($val){ $this->label = $val;}
+  function set_taxonomy($val=true){ $this->custom_taxonomy = $val; }
   function set_tax_label($val){ $this->tax_label = $val;}
-  function set_menu_position($val){ $this->args['menu_position'] = $val;}
-  function set_description($val){ $this->args['description'] = $val;}
-  function set_supports($val){ $this->args['supports'] = $val;}
+  
+  function set_archive($val){ $this->_set_args($val,'has_archive');}
+  function set_menu_position($val){ $this->_set_args($val,'menu_position');}
+  function set_description($val){ $this->_set_args($val,'description');}
+  function set_menu_under($val){ $this->_set_args($val,'show_in_menu');}
+
+  /* post */
+  function set_support($val){ $this->args['supports'] = $val;}
   function set_help($page1_main, $page2_edit){ 
     $this->page1_main = $page1_main;
     $this->page2_edit = $page2_edit;
   }
-  function set_menu_under($val) { $this->args['show_in_menu']= $val;}
   function set_icon($val) { $this->args['menu_icon'] = $val; }
-  function with_taxonomy(){ $this->custom_taxonomy = true; }
+  function disable_editor(){
+    add_filter('use_block_editor_for_post_type', array($this,'_prefix_disable_gutenberg'), 10, 2);
+    $tmpSupports = $this->args['supports'];
+    if (($key = array_search('editor', $tmpSupports)) !== false) {
+      unset($tmpSupports[$key]);
+    }
+    $this->set_support($tmpSupports);
+  }
+  
 }

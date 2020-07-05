@@ -10,12 +10,22 @@ if(function_exists('acf_register_block')){
     // 1. Urbosa Panel with options to add images left/right
     acf_register_block(array(
       'name'=> 'cb_content_panel',
-      'title'=> __('Panel'),
+      'title'=> __('Theme Panel'),
       'description'=>__('Theme Panel'),
       'render_template'=> 'inc/acf-blocks/cb_content_panel.php',
       'category'=> 'urbosa-blocks',
       'icon'	=> 'layout',
       'keywords'=> array( 'Theme Panel' ),
+    ));
+    // 2. Urbosa Theme Slider
+    acf_register_block(array(
+      'name'=> 'cb_theme_slider',
+      'title'=> __('Theme Slider'),
+      'description'=>__('Theme Slider'),
+      'render_template'=> 'inc/acf-blocks/cb_theme_slider.php',
+      'category'=> 'urbosa-blocks',
+      'icon'	=> 'image-flip-horizontal',
+      'keywords'=> array( 'Theme Slider' ),
     ));
   }
 

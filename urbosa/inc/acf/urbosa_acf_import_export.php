@@ -45,15 +45,17 @@ class Urbosa_ACF_Import_Export{
             $this->urbosa_acf_import_from_json_to_db($this->copy_folder);
           }
         }
-        
+
+
+        // Make sure to redirect to avoid duplicate when refreshing
         if(!is_admin()){
           wp_redirect( home_url('/') );
           die();
+        }else{
+          $referer = wp_get_referer();
+          wp_redirect($referer);
+          die();
         }
-      }
-      //---------------------------------------------------
-      // This disable ACF
-      if($themeStatus){
       }
     }
   }
