@@ -1,10 +1,10 @@
 $(document).ready(function () {
   initLazyLoadImage()
-  initParallax()
+  initSimpleParallax()
   initLoginPage()
+  initLightBoxVideo()
 })
 
-/* pre-built */
 function initLoginPage () {
   var loginLogo = $('#login h1 a')
   if (loginLogo.length > 0 && homeURL) {
@@ -12,6 +12,7 @@ function initLoginPage () {
   }
 }
 
+/* pre-built */
 function initLazyLoadImage () {
   if ($.visibility) {
     $('img.urbosa-lazy-load').visibility({
@@ -21,7 +22,7 @@ function initLazyLoadImage () {
     })
   }
 }
-function initParallax () {
+function initSimpleParallax () {
   var parallaxClass = 'parallax'
   if (
     $('.' + parallaxClass).length > 0 &&
@@ -33,4 +34,7 @@ function initParallax () {
 }
 function mcFormCallback (result) {
   console.log('Mailchimp response:', result)
+}
+function initLightBoxVideo () {
+  $('.youtube-lightbox').simpleLightbox()
 }

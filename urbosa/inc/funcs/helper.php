@@ -387,43 +387,61 @@ if(!function_exists('youtubeEmbed')){
    */
   function youtubeEmbed($embed_video,$mode='normal',$properties="width='100%' height='100%' frameborder='0' allowfullscreen",$srcquery="autoplay=1&controls=0&html5=1&loop=1&mute=1&rel=0"){
     $new_embed = $embed_video;
+    $tmp = array(
+      'render' => '',
+      'src' => '',
+      'id' => ''
+    );
 
 
-    
-    if($mode=='normal'){
+    $new_embed = preg_replace('/'.'width=".*?"'.'/','', $new_embed);
+    $new_embed = preg_replace('/'.'height=".*?"'.'/','', $new_embed);
+
+    if(strpos($new_embed,'?')==false){
+
+      $srcquery = '?'.$srcquery;
+    }else{
+      $srcquery = '&'.$srcquery;
+    }
+  
+    preg_match('/'.'(src=".*?")'.'/',$embed_video,$match);
+
+    if($match){
+      $src = $match[1];
+
+      $url = str_replace('src=','', $src);
+      $url = str_replace('"','', $url);
+
+      $tmp['src'] = $url;
+
+      $yID = getYoutubeIdFromUrl($src);
+      $tmp['id'] = $yID;
+
+      $srcquery .= '&playlist='.$yID; // this allow it to loop
+
+      $src = substr($src,0,-1);
+      $src = $src.$srcquery.'"';
+      $new_embed = preg_replace('/'.'src=".*?"'.'/',$src, $new_embed);
+    }
+
+    ob_start();
+    if($mode=='background'){
+
+      echo '<div class="video-background">';
+      echo '<div class="video-foreground">';
+      echo $new_embed;
+      echo '</div>';
+      echo '</div>';
+      
+    }else {
+
       echo '<div class="video-container">';
       echo $new_embed;
       echo '</div>';
-    }else if($mode=='background'){
-      $new_embed = preg_replace('/'.'width=".*?"'.'/','', $new_embed);
-      $new_embed = preg_replace('/'.'height=".*?"'.'/','', $new_embed);
-
-      if(strpos($new_embed,'?')==false){
-
-        $srcquery = '?'.$srcquery;
-      }else{
-        $srcquery = '&'.$srcquery;
-
-      }
-    
-      preg_match('/'.'(src=".*?")'.'/',$embed_video,$match);
-
-      if($match){
-        $src = $match[1];
-        
-        $yID = getYoutubeIdFromUrl($src);
-        $srcquery .= '&playlist='.$yID; // this allow it to loop
-
-        $src = substr($src,0,-1);
-        $src = $src.$srcquery.'"';
-        $new_embed = preg_replace('/'.'src=".*?"'.'/',$src, $new_embed);
-      }
-      echo '<div class="video-background">';
-        echo '<div class="video-foreground">';
-        echo $new_embed;
-        echo '</div>';
-      echo '</div>';
+      
     }
+    $tmp['render'] = ob_get_clean();
+    return $tmp;
   }
 
 
@@ -594,33 +612,40 @@ if(!function_exists('progressiveBG') && !function_exists('enableProgressiveBG'))
   function progressiveBG(){
     ?>
 <script>
-jQuery(document).ready(function($){
-  /* 
+function initProgressive(className='progressive'){
+    /* 
     Parallax and Progressive Example
-    <img class="progressive" src="{encodedLowImage}" data-high="{highImageURL}" />
+    <img class="progressive parallax" src="{encodedLowImage}" data-high="{highImageURL}" />
   */
-  for (let n = 0; n < $('.progressive').length; n++) {
-    var svgblur =`<svg xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        width="1500" height="823"
-        viewBox="0 0 1500 823">
-      <filter id="blur" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-        <feGaussianBlur stdDeviation="100 100" edgeMode="duplicate" />
-        <feComponentTransfer>
-          <feFuncA type="discrete" tableValues="1 1" />
-        </feComponentTransfer>
-      </filter>
-      <image filter="url(#blur)" xlink:href="REPLACEME" x="0" y="0" height="100%" width="100%"/>
-    </svg>`
+  for (let n = 0; n < $('.'+ className).length; n++) {
     // Load low-res
-    var $el = $($('.progressive')[n]);
+    initProgressiveSingle($('.'+ className)[n])
+  }
+}
+function initProgressiveSingle(jEl){
+  if(!jEl) return;
+
+  var svgblur =`<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1500" height="823"
+     viewBox="0 0 1500 823">
+   <filter id="blur" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+     <feGaussianBlur stdDeviation="100 100" edgeMode="duplicate" />
+     <feComponentTransfer>
+       <feFuncA type="discrete" tableValues="1 1" />
+     </feComponentTransfer>
+   </filter>
+   <image filter="url(#blur)" xlink:href="REPLACEME" x="0" y="0" height="100%" width="100%"/>
+ </svg>`
+
+ var $el = $(jEl);
     var base64Image = $el.data('low')
-    var all = `url(data:image/svg+xml;base64,${window.btoa(svgblur.replace('REPLACEME', base64Image ))})`
+    var all = `data:image/svg+xml;base64,${window.btoa(svgblur.replace('REPLACEME', base64Image ))}`
 
     if($el.prop('tagName')=='IMG'){
       $el.attr('src',all);
     }else{
-      $el.css('background-image',all);
+      $el.css('background-image','url(' + all + ')');
     }
     // Load hi-res
     var high = $el.data('high')
@@ -629,13 +654,15 @@ jQuery(document).ready(function($){
       if($el.prop('tagName')=='IMG'){
         $el.attr('src',high);
       }else{
+        
         $el.css('background-image',`url(${high})`)
+        
       }
       $el.addClass('enhanced')
+  
     };
     if (high) { imgHigh.src = high; }
-  }
-})
+}
 </script>
 <style>
 .progressive { background-size: cover; transform: translateZ(0); transition: filter .5s ease-in; filter: blur(4px);}

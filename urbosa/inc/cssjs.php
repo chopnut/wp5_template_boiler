@@ -13,7 +13,8 @@ function theme_setup()
   wp_enqueue_script('lib', get_template_directory_uri() . "/assets/dist/js/bundle.js", array(), null, false);   // SemanticUI/JQuery/Slick
   
   // features
-  // wp_enqueue_script('parallax', get_template_directory_uri() . "/assets/lib/simpleParallax.min.js$suffix" , array('lib'), null, true);
+  wp_enqueue_script('parallax', get_template_directory_uri() . "/assets/lib/simpleParallax.min.js$suffix" , array('lib'), null, true);
+  wp_enqueue_script('simplelightbox', get_template_directory_uri() . "/assets/lib/simpleLightBox/simpleLightBox.min.js$suffix" , array(), null, true);
 
   // essentials
   wp_enqueue_script('blocks', get_template_directory_uri() . "/assets/js/blocks.js$suffix" , array(), null, true);
@@ -112,6 +113,7 @@ function urbosa_add_custom_to_footer() {
   wp_enqueue_style('dashicons','/wp-includes/css/dashicons.min.css'); 
   wp_enqueue_style('other', get_template_directory_uri() . "/assets/dist/css/style.css$suffix" , array(), null, false); // Other layouts/blocks/page specifics/elements etc
   wp_enqueue_style('custom', get_template_directory_uri() . "/assets/css/custom.css$suffix" , array(), null, false);    // Custom CSS
+  wp_enqueue_style('simplelightbox', get_template_directory_uri() . "/assets/lib/simpleLightBox/simpleLightBox.min.css$suffix" , array(), null, false);    // Custom CSS
 };
 add_action( 'get_footer', 'urbosa_add_custom_to_footer' );
 

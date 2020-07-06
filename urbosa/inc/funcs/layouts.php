@@ -17,7 +17,7 @@ function urbosaGenerateSlider(
           ?>
           <div class="each-slider">
             <div class="wrapper">
-              <div class="holder">
+              <div class="content-wrapper">
                 <?php 
                   if(!empty($eachFunctionCaller) && function_exists($eachFunctionCaller)){
                     $eachFunctionCaller($banner);
@@ -38,5 +38,6 @@ function urbosaGenerateSlider(
   </div>
   <?php
 }
+
 
 ?>
