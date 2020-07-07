@@ -8,6 +8,7 @@ if(function_exists('acf_register_block')){
       Instruction: Copy the acf_register_block , 1 per each block set the render template.
       Create the template php file in the blocks folder. Icon should be dashicon of wordpress without the 'dashicons'
     */
+    
     // 1. Urbosa Panel with options to add images left/right
     acf_register_block(array(
       'name'=> 'cb_content_panel',
