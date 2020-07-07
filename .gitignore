@@ -8,5 +8,5 @@
 /logs/
 /db/*
 /dist/
-/urbosa/inc/acf/backup/*.json
-/urbosa/inc/acf/copy/*.json
+/urbosa/inc/acf/json/backup/*.json
+/urbosa/inc/acf/json/copy/*.json

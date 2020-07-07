@@ -119,6 +119,7 @@ $is_lazy        = false;
 $is_lightbox    = false;
 
 
+
 if(is_array($slider_feature)){
   $is_parallax    = (array_search('parallax', $slider_feature) !== false);
   $is_progressive = (array_search('progressive', $slider_feature)!== false);

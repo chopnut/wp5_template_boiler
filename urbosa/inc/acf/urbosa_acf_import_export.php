@@ -3,9 +3,12 @@
 class Urbosa_ACF_Import_Export{
   var $back_up_folder = '';
   var $copy_folder = '';
+  var $default_folder ='';
+
   function __construct(){
-    $this->copy_folder    = get_stylesheet_directory().'/inc/acf/copy';
-    $this->back_up_folder = get_stylesheet_directory().'/inc/acf/backup';
+    $this->copy_folder    = get_stylesheet_directory().'/inc/acf/json/copy';
+    $this->back_up_folder = get_stylesheet_directory().'/inc/acf/json/backup';
+    $this->default_folder = get_stylesheet_directory().'/inc/acf/json/default';
   }
    function init(){
     if(function_exists('acf_get_field_group')){
@@ -93,9 +96,8 @@ class Urbosa_ACF_Import_Export{
     $this->urbosa_acf_write_json_field_group($field_group, $this->copy_folder);
     $this->urbosa_acf_write_json_field_group($field_group, $this->back_up_folder);
   }
-  function urbosa_acf_save_json_folder( $path ) {
-    $path = get_stylesheet_directory() . '/inc/acf/default';
-    return $path;
+  function urbosa_acf_save_json_folder() {
+    return $this->default_folder;
   }
   function urbosa_acf_write_php(){
 
