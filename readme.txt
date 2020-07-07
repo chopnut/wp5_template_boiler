@@ -1,5 +1,5 @@
 * ----------------------------------------------*
-|               Requirements                    |
+|               REQUIREMENTS                    |
 * ----------------------------------------------*
 - Install Docker 
 - Install Node/npm
@@ -44,3 +44,9 @@ INSERT INTO `dev_db`.`wp_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_val
 * ----------------------------------------------*
 - Install ngrok
 ngrok http -region=au -host-header=rewrite localhost:8191
+
+* ----------------------------------------------*
+|              TROUBLESHOOTING                  |
+* ----------------------------------------------*
+- If you get ERROR regarding node-sass/ when building
+  on your local project run: npm rebuild node-sass

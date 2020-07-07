@@ -70,15 +70,15 @@
                 "id": ""
             },
             "choices": {
-                "square": "Square",
                 "wide": "Wide",
                 "tv": "TV",
                 "small": "Small",
                 "strip": "Strip",
+                "square": "Square",
                 "override": "Override"
             },
             "default_value": [
-                "square"
+                "wide"
             ],
             "allow_null": 0,
             "multiple": 0,
@@ -151,5 +151,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1593975664
+    "modified": 1594153330
 }

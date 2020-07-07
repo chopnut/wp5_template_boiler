@@ -1,21 +1,21 @@
 {
-  "base": "semantic\\",
+  "base": "semantic/",
   "paths": {
     "source": {
       "config": "src/theme.config",
       "definitions": "src/definitions/",
-      "site": "src\\fui\\",
+      "site": "src/fui/",
       "themes": "src/themes/"
     },
     "output": {
-      "packaged": "dist\\",
-      "uncompressed": "dist\\raw_components\\",
-      "compressed": "dist\\components\\",
+      "packaged": "dist/",
+      "uncompressed": "dist/raw_components/",
+      "compressed": "dist/components/",
       "themes": "dist/themes/"
     },
     "clean": "dist/"
   },
-  "permission": 744,
+  "permission": 755,
   "autoInstall": true,
   "rtl": false,
   "components": ["reset", "container", "modal", "transition", "dimmer"],

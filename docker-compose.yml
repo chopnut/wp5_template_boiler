@@ -17,8 +17,8 @@ services:
     ports:
       - ${DB_PORT}:3306
     volumes: 
-      - .\db\export.sql:/docker-entrypoint-initdb.d/export.sql
-      - .\db\mysql:/var/lib/mysql
+      - ./db/export.sql:/docker-entrypoint-initdb.d/export.sql
+      - ./db/mysql:/var/lib/mysql
     networks: 
       - back
   wp:
@@ -39,10 +39,10 @@ services:
       WORDPRESS_TABLE_PREFIX: ${WP_DB_TABLE_PREFIX}
       WORDPRESS_DB_HOST: db
     volumes: 
-      - .\${WP_THEME}:/var/www/html/wp-content/themes/${WP_THEME}
-      - .\${WP_THEME}-cb:/var/www/html/wp-content/plugins/${WP_THEME}-cb
-      - .\wp:/var/www/html/
-      - .\logs\wp:/var/log/apache2/
+      - ./${WP_THEME}:/var/www/html/wp-content/themes/${WP_THEME}
+      - ./${WP_THEME}-cb:/var/www/html/wp-content/plugins/${WP_THEME}-cb
+      - ./wp:/var/www/html/
+      - ./logs/wp:/var/log/apache2/
     networks: 
       - back
   # ---------------------------------------- PHPMYADMIN

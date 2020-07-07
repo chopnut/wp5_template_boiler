@@ -5,7 +5,7 @@
   
   <footer>
     <div class="urbosa container">
-      {Footer goes here}
+      {FOOTER GOES HERE}
     </div>
   </footer>  
   <!-- <?php echo getCurrentTemplate(); ?> -->
