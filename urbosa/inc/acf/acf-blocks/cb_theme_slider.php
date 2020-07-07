@@ -400,6 +400,7 @@ if(is_array($slider_feature)){
 
       if($is_lightbox && !is_admin()){
         ?>
+        $('.youtube-lightbox').simpleLightbox()
         var <?=$lightboxInstance?> = new SimpleLightbox({
           items: <?=$lightBoxCollection?>
         })
@@ -483,9 +484,15 @@ if(is_array($slider_feature)){
         ?>
         $('#<?=$theme_slider_id?>_slick').on('beforeChange',function(slick){
           <?=$triggerLightBoxVar?> = false;
+          $('.youtube-lightbox').map(function(index, item){
+            $(item).replaceWith($(item).clone()); // replace removes all event listeners to the element
+          })
+         
         });
         $('#<?=$theme_slider_id?>_slick').on('afterChange',function(slick){
           <?=$triggerLightBoxVar?> = true;
+          $('.youtube-lightbox').simpleLightbox()
+
         });
         $('#<?=$theme_slider_id?>_slick').slick(slickOptions);
         <?php

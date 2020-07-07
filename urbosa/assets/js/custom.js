@@ -2,7 +2,6 @@ $(document).ready(function () {
   initLazyLoadImage()
   initSimpleParallax()
   initLoginPage()
-  initLightBoxVideo()
 })
 
 function initLoginPage () {
@@ -34,7 +33,4 @@ function initSimpleParallax () {
 }
 function mcFormCallback (result) {
   console.log('Mailchimp response:', result)
-}
-function initLightBoxVideo () {
-  $('.youtube-lightbox').simpleLightbox()
 }
