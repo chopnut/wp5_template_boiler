@@ -10,3 +10,4 @@
 /dist/
 /urbosa/inc/acf/json/backup/*.json
 /urbosa/inc/acf/json/copy/*.json
+/urbosa/inc/acf/json/default/*.json
