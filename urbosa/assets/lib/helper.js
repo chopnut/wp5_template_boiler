@@ -79,6 +79,20 @@ function helper (){
     }
     return ''
   }
+  this.getTransitionEndEventName = function() {
+    var transitions = {
+        "transition"      : "transitionend",
+        "OTransition"     : "oTransitionEnd",
+        "MozTransition"   : "transitionend",
+        "WebkitTransition": "webkitTransitionEnd"
+     }
+    let bodyStyle = document.body.style;
+    for(let transition in transitions) {
+        if(bodyStyle[transition] != undefined) {
+            return transitions[transition];
+        } 
+    }
+  }
   this.loadAJAXContent = function (callbackFunction = null) {
     if (typeof optionData !== 'undefined') {
       let page = optionData.page
@@ -143,14 +157,15 @@ function helper (){
 }
 window.Helper = new helper()
 // Slideout menu
-window.__slideOutTimeout = null
-window.__slideOutDelay   = 1000
-  
+
 window.initSlideOutMenu = function(opt) {
   if(!opt) return 
 
+  window.__slideOutTimeout = null
+
   var ulSelector = opt.menu 
   var containerSelector = opt.container
+  var transEndName = Helper.getTransitionEndEventName()
 
   $ulMenu = $(ulSelector)
   $container = $(containerSelector)
@@ -162,8 +177,15 @@ window.initSlideOutMenu = function(opt) {
 
     __initTriggerSlideOut(opt)
     __nonTrigger(opt)
+
     $container.children('div').map(function(i,item){
-      $(item).css('z-index', i);
+      // arrange z
+
+      $item = $(item)
+      $item.css('z-index', i);
+
+      // attach end transition to open columns only
+      $item[0].addEventListener(transEndName, __transEndColumn)
     })
   }
 }
@@ -171,7 +193,7 @@ window.__slideOutMenuHelperRecursive = function ($li, $container, level, opt) {
   // Get the ID and stick it to the A tag
 
 
-  $liID = $li.attr('id')
+  liID = $li.attr('id')
 
   // Now check for UL inside LI and if a new div has already added with same level deep
 
@@ -184,14 +206,16 @@ window.__slideOutMenuHelperRecursive = function ($li, $container, level, opt) {
       .children('a')
       .attr('data-level', 'level-' + level)
       .attr('data-step', level)
-      .addClass($liID + ' slide-out-trigger')
+      .attr('data-ul', liID)
+      .addClass(' slide-out-trigger')
 
+    
     // ul is found
     var newLevel = level
     $newUlClone = null
 
     if ($existingContainer.length > 0) {
-      $newUlClone = $ul.addClass($liID).clone() // add reference from the LI parent
+      $newUlClone = $ul.addClass(liID).clone() // add reference from the LI parent
       
 
       if ($newUlClone.find('ul').length > 0) {
@@ -202,7 +226,7 @@ window.__slideOutMenuHelperRecursive = function ($li, $container, level, opt) {
     } else {
       // if not found create a new container level + 1
       levelClass = 'level-' + newLevel
-      $newUlClone = $ul.addClass($liID).clone() // add reference from the LI parent
+      $newUlClone = $ul.addClass(liID).clone() // add reference from the LI parent
       
 
 
@@ -222,6 +246,7 @@ window.__slideOutMenuHelperRecursive = function ($li, $container, level, opt) {
     })
   }
 }
+// Attach event to non-trigger
 window.__nonTrigger= function (opt){
 
   var nonTriggers = $(opt.container).children('.level').children('ul').children('li').find('a:not(.slide-out-trigger)')
@@ -238,29 +263,6 @@ window.__nonTrigger= function (opt){
   clearInterval(__slideOutTimeout)
   __slideOutTimeout = null
 
-  $col = $(e.target).closest('.level')
-
-  ownLevel = $col.data('step');
-
-
-  $(opt.container).children('.open').map(function(i,item){
-
-    var otherLevel = $(item).data('step')
-
-
-    if(otherLevel == ownLevel){
-     
-      // do nothing
-
-    }else{
-  
-      var dir = opt.direction
-      if(dir == 'left') dir = 'right'
-      $(item).css(dir, '0%')
-      
-    }
-
-  })
  }
 
 
@@ -269,51 +271,73 @@ window.__nonTrigger= function (opt){
   __slideOutTimeout = setTimeout(() => {
 
     $(opt.container).children('.open').map(function(i,item){
+
       var dir = opt.direction
       if(dir == 'left') dir = 'right'
       $(item).css(dir, '0%').removeClass('open')
 
-      console.log('was closing it all along', e.target, item);
+
 
     })
+    
 
-  }, __slideOutDelay);
+  }, opt.delay);
 }
+// Make all ul invisible when 'open' is removed from its class
+window.__transEndColumn = function(e){
+  $this = $(e.target)
+  if(!$this.hasClass('open')){
+    $this.children('ul').removeClass('open')
+  }
+}
+
+// Attach event to triggers
  window.__initTriggerSlideOut = function(opt) {
 
 
+
   $('.slide-out-trigger').on('mouseover', function (e) {
+
     clearInterval(__slideOutTimeout)
     __slideOutTimeout =null
 
-    $winItem = $(this).data('level')
-    $stepN   = parseInt($(this).data('step'))
-
-    $adjust = 100 * $stepN;
-
-    $('.' + $winItem).addClass('open')
-    var dir = opt.direction
+    win = $(this).data('level')  // the column class
+    ulRef   = $(this).data('ul') // the reference to the ul menu
+    stepN   = parseInt($(this).data('step')) // number of times to fill the animation
+    var dir = opt.direction // direction of the animation
     if(dir == 'left') dir = 'right'
-    $('.' + $winItem).css(dir, $adjust+'%')
 
-   
+    // find they references
+    $win = $(opt.container).children('.'+win)
+    $ul  = $win.find('ul.'+ulRef)
+
+    if($ul.length>0){
+      adjust = 100 * stepN;
+
+
+      $win.addClass('open') // open the column and slide it
+      $win.children('ul').removeClass('open') //hide all ul first
+      $ul.addClass('open') // reveal the ul
+      $win.css(dir, adjust+'%')  
+
+    }
   })
 
   $('.slide-out-trigger').on('mouseout', function (e) {
  
    
     __slideOutTimeout = setTimeout(() => {
-
+      // Close all columns 
       $(opt.container).children('.open').map(function(i,item){
+
         var dir = opt.direction
+        $item = $(item)
         if(dir == 'left') dir = 'right'
-        $(item).css(dir, '0%').removeClass('open')
-      console.log('just closed another');
-
-
+        $item.css(dir, '0%').removeClass('open')
+    
       })
 
-    }, __slideOutDelay);
+    }, opt.delay);
   })
 }
 /* end slide-out */

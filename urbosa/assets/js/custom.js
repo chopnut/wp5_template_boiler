@@ -7,7 +7,8 @@ $(document).ready(function () {
     {
       menu: '#menu-menu-1',
       container: '#menu-container',
-      direction: 'left'
+      direction: 'left',
+      delay: 500
     }
   )
 })

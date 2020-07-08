@@ -86,16 +86,11 @@
   a.urbosa.underline:hover:after{ width: 100%;  left: 0;  }
 
   /* 
-    slideout-menu 
-    usage: change the main container selector  
+    ---- Slide Out Menu ----
+    Style your menu container first to desired results if sliding from left, position it to the right and vise-versa
+    Usage: Change the main container selector
   */
-  #menu-container{
-    border: 1px solid black;
-    float: right;
-    height: 100vh;
-    >div:nth-child(1){ background-color: #cccccc;}
-    >div:nth-child(2){ background-color: #eee;}
-  }
+
   #menu-container {
     position: relative;
     ul,li { padding: 0; margin: 0; list-style: none;}
@@ -111,10 +106,16 @@
     }
     >div.left{ right: 0%;}
     >div.right{ left: 0%;}
-
     >div:not(.level){
       position: relative;
       background-color: white;
     }
+    >div.level ul{
+      display: none;
+    }
+    >div.level ul.open{
+      display: block;
+    }
+    a{ display: inline-block;}
   }
 
