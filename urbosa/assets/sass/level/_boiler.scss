@@ -84,3 +84,37 @@
   a.urbosa.underline{  display: inline-block;  position: relative; text-decoration: none; padding-bottom: .5em; }
   a.urbosa.underline:after{background: none repeat scroll 0 0 transparent;bottom: 0;content: "";display: block;height: 2px;left: 50%;position: absolute;background: white;transition: width 0.3s ease 0s, left 0.3s ease 0s;width: 0;}
   a.urbosa.underline:hover:after{ width: 100%;  left: 0;  }
+
+  /* 
+    slideout-menu 
+    usage: change the main container selector  
+  */
+  #menu-container{
+    border: 1px solid black;
+    float: right;
+    height: 100vh;
+    >div:nth-child(1){ background-color: #cccccc;}
+    >div:nth-child(2){ background-color: #eee;}
+  }
+  #menu-container {
+    position: relative;
+    ul,li { padding: 0; margin: 0; list-style: none;}
+    .sub-menu{ display: none;}
+
+    >div{
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      transition: all .4s linear;
+      transition-property:  right , left;
+    }
+    >div.left{ right: 0%;}
+    >div.right{ left: 0%;}
+
+    >div:not(.level){
+      position: relative;
+      background-color: white;
+    }
+  }
+
