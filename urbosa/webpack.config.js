@@ -103,15 +103,6 @@ module.exports = env => {
               options: 'jQuery'
             }
           ]
-        },
-        {
-          test: require.resolve('Helper'),
-          use: [
-            {
-              loader: 'expose-loader',
-              options: 'Helper'
-            }
-          ]
         }
       ]
     },

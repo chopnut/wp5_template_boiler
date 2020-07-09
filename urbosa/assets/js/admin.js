@@ -8,7 +8,7 @@ function initDisableACF () {
   $id = $currentMenu.attr('id')
 
   if ($id == 'toplevel_page_edit-post_type-acf-field-group') {
-    var post = getParameterByName('post')
+    var post = Helper.getParameterByName('post')
     if (post) {
       $statE = $('#wp-admin-bar-urbosa-theme-status a')
       if ($statE.length > 0) {
@@ -18,7 +18,7 @@ function initDisableACF () {
     }
   }
   // Check if theme is live and do not let add/new
-  var postType = getParameterByName('post_type')
+  var postType = Helper.getParameterByName('post_type')
   if (
     websiteData &&
     websiteData.is_theme_live == '1' &&

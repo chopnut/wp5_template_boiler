@@ -3,13 +3,10 @@ $(document).ready(function () {
   initSimpleParallax()
   initLoginPage()
 
-  initSlideOutMenu(
-    {
-      menu: '#menu-menu-1',
-      container: '#menu-container',
-      direction: 'left',
-      delay: 500
-    }
-  )
+  initSlideOutMenu({
+    container: '#menu-container',
+    menu: '#menu-menu-1',
+    direction: 'left',
+    delay: 500
+  })
 })
-
