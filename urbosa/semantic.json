@@ -18,6 +18,6 @@
   "permission": 755,
   "autoInstall": true,
   "rtl": false,
-  "components": ["reset", "visibility", "sticky", "sidebar"],
-  "version": "2.7.8"
+  "components": ["reset", "visibility", "sticky", "sidebar", "transition"],
+  "version": "2.8.6"
 }
