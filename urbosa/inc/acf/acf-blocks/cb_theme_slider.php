@@ -282,7 +282,8 @@ if(is_array($slider_feature)){
 
 
                     if($is_progressive && !is_admin()){
-                      $containerClass .= 'progressive ';
+                      
+                      $containerClass .= 'progressive '.$theme_slider_id;
                       $containerAttr .= "data-low='$lowRes' data-high='$hiRes' ";
                       $containerStyle = '';
                     }
@@ -384,6 +385,7 @@ if(is_array($slider_feature)){
 
       if($is_progressive && !is_admin()){
         ?>
+    
         initProgressive('<?=$theme_slider_id?>');
         <?php
 
@@ -492,7 +494,13 @@ if(is_array($slider_feature)){
         });
         $('#<?=$theme_slider_id?>_slick').on('afterChange',function(slick){
           <?=$triggerLightBoxVar?> = true;
-          $('.youtube-lightbox').simpleLightbox()
+          <?php 
+            if($is_lightbox){
+              ?>
+              $('.youtube-lightbox').simpleLightbox()
+              <?php
+            }
+          ?>
 
         });
         $('#<?=$theme_slider_id?>_slick').slick(slickOptions);
