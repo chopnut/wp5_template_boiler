@@ -37,7 +37,7 @@
   }
   // Check if wordpress is loaded
   if(defined('ABSPATH')){
-    global $live;
+    $live = is_theme_live();
     $strPos = strpos(__FILE__,'wp-content');
     if($strPos!==false){
       $itself = home_url('/').substr(__FILE__,$strPos);

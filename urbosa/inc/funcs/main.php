@@ -1,10 +1,33 @@
 <?php
 
 /** 
- * Miscellaneous feature that you may use
+ * Main driver of the theme 
  */
 
- 
+function urbosa_login_page()
+{
+  $suffix = get_theme_suffix();
+
+  ?>
+  <style type="text/css">
+    #login h1 a,
+    .login h1 a {
+      background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/sample.jpg);
+      width: 200px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    body.login {
+      background-color: #eee;
+    }
+  </style>
+  <script>var homeURL = '<?=home_url('/')?>';</script>
+<?php
+  wp_enqueue_script('lib', get_template_directory_uri() . "/assets/dist/js/bundle.js", array(), null, false);   // SemanticUI/JQuery/Slick
+  wp_enqueue_script('custom', get_template_directory_uri() . "/assets/js/custom.js$suffix" , array(), null, true);       // Any custom/override changes
+}
+add_action('login_enqueue_scripts', 'urbosa_login_page');
+
 
 /*******************************************************************
  *              Setting up custom login behaviour 
@@ -204,7 +227,29 @@ add_action('wp_ajax_nopriv_urbosa_get_post', 'urbosa_get_post');//for users that
   }
   // Uncomment below to enable: Custom search
   // add_action( 'pre_get_posts', 'urbosa_custom_search' );
-
+//===============================================
+// Add option page
+  if(function_exists('acf_add_options_sub_page')){
+    acf_add_options_page(array(
+      'page_title'=>'Theme Options',
+      'menu_title'=>'Theme Options',
+      'menu_slug'=>'urbosa_theme_option',
+      'capability' => 'edit_posts',
+      'parent_slug' => '#urbosa_resources',
+      'icon_url' => '',
+      'post_id' => 'options', // to which post it applies to default to global options
+      'update_button' => __('Update Theme Options', 'acf'),
+      'position' => ''
+    ));
+  }
+// Adds reusable blocks menu to the admin
+function urbosa_theme_menu() {
+  global $submenu; 
+  add_menu_page( 'Theme Resources', 'Theme Resources', 'edit_posts', '#urbosa_resources', '', 'dashicons-welcome-widgets-menus', 58 );
+  add_submenu_page( '#urbosa_resources', 'Reusable Blocks', 'Reusable Blocks', 'edit_posts','reusable_block','edit.php?post_type=wp_block',58 );
+  $submenu['#urbosa_resources'][count($submenu['#urbosa_resources'])-1][2] = 'edit.php?post_type=wp_block';
+}
+add_action( 'admin_menu', 'urbosa_theme_menu' );
 add_action( 'admin_bar_menu', 'urbosa_add_items', 250 );
 function urbosa_add_items( $wp_admin_bar ) {
   $label        = 'DEV'; 
@@ -242,6 +287,33 @@ function urbosa_admin_style() {
   </style>
   <?php
 }
+//===============================================
+// Enable exact search by phrase by setting $_GET['exact']
+function urbosa_exact_search($search, $wp_query){
+  global $wpdb;
+  if(empty($search)) return $search;
+  if(isset($_GET['exact']) && $_GET['exact']==1){
+    $q = $wp_query->query_vars;
+    $search = $searchand = '';
+
+    foreach((array)$q['search_terms'] as $term) :
+        $term = esc_sql(like_escape($term));
+        $search.= "{$searchand}($wpdb->posts.post_title REGEXP '[[:<:]]{$term}[[:>:]]') OR ($wpdb->posts.post_content REGEXP '[[:<:]]{$term}[[:>:]]')";
+        $searchand = ' AND ';
+    endforeach;
+
+    if(!empty($search)) :
+        $search = " AND ({$search}) ";
+        if(!is_user_logged_in())
+            $search .= " AND ($wpdb->posts.post_password = '')";
+    endif;
+    return $search;
+  }
+  return $search;
+}
+
+// Enable exact search feature: Uncomment below
+// add_filter('posts_search', 'urbosa_exact_search', 20, 2);
 
 add_action('init', 'urbosa_theme_init');
 function urbosa_theme_init(){
