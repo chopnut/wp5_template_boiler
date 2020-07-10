@@ -154,6 +154,12 @@ function helper () {
     q = setQueryParameter(ar)
     window.history.pushState('Page ' + page, '', q)
   }
+  this.copyAttributes = function ($src, $dst) {
+    var attributes = $src.prop('attributes')
+    $.each(attributes, function () {
+      $dst.attr(this.name, this.value)
+    })
+  }
 }
 window.Helper = new helper()
 // Slideout menu

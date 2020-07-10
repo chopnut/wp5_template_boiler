@@ -617,7 +617,9 @@ function initProgressive(className='progressive'){
     Parallax and Progressive Example
     <img class="progressive parallax" src="{encodedLowImage}" data-high="{highImageURL}" />
   */
-  for (let n = 0; n < $('.'+ className).length; n++) {
+
+ $elements = $('.'+className);
+  for (let n = 0; n < $elements.length; n++) {
     // Load low-res
     initProgressiveSingle($('.'+ className)[n])
   }
@@ -647,18 +649,20 @@ function initProgressiveSingle(jEl){
     }else{
       $el.css('background-image','url(' + all + ')');
     }
+  
     // Load hi-res
     var high = $el.data('high')
     var imgHigh = new Image();
+
     imgHigh.onload = function() {
       if($el.prop('tagName')=='IMG'){
         $el.attr('src',high);
       }else{
-        
         $el.css('background-image',`url(${high})`)
         
       }
       $el.addClass('enhanced')
+      $el.attr('data-low','')
   
     };
     if (high) { imgHigh.src = high; }
@@ -709,6 +713,7 @@ if(!function_exists('removePortFromPath')){
 if(!function_exists('encodeDataImage')){
   function encodeDataImage($path,$removePort=true){
     $tmpPath = $path;
+    if(empty($path)) return '';
     if($removePort) $tmpPath = removePortFromPath($tmpPath);
     $type = pathinfo($tmpPath, PATHINFO_EXTENSION);
     $data = file_get_contents($tmpPath);

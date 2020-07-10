@@ -279,7 +279,7 @@ if(is_array($slider_feature)){
                   $containerAttr = "";
 
                   if($image){
-
+                    $imageID = $image['ID'];
 
                     if($is_progressive && !is_admin()){
                       
@@ -324,7 +324,7 @@ if(is_array($slider_feature)){
                     }
 
                   ?>
-                  <div class="image-wrapper <?=$containerClass?>"  <?=$containerAttr?> style="<?=$containerStyle?>">
+                  <div class="image-wrapper <?=$imageID?> <?=$containerClass?>"  <?=$containerAttr?> style="<?=$containerStyle?>" data-id="<?=$imageID?>" >
                     <?=$innerContent?>
                   </div>
                   <?php
@@ -485,7 +485,10 @@ if(is_array($slider_feature)){
 
       if(!is_admin()){
         ?>
-        $('#<?=$theme_slider_id?>_slick').on('beforeChange',function(slick){
+        $('#<?=$theme_slider_id?>_slick').on('beforeChange',function(slick,currentSlide,nextSlide){
+
+         
+          
           <?=$triggerLightBoxVar?> = false;
           $('.youtube-lightbox').map(function(index, item){
             $(item).replaceWith($(item).clone()); // replace removes all event listeners to the element
@@ -502,7 +505,37 @@ if(is_array($slider_feature)){
             }
           ?>
 
+
         });
+        $('#<?=$theme_slider_id?>_slick').on('init',function(slick){
+
+          // Copy original to the clones
+
+          $actual = $('#<?=$theme_slider_id?>_slick .slick-slide:not(.slick-cloned) .image-wrapper')
+          
+          $clones = $('#<?=$theme_slider_id?>_slick .slick-cloned .image-wrapper')
+
+
+          if($clones.length){
+
+            $actual.map(function(i,item){
+              
+              $item = $(item)
+              ID = $item.data('id');
+            
+              $clones.map(function(i2, item2){
+
+                $cloneItem = $(item2)
+
+                if($cloneItem.hasClass(ID)){
+                  
+                  Helper.copyAttributes($item, $cloneItem)
+
+                }
+              })
+            })
+          }
+        })
         $('#<?=$theme_slider_id?>_slick').slick(slickOptions);
         <?php
       }

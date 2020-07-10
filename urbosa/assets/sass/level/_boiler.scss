@@ -16,15 +16,7 @@
 
 /* html5 video background */
 .html5-video-container{ overflow: hidden; position: relative; height: 100%;}
-  .html5-video-container video{ 
-    min-width: 100%; 
-    min-height: 100%; 
-    height: auto;
-    width: auto;
-    top: 50%; left: 50%; 
-    position: absolute; 
-    transform: translateX(-50%) translateY(-50%);
-  }
+  .html5-video-container video{  min-width: 100%;  min-height: 100%;  height: auto; width: auto; top: 50%; left: 50%;  position: absolute;  transform: translateX(-50%) translateY(-50%);}
 
 /* image behave like background */
 .img-bg { position: relative; overflow: hidden; }
@@ -39,8 +31,8 @@
 .ratio>*>*{height: 100%;}
 .ratio::after { clear: left; content: " "; display: table; }
 .ratio::before { content: ""; float: left; }
-.ratio.square::before { padding-bottom: 100%; }
 .ratio.wide::before { padding-bottom: 56.25%; }
+.ratio.square::before { padding-bottom: 100%; }
 .ratio.tv::before { padding-bottom: 75%; }
 .ratio.small::before { padding-bottom:  66.6%; }
 .ratio.strip::before { padding-bottom: 62.5%; }
@@ -51,31 +43,9 @@
     .slick-sliders .slick-arrow{ cursor: pointer; position: absolute; top: calc(50% - 1em); display: block; z-index: 2;}
     .slick-sliders .slick-nav-prev{ left: 1rem;  right: auto; }
     .slick-sliders .slick-nav-next{left: auto; right: 1rem;}
-    .slick-sliders .slick-dots{
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      width: 100%;
-      text-align: center;
-      justify-content: center;
-      height: 2rem;
-      align-items: center;
-    }
-    .slick-sliders .slick-dots li{
-      display: inline-block;
-      overflow: hidden;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      margin: 0 .5em;      
-    }
-    .slick-sliders .slick-dots button{
-      border: none;
-      outline: none;
-      cursor: pointer;
-      text-indent: 999%;
-    }
+    .slick-sliders .slick-dots{ height: 50px; margin: 0; padding: 0; list-style: none; display: flex; width: 100%; text-align: center; justify-content: center; align-items: center;}
+    .slick-sliders .slick-dots li{ display: inline-block; overflow: hidden; width: 10px; height: 10px; border-radius: 50%; margin: 0 .5em;       }
+    .slick-sliders .slick-dots button{ border: none; outline: none; cursor: pointer; text-indent: 999%;}
     .slick-sliders .slick-dots li button{ background-color: #bbb;}
     .slick-sliders .slick-dots li.slick-active button{ background-color: #aaa;}
     .slick-sliders .slick-dots button:hover{ background-color: #aaa;}

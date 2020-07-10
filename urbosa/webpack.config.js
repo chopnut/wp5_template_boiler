@@ -23,8 +23,9 @@ module.exports = env => {
         files: [
           `./`, // Will watch any changes from this folder
           '!./node_modules/',
-          '!./inc/acf/'
+          '!./inc/acf/json'
         ],
+
         notify: false,
         reloadDelay: 0
       })
