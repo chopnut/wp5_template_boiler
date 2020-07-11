@@ -10,31 +10,56 @@ function get_theme_suffix(){
     $suffix = ''; if(!$live) $suffix ='?'.time();
     return $suffix;
 }
-function add_feature($feature, $option=''){
+function _add_feature($feature, $option=''){
+  switch($feature){
+    case 'googlemap':
+        wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key='.$option, array(), null, false);
+        add_filter('acf/fields/google_map/api', function($api) use (&$option){
+            $api['key'] = $option;
+            return $api;
+        });
+    break;
+    case 'parallax':
+        wp_enqueue_script('parallax', get_template_directory_uri() . "/assets/lib/simpleParallax.min.js" , array('lib'), null, true);
+    break;
+    case 'lightbox':
+        wp_enqueue_script('simplelightbox', get_template_directory_uri() . "/assets/lib/simpleLightBox/simpleLightBox.min.js" , array(), null, true);
+      break;
+      case 'progressive':
+        enableProgressiveBG();
+      break;
+      case 'debug':
+        wp_enqueue_style('debug', get_template_directory_uri() . "/assets/css/debug.css" , array(), null, false);    // Custom CSS
+      break;
+      case 'font-awesome':
+        wp_enqueue_script('fontawesome', "https://use.fontawesome.com/releases/v5.3.1/js/all.js" , array(), null, true);
+      break;
+      case 'dashicons':
+        add_action( 'get_footer', '_add_dashicons_footer');
+      break;
+    default;
+  }
+}
+function _add_dashicons_footer(){
+  wp_enqueue_style('dashicons','/wp-includes/css/dashicons.min.css'); 
 
-    switch($feature){
-        case 'googlemap':
-            wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key='.$option, array(), null, false);
-            add_filter('acf/fields/google_map/api', function($api) use (&$option){
-                $api['key'] = $option;
-                return $api;
-            });
-        break;
-        case 'parallax':
-            wp_enqueue_script('parallax', get_template_directory_uri() . "/assets/lib/simpleParallax.min.js" , array('lib'), null, true);
-        break;
-        case 'lightbox':
-            wp_enqueue_script('simplelightbox', get_template_directory_uri() . "/assets/lib/simpleLightBox/simpleLightBox.min.js" , array(), null, true);
-        break;
-        case 'progressive':
-            enableProgressiveBG();
-        break;
-        case 'debug_me':
-            wp_enqueue_style('debug', get_template_directory_uri() . "/assets/css/debug.css" , array(), null, false);    // Custom CSS
+}
+function add_feature($features,$option=''){
+  if(is_array($features)){
+    foreach ($features as $tmpFeature) {
+      $feature = $tmpFeature;
+      $option = '';
 
-        break;
-        default;
+      if(is_array($feature) && count($feature)){
+        $feature = $feature[0];
+        if(isset($feature[1])) $option = $feature[1];
+      }
+      _add_feature($feature, $option);
+
     }
+  }else{
+    _add_feature($features, $option);
+  }
 }
 
 function add_style_sheet_attr($html, $handle){
@@ -74,7 +99,6 @@ function add_style_sheet_attr($html, $handle){
   add_action( 'wp_print_styles', 'deregister_dashicons' );
   function urbosa_add_custom_to_footer() {
     $suffix = get_theme_suffix();
-    wp_enqueue_style('dashicons','/wp-includes/css/dashicons.min.css'); 
     wp_enqueue_style('other', get_template_directory_uri() . "/assets/dist/css/style.css$suffix" , array(), null, false); // Other layouts/blocks/page specifics/elements etc
     wp_enqueue_style('custom', get_template_directory_uri() . "/assets/css/custom.css$suffix" , array(), null, false);    // Custom CSS
     wp_enqueue_style('simplelightbox', get_template_directory_uri() . "/assets/lib/simpleLightBox/simpleLightBox.min.css$suffix" , array(), null, false);    // Custom CSS

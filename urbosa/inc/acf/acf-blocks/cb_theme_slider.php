@@ -41,14 +41,22 @@ if(!function_exists('__cb_theme_slider_video_file')){
   
   function __cb_theme_slider_video_file($mode,$videoClass,$desktopSrc,$type, $mobile_poster){
 
-    __cb_theme_slider_video_mobile_poster($mobile_poster);
+    // __cb_theme_slider_video_mobile_poster($mobile_poster);
 
+    $attr = '';
+    if($mobile_poster) {
+
+      $poster = $mobile_poster['sizes']['large'];
+      $attr = "poster='$poster'";
+
+    }
+    
     ?>
     <div class="video-wrapper <?=$mode?> ">
 
       <div class="html5-video-container">
 
-        <video loop autoplay muted class="<?=$videoClass?>" src="<?=$desktopSrc?>"  type="<?=$type?>"></video>
+        <video loop autoplay muted class="<?=$videoClass?>" <?=$attr?> src="<?=$desktopSrc?>"  type="<?=$type?>"></video>
 
       </div>
 
@@ -173,9 +181,8 @@ if(is_array($slider_feature)){
               $ctr = 0;
               foreach ($sliders as $slider) {
 
-
-
                 // Prep-vars
+
                 $background_type        = $slider['background_type'];
                 $image                  = $slider['image'];
                 
@@ -186,9 +193,7 @@ if(is_array($slider_feature)){
                 $mobile_video_type      = $slider['mobile_video']['mobile_video_type'];
                 $mobile_video_file      = $slider['mobile_video']['mobile_video_src_file'];
                 $mobile_video_embed     = $slider['mobile_video']['mobile_video_embed'];
-
-
-                
+     
                 $mobile_poster          = $slider['mobile_poster'];
 
                 $content                = $slider['content'];

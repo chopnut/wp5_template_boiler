@@ -7,12 +7,16 @@
 function urbosa_login_page()
 {
   $suffix = get_theme_suffix();
-
+  $img = urbosa_custom_logo();
+  if(empty($img)){
+    $img = get_template_directory_uri().'/assets/img/sample.jpg';
+  }
+  
   ?>
   <style type="text/css">
     #login h1 a,
     .login h1 a {
-      background-image: url(<?php echo get_template_directory_uri(); ?>/assets/img/sample.jpg);
+      background-image: url(<?=$img?>);
       width: 200px;
       background-size: contain;
       background-repeat: no-repeat;

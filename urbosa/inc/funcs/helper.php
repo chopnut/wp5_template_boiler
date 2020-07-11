@@ -819,6 +819,17 @@ if(!function_exists('mcForm')){
     <?
   }
 }
+if(!function_exists('urbosa_custom_logo')){
+  function urbosa_custom_logo($is_src=true){
+    $custom_logo_id = get_theme_mod( 'custom_logo' );
+    $logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );
+    if(has_custom_logo()){
+      if($is_src) return $logo[0]; 
+      return '<img src="' . esc_url( $logo) . '" alt="' . get_bloginfo( 'name' ) . '">';
+    }
+    return '';
+  }
+}
 if(!function_exists('urbosa_copy_folder')){
   function urbosa_copy_folder($src,$dst) { 
     $dir = opendir($src); 
