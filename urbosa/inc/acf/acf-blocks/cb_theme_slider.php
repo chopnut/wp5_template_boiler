@@ -177,7 +177,7 @@ if(is_array($slider_feature)){
 
 
           ?>
-          <div class="slick-sliders <?=$show_navigation?'nav':''?>" id="<?=$theme_slider_id?>_slick">
+          <div class="slick-sliders" id="<?=$theme_slider_id?>_slick">
           <?php 
               $ctr = 0;
               foreach ($sliders as $slider) {
@@ -479,13 +479,13 @@ if(is_array($slider_feature)){
     <?php 
       if($show_arrows && $arrow_icon){
         ?>
-        slickOptions['nextArrow'] = '<img src="<?=$arrow_icon?>" class="" width="50" height="50" />';
-        slickOptions['prevArrow'] = '<img src="<?=$arrow_icon?>" class="" width="50" height="50" />';
+        slickOptions['nextArrow'] = '<img src="<?=$arrow_icon?>" class="slick-next" width="50" height="50" />';
+        slickOptions['prevArrow'] = '<img src="<?=$arrow_icon?>" class="slick-prev" width="50" height="50" />';
         <?php
       }else if($show_arrows){
         ?>
         slickOptions['nextArrow'] = '<span class="slick-arrow slick-next">&rsaquo;</span>';
-        slickOptions['prevArrow'] = '<span class="slick arrow slick-prev">&lsaquo;</span>';
+        slickOptions['prevArrow'] = '<span class="slick arrow slick-prev">&rsaquo;</span>';
         <?php
       }else{
         ?>
@@ -526,45 +526,34 @@ if(is_array($slider_feature)){
         });
         $('#<?=$theme_slider_id?>_slick').on('afterChange',function(slick){
           <?=$triggerLightBoxVar?> = true;
+
+          // Copy original to the clones for image types, so it doesnt blur anymore 
+          $actual = $('#<?=$theme_slider_id?>_slick .slick-slide:not(.slick-cloned) .image-wrapper.enhanced')
+          $clones = $('#<?=$theme_slider_id?>_slick .slick-cloned .image-wrapper')
+          copyClonesAttributes($actual,$clones);
+
           <?php 
             if($is_lightbox){
               ?>
               $('.youtube-lightbox').simpleLightbox()
+
               <?php
             }
+            
           ?>
 
 
         });
         $('#<?=$theme_slider_id?>_slick').on('init',function(slick){
 
-          // Copy original to the clones
-
-          $actual = $('#<?=$theme_slider_id?>_slick .slick-slide:not(.slick-cloned) .image-wrapper')
-          
+          // Copy original to the clones for image types, so it doesnt blur anymore 
+          $actual = $('#<?=$theme_slider_id?>_slick .slick-slide:not(.slick-cloned) .image-wrapper.enhanced')
           $clones = $('#<?=$theme_slider_id?>_slick .slick-cloned .image-wrapper')
-
-
-          if($clones.length){
-
-            $actual.map(function(i,item){
-              
-              $item = $(item)
-              ID = $item.data('id');
-            
-              $clones.map(function(i2, item2){
-
-                $cloneItem = $(item2)
-
-                if($cloneItem.hasClass(ID)){
-                  
-                  Helper.copyAttributes($item, $cloneItem)
-
-                }
-              })
-            })
-          }
+          copyClonesAttributes($actual,$clones);
         })
+
+
+
         $('#<?=$theme_slider_id?>_slick').slick(slickOptions);
         <?php
       }

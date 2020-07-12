@@ -161,6 +161,20 @@ function helper () {
     })
   }
 }
+window.copyClonesAttributes = function($actual, $clones){
+  if($clones.length){
+    $actual.map(function(i,item){         
+      $item = $(item)
+      ID = $item.data('id');
+      $clones.map(function(i2, item2){
+        $cloneItem = $(item2)
+        if($cloneItem.hasClass(ID)){  
+          Helper.copyAttributes($item, $cloneItem)
+        }
+      })
+    })
+  }
+}
 window.Helper = new helper()
 // Slideout menu
 
