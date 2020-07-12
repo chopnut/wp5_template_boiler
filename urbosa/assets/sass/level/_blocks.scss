@@ -59,21 +59,31 @@
           z-index: 6;
           color: white;
           text-shadow: 1px 1px 2px rgba(0,0,0,.5);
-      
-
-          &.topleft{}
-          &.topcenter{}
-          &.topright{}
-          &.left{}
-          &.center{}
-          &.right{}
-          &.bottomleft{}
-          &.bottomcenter{}
-          &.bottomright{}
-
+          width: 100%;
+          height: 100%;
+          font-size: calc(1.5vw + 0.5rem);
+          *{ color: white; }
           .the_content{
-
+            padding: 3rem;
+            min-width: 50%;
           }
+          &.topcenter{ justify-content: center;}
+          &.topright{justify-content: flex-start;}
+
+          &.left,&.center,&.right{
+            align-items:  center;
+          }
+          &.left{ justify-content: flex-start;}
+          &.center{  justify-content: center;}
+          &.right{justify-content: flex-end;}
+
+          &.bottomleft,&.bottomcenter,&.bottomright{
+            align-items: flex-end;
+          }
+          &.bottomcenter{justify-content: center;}
+          &.bottomright{justify-content:flex-end;}
+
+
         }
         
         /* video type */
@@ -146,6 +156,19 @@
       .each-slider{
         .actual-content{
 
+          /* content-wrapper */
+          .content-wrapper{
+            .the_content{
+              width: 100%;
+            }
+            &.topleft,&.topcenter, &.topright,
+            &.left, &.center,&.right,
+            &.bottomleft, &.bottomcenter, &.bottomright{
+              align-items: center;
+              justify-content: center;
+            }
+          }
+
           /* video-type */
           .video-wrapper {
             video{
@@ -157,7 +180,6 @@
           }
 
           /* image-type */
-
           .poster{
             position: absolute;
             top: 0px;
