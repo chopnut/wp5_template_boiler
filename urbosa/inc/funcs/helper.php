@@ -669,15 +669,12 @@ function initProgressiveSingle(jEl){
 }
 </script>
 <style>
-.progressive { background-size: cover; transform: translateZ(0); transition: filter .5s ease-in; filter: blur(4px);}
+.progressive { background-size: cover; transform: translateZ(0); transition: filter .5s ease-in; filter: blur(45px);}
 .progressive.enhanced{ filter: blur(0px); }
 </style>
     <?php
   }
-  function enableProgressiveBG($lowResImageSize='progressive'){
-    add_image_size( $lowResImageSize.'_landscape', 40, 22 );
-    add_image_size( $lowResImageSize.'_portrait', 22, 40 );
-    add_image_size( $lowResImageSize.'_square', 40, 40 );
+  function enableProgressiveBG(){
     add_action('wp_footer', 'progressiveBG');
   }
 }
@@ -712,11 +709,15 @@ if(!function_exists('removePortFromPath')){
 }
 if(!function_exists('encodeDataImage')){
   function encodeDataImage($path,$removePort=true){
+    
     $tmpPath = $path;
     if(empty($path)) return '';
+
     if($removePort) $tmpPath = removePortFromPath($tmpPath);
     $type = pathinfo($tmpPath, PATHINFO_EXTENSION);
     $data = file_get_contents($tmpPath);
+
+    
     return 'data:image/' . $type . ';base64,' . base64_encode($data);
   }
 }

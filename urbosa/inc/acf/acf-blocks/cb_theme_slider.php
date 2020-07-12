@@ -91,12 +91,13 @@ if(!function_exists('__cb_theme_slider_video_mobile_poster')){
 
     if($mobile_poster){
       
+      
       $lowRes = encodeDataImage($mobile_poster['sizes']['progressive_landscape']);
       $hiRes  = $mobile_poster['url'];
       $containerAttr = "data-low='$lowRes' data-high='$hiRes' ";
 
       ?>
-      <div class="image-wrapper progressive mobile poster" <?=$containerAttr?>></div>
+        <div class="image-wrapper progressive mobile poster" <?=$containerAttr?>></div>
       <?php
     }
   }
@@ -170,9 +171,9 @@ if(is_array($slider_feature)){
 <div class="urbosa-block <?=$className?> <?=$proportion?>  <?=(is_admin()?'admin':'')?>" id="<?=$theme_slider_id?>">
 
       <?php 
-      
+        $true = false;
 
-        if(!empty($sliders)){
+        if(is_array($sliders) && count($sliders)>0){
 
 
           ?>
@@ -238,7 +239,17 @@ if(is_array($slider_feature)){
                 <div class="actual-content">
 
                 <?php
-                //-----------------------------------------------------------
+                
+                //------------------- content ------------------------
+                if(!empty($content)){
+                  ?>
+                  <div class="content-wrapper <?=$content_position?>">
+                    <div class="the_content"><?=wpautop( $content )?></div>
+                  </div>
+                  <?php
+                }
+
+                //------------------- resource -----------------------
                 if($background_type =='video'){
 
                   $desktopVideoSrc        = $final_verdict['desktop']['src'];
@@ -268,6 +279,7 @@ if(is_array($slider_feature)){
 
 
                   }
+
                   
                 //-----------------------------------------------------------
                 }else{ // Image
@@ -309,17 +321,22 @@ if(is_array($slider_feature)){
                     }
 
                     if($is_lazy && !is_admin()){
+   
                       $innerContent = "<img data-lazy='$hiRes' class='{parallax} 'alt='$alt' />";
+                      
                       $containerClass = $containerStyle = "";
                       if($is_parallax){
                         $innerContent = str_replace('{parallax}','parallax', $innerContent);
 
                       }else{
+
                         $innerContent = str_replace('{parallax}','', $innerContent);
                       }
                     }
 
+
                     if($is_lightbox && !is_admin()){
+                      
                       ?>
                       <script><?=$lightBoxCollection?>.push('<?=$hiRes?>')</script>
                       <?php
@@ -327,11 +344,14 @@ if(is_array($slider_feature)){
                       $containerAttr  .= " onclick=\"$lightboxFunc($ctr)\"";
                       
                     }
+                    
 
+ 
                   ?>
-                  <div class="image-wrapper <?=$imageID?> <?=$containerClass?>"  <?=$containerAttr?> style="<?=$containerStyle?>" data-id="<?=$imageID?>" >
-                    <?=$innerContent?>
-                  </div>
+                    <div class="image-wrapper <?=$imageID?> <?=$containerClass?>"  <?=$containerAttr?> style="<?=$containerStyle?>" data-id="<?=$imageID?>" >
+                      <?=$innerContent?>
+                    </div>
+
                   <?php
 
                   } else{
@@ -464,8 +484,13 @@ if(is_array($slider_feature)){
         <?php
       }else if($show_arrows){
         ?>
-        slickOptions['nextArrow'] = '<i class="dashicons dashicons-arrow-right-alt2 slick-nav-next"></i>';
-        slickOptions['prevArrow'] = '<i class="dashicons dashicons-arrow-left-alt2 slick-nav-prev"></i>';
+        slickOptions['nextArrow'] = '<span class="slick-arrow slick-next">&rsaquo;</span>';
+        slickOptions['prevArrow'] = '<span class="slick arrow slick-prev">&lsaquo;</span>';
+        <?php
+      }else{
+        ?>
+        slickOptions['nextArrow'] = false;
+        slickOptions['prevArrow'] = false;
         <?php
       }
 
@@ -487,13 +512,12 @@ if(is_array($slider_feature)){
       }
 
 
-
+      
       if(!is_admin()){
         ?>
         $('#<?=$theme_slider_id?>_slick').on('beforeChange',function(slick,currentSlide,nextSlide){
 
-         
-          
+        
           <?=$triggerLightBoxVar?> = false;
           $('.youtube-lightbox').map(function(index, item){
             $(item).replaceWith($(item).clone()); // replace removes all event listeners to the element

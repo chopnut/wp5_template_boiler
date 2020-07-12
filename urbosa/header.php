@@ -10,12 +10,5 @@
 
 </head>
 <body <?php body_class('page-' . $post->post_name); ?>>
-<style>
-.menu-container{ border: 1px solid black;}
-</style>
-<div id="menu-container">
- <?php 
-urbosa_menu_by_location()
- ?>
- </div>
+
 <main>

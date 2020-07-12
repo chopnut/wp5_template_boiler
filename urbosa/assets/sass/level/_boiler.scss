@@ -40,9 +40,15 @@
 /* Slick theme */
 .slick-sliders{ width:100%; height: 100%; position: relative; }
   .slick-sliders >div,.slick-sliders >div>div {  height: 100%; z-index: 1; outline: none;}
-    .slick-sliders .slick-arrow{ cursor: pointer; position: absolute; top: calc(50% - 1em); display: block; z-index: 2;}
-    .slick-sliders .slick-nav-prev{ left: 1rem;  right: auto; }
-    .slick-sliders .slick-nav-next{left: auto; right: 1rem;}
+    .slick-sliders .slick-arrow{font-size: 2rem;color: white; cursor: pointer; position: absolute; top: calc(50% - 1em); display: block; z-index: 2;}
+    .slick-sliders .slick-nav-prev,
+    .slick-sliders .slick-prev
+    { left: 1rem;  right: auto; }
+
+    .slick-sliders .slick-nav-next, 
+    .slick-sliders .slick-next{ 
+      left: auto; right: 1rem;
+}
     .slick-sliders .slick-dots{ height: 50px; margin: 0; padding: 0; list-style: none; display: flex; width: 100%; text-align: center; justify-content: center; align-items: center;}
     .slick-sliders .slick-dots li{ display: inline-block; overflow: hidden; width: 10px; height: 10px; border-radius: 50%; margin: 0 .5em;       }
     .slick-sliders .slick-dots button{ border: none; outline: none; cursor: pointer; text-indent: 999%;}

@@ -47,8 +47,34 @@
     .each-slider{
       outline: none;
       .actual-content{
+
+        position: relative;
         height: 100%;
         width: 100%;
+
+        /* content text */
+        .content-wrapper{
+          display: flex;
+          position: absolute;
+          z-index: 6;
+          color: white;
+          text-shadow: 1px 1px 2px rgba(0,0,0,.5);
+      
+
+          &.topleft{}
+          &.topcenter{}
+          &.topright{}
+          &.left{}
+          &.center{}
+          &.right{}
+          &.bottomleft{}
+          &.bottomcenter{}
+          &.bottomright{}
+
+          .the_content{
+
+          }
+        }
         
         /* video type */
         .video-wrapper{ 
@@ -64,11 +90,11 @@
 
         /* image type */
         .image-wrapper {
-          background-color: white;
           position: relative;
+          z-index: 5;
+          background-color: white;
           width: 100%;
           height: 100%;
-          z-index: 5;
           @include bg_cover;
           img {
             width: 100%;
@@ -76,8 +102,6 @@
           .simpleParallax{
             position: absolute;
           }
-  
-  
         }
 
         .youtube-lightbox{
@@ -134,7 +158,6 @@
 
           /* image-type */
 
-          
           .poster{
             position: absolute;
             top: 0px;
