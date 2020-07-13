@@ -16,7 +16,7 @@ function theme_setup()
   wp_enqueue_style('template', get_template_directory_uri() . "/assets/dist/css/template.css$suffix" , array(), null, false); 
   wp_enqueue_style('main', get_template_directory_uri() . "/assets/dist/css/layout.css$suffix" , array(), null, false);
   
-  add_feature(array('parallax','progressive','font-awesome'));
+  add_feature(array('parallax','font-awesome'));
   // add_feature('debug');
 
   // local object

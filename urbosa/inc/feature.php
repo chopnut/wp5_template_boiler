@@ -34,9 +34,7 @@ function urbosa_theme_setup()
     );
   add_theme_support( 'custom-logo', $logoDefaults );
   add_image_size( 'urbosa_size', 2000, 2000 );
-  add_image_size( 'progressive_landscape', 40, 22 );
-  add_image_size( 'progressive_portrait', 22, 40 );
-  add_image_size( 'progressive_square', 40, 40 );
+  add_feature('progressive');
   register_nav_menu('main', __('My main menu'));
 }
 add_action('after_setup_theme', 'urbosa_theme_setup');

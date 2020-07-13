@@ -207,7 +207,7 @@ if(is_array($slider_feature)){
                   'type' => $desktop_video_type,
                   'src'=> ($desktop_video_type=='file'?$desktop_video_file:$desktop_video_embed),
                 );
-
+                debug($image);
                 $final_verdict['mobile'] = array(
                   'type' => $mobile_video_type,
                   'src'=> ($mobile_video_type=='file'?$mobile_video_file:$mobile_video_embed),

@@ -26,6 +26,9 @@ function _add_feature($feature, $option=''){
         wp_enqueue_script('simplelightbox', get_template_directory_uri() . "/assets/lib/simpleLightBox/simpleLightBox.min.js" , array(), null, true);
       break;
       case 'progressive':
+        add_image_size( 'progressive_landscape', 40, 22 );
+        add_image_size( 'progressive_portrait', 22, 40 );
+        add_image_size( 'progressive_square', 40, 40 );
         enableProgressiveBG();
       break;
       case 'debug':

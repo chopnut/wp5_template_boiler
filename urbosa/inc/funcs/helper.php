@@ -677,7 +677,9 @@ function initProgressiveSingle(jEl){
   function enableProgressiveBG(){
     add_action('wp_footer', 'progressiveBG');
   }
+
 }
+
 if(!function_exists('urbosaLoader')){
   function urbosaLoader($color='#000',$width="20"){
     $svg = '<svg width="'.$width.'" height="'.$width.'" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" stroke="'.$color.'">
