@@ -73,8 +73,9 @@ function add_style_sheet_attr($html, $handle){
         $tempHtml .=str_replace("rel='stylesheet'","rel='stylesheet' media='print' onload=\"this.media='all'\"",$html);
         $tempHtml  = str_replace("media=''",'',$tempHtml);
         return $tempHtml;
-      case 'dashicons':
+      break;
       case 'other':
+      case 'dashicons':
       case 'custom':
       case 'template':
         // Async other CSS
@@ -102,12 +103,19 @@ function add_style_sheet_attr($html, $handle){
   add_action( 'wp_print_styles', 'deregister_dashicons' );
   function urbosa_add_custom_to_footer() {
     $suffix = get_theme_suffix();
-    wp_enqueue_style('other', get_template_directory_uri() . "/assets/dist/css/style.css$suffix" , array(), null, false); // Other layouts/blocks/page specifics/elements etc
+    wp_enqueue_style('other', get_template_directory_uri() . "/assets/dist/css/style.css$suffix"); // fonts/pages/single
     wp_enqueue_style('custom', get_template_directory_uri() . "/assets/css/custom.css$suffix" , array(), null, false);    // Custom CSS
     wp_enqueue_style('simplelightbox', get_template_directory_uri() . "/assets/lib/simpleLightBox/simpleLightBox.min.css$suffix" , array(), null, false);    // Custom CSS
   };
   add_action( 'get_footer', 'urbosa_add_custom_to_footer' );
 
+
+  function urbosa_wp_head(){
+    ?>
+
+    <?php
+  }
+  add_action('wp_head', 'urbosa_wp_head');
 //--------------------------------------------------//
 /*                    Others                        */
 //--------------------------------------------------//

@@ -29,6 +29,26 @@ if(function_exists('acf_register_block')){
       'icon'	=> 'image-flip-horizontal',
       'keywords'=> array( 'Theme Slider' ),
     ));
+    // 3. Repeater posts and CTA
+    acf_register_block(array(
+      'name'=> 'cb_repeater_posts',
+      'title'=> __('Repeater Posts'),
+      'description'=>__('Repeater Posts'),
+      'render_template'=> $acfBlocksLocation.'cb_repeater_posts.php',
+      'category'=> 'urbosa-blocks',
+      'icon'	=> 'grid-view',
+      'keywords'=> array( 'Repeater Posts' ),
+    ));
+    // 4. ACF Google Map
+    acf_register_block(array(
+      'name'=> 'cb_google_map',
+      'title'=> __('Theme Google Map'),
+      'description'=>__('Theme Google Map'),
+      'render_template'=> $acfBlocksLocation.'cb_google_map.php',
+      'category'=> 'urbosa-blocks',
+      'icon'	=> 'grid-view',
+      'keywords'=> array( 'Theme Google Map' ),
+    ));
   }
 
   add_action('acf/init', 'register_blocks');

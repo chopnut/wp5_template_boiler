@@ -13,8 +13,9 @@ function theme_setup()
   wp_enqueue_script('lib', get_template_directory_uri() . "/assets/dist/js/bundle.js", array(), null, false);  
   wp_enqueue_script('blocks', get_template_directory_uri() . "/assets/js/blocks.js$suffix" , array(), null, true);
   wp_enqueue_script('custom', get_template_directory_uri() . "/assets/js/custom.js$suffix" , array('lib'), null, true);       
-  wp_enqueue_style('template', get_template_directory_uri() . "/assets/dist/css/template.css$suffix" , array(), null, false); 
-  wp_enqueue_style('main', get_template_directory_uri() . "/assets/dist/css/layout.css$suffix" , array(), null, false);
+
+  wp_enqueue_style('template', get_template_directory_uri() . "/assets/dist/css/template.css$suffix"); 
+  wp_enqueue_style('main', get_template_directory_uri() . "/assets/dist/css/layout.css$suffix");
   
   add_feature(array('parallax','font-awesome'));
   // add_feature('debug');
