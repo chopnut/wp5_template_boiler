@@ -12,7 +12,7 @@ if(function_exists('acf_register_block')){
     // 1. Urbosa Panel with options to add images left/right
     acf_register_block(array(
       'name'=> 'cb_content_panel',
-      'title'=> __('Theme Panel'),
+      'title'=> __('Panel'),
       'description'=>__('Theme Panel'),
       'render_template'=> $acfBlocksLocation.'cb_content_panel.php',
       'category'=> 'urbosa-blocks',
@@ -22,7 +22,7 @@ if(function_exists('acf_register_block')){
     // 2. Urbosa Theme Slider
     acf_register_block(array(
       'name'=> 'cb_theme_slider',
-      'title'=> __('Theme Slider'),
+      'title'=> __('Slider'),
       'description'=>__('Theme Slider'),
       'render_template'=> $acfBlocksLocation.'cb_theme_slider.php',
       'category'=> 'urbosa-blocks',
@@ -42,7 +42,7 @@ if(function_exists('acf_register_block')){
     // 4. ACF Google Map
     acf_register_block(array(
       'name'=> 'cb_google_map',
-      'title'=> __('Theme Google Map'),
+      'title'=> __('Google Map'),
       'description'=>__('Theme Google Map'),
       'render_template'=> $acfBlocksLocation.'cb_google_map.php',
       'category'=> 'urbosa-blocks',
