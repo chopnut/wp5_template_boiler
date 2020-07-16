@@ -88,6 +88,104 @@
                     "maxlength": ""
                 },
                 {
+                    "key": "field_5f10aa164d3db",
+                    "label": "Category\/Taxonomy",
+                    "name": "auto_cat_option",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_5f10acf48ecb4",
+                            "label": "Type",
+                            "name": "auto_cat_type",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "category": "Category",
+                                "taxonomy": "Taxonomy"
+                            },
+                            "default_value": [
+                                "category"
+                            ],
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "ui": 0,
+                            "return_format": "value",
+                            "ajax": 0,
+                            "placeholder": ""
+                        },
+                        {
+                            "key": "field_5f10ad2b8ecb5",
+                            "label": "Category",
+                            "name": "auto_categories",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_5f10acf48ecb4",
+                                        "operator": "==",
+                                        "value": "category"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5f10ad7a8ecb6",
+                            "label": "Taxonomy",
+                            "name": "auto_taxonomies",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": [
+                                [
+                                    {
+                                        "field": "field_5f10acf48ecb4",
+                                        "operator": "==",
+                                        "value": "taxonomy"
+                                    }
+                                ]
+                            ],
+                            "wrapper": {
+                                "width": "50",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        }
+                    ]
+                },
+                {
                     "key": "field_5f0f6b5a2bb95",
                     "label": "Number To Display",
                     "name": "auto_display_count",
@@ -412,5 +510,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1594894775
+    "modified": 1594928570
 }

@@ -22,20 +22,37 @@ $autoOption   = get_field('auto_post_options');
     $posts =[];
 
     if($repeaterType == 'auto'){ 
-
+      // default
       $metaArray= [];
       $orderBy = 'date';
       $order   = 'DESC';
+      $categories = [];
+      $taxonomies = [];
 
       $postType = get_field('auto_post_type');
+      $taxonomy = get_field('auto_taxonomy');
       $count    = get_field('auto_display_count');
       $orderBy  = get_field('auto_order_by');
+
+      $catOption = get_field('auto_cat_option');
+      $catType   = get_field('auto_cat_type');
+      $autoCat   = get_field('auto_categories');
+      $autoTax   = get_field('auto_taxonomies');
+
+      if($catType == 'category' && !empty($autoCat)){
+        $categories = array_map('trim', explode(',', $autoCat));
+      }
+      if($catType == 'taxonomy' && !empty($autoTax)){
+        $taxonomies = array_map('trim', explode(',', $autoTax));
+      }
+
 
       switch($orderBy){
         case 'dateasc':
           $order = 'ASC';
         break;
         case 'random':
+          $orderBy = 'rand';
         break;
         case 'menuorder': 
           $orderBy = 'menu_order';
@@ -46,13 +63,17 @@ $autoOption   = get_field('auto_post_options');
 
       $res = getPosts(
         $postType,
-        '', [] , [], 
-        $count, 0, 
+        '', 
+        ['gateway_image'],// acf 
+        $categories,// categories
+        $taxonomies,// taxonomies
+        $count, //per_page
+        0, 
         $metaArray,
         $orderBy, 
         $order
       );
-
+      debug($res['posts']);
     }else { // manual
 
     }

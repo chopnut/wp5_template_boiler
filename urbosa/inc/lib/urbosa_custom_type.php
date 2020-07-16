@@ -110,6 +110,7 @@ class Urbosa_Custom_Type
         case 'post':
           register_post_type( $this->name, $this->args );
           if($this->custom_taxonomy){
+            // (taxonomy_name , post_type , args)
             register_taxonomy( $this->name.'_category', $this->name, $this->tax_args );
           }
           if(!empty($this->page1_main) && !empty($this->page2_edit)){

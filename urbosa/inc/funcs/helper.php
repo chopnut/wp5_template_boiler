@@ -46,21 +46,25 @@ if(!function_exists('getPosts')){
    * @param  mixed $metaArray
    * @param  mixed $orderby
    * @param  mixed $order
+   * @param  mixed $withFeaturedImage (book)
    * @return void
    */
   function getPosts( 
-    $post_type='post',  
+    $postType='post',  
     $slug='', 
     $acfFields = array(),  
     $categories = array(),  
+    $taxonomies = array(),
     $perPage = -1,  
     $offset = 0, 
     $metaArray = array(),  
     $orderby = 'menu_order',  
-    $order = 'DESC')
+    $order = 'DESC',
+    $withFeaturedImage= true
+  )
   {
     $args = array(
-      'post_type' => $post_type,
+      'post_type' => $postType,
       'post_status' => 'publish',
       'ignore_sticky_posts' => 0,
       'posts_per_page' => $perPage,
@@ -69,14 +73,23 @@ if(!function_exists('getPosts')){
       'offset' => $offset,
     );
   
-    if (count($categories) > 0) {
+    if(count($categories)) {
       $args['category_name'] = implode(',', $categories);
+    }
+    if(count($taxonomies)){
+      $args['tax_query'] = array_map(function($v){
+        return array(
+          'taxonomy' => 'fabric_building_types',
+          'field' => 'name',
+          'terms' => $v,
+        );
+      }, $taxonomies);
     }
     if(!empty($slug)){
       $args['name'] = $slug;
     }
   
-    if (count($metaArray) > 0) {
+    if (count($metaArray)) {
       foreach ($metaArray as $meta) {
         if ($meta['value'] != '') {
           $args['meta_query'][] = array(
@@ -99,6 +112,13 @@ if(!function_exists('getPosts')){
         if (stripos($field, 'image') !== false) {
           $data[$field] = $data[$field];
         }
+      }
+      if($withFeaturedImage){
+        $featImage = array(
+          'normal' => getFeaturedImage($thisID,'large'),
+          'progressive' => (function_exists('urbosa_progressive')? getFeaturedImage($thisID,'progressive_landscape') :'')
+        );
+        $data['featured_image'] = $featImage;
       }
       $dataArray[] = $data;
     }
@@ -685,6 +705,7 @@ function initProgressiveSingle(jEl){
   }
   function enableProgressiveBG(){
     add_action('wp_footer', 'progressiveBG');
+    if(!function_exists('urbosa_progressive')){ function urbosa_progressive(){}}
   }
 
 }
