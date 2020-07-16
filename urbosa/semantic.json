@@ -1,5 +1,5 @@
 {
-  "base": "semantic/",
+  "base": "semantic\\",
   "paths": {
     "source": {
       "config": "src/theme.config",
@@ -18,6 +18,6 @@
   "permission": 755,
   "autoInstall": true,
   "rtl": false,
-  "components": ["reset", "visibility", "sticky", "sidebar", "transition"],
+  "components": ["visibility", "sticky"],
   "version": "2.8.6"
 }

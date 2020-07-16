@@ -46,7 +46,7 @@ if(function_exists('acf_register_block')){
       'description'=>__('Theme Google Map'),
       'render_template'=> $acfBlocksLocation.'cb_google_map.php',
       'category'=> 'urbosa-blocks',
-      'icon'	=> 'grid-view',
+      'icon'	=> 'location',
       'keywords'=> array( 'Theme Google Map' ),
     ));
   }

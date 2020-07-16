@@ -36,7 +36,7 @@
                 "auto": "Auto"
             },
             "default_value": [
-                "manual"
+                "auto"
             ],
             "allow_null": 0,
             "multiple": 0,
@@ -44,6 +44,100 @@
             "return_format": "value",
             "ajax": 0,
             "placeholder": ""
+        },
+        {
+            "key": "field_5f0f6b192bb93",
+            "label": "Auto Options",
+            "name": "auto_post_options",
+            "type": "group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5f0e1c2081bc0",
+                        "operator": "==",
+                        "value": "auto"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_5f0f6b482bb94",
+                    "label": "Post Type",
+                    "name": "auto_post_type",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "post",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_5f0f6b5a2bb95",
+                    "label": "Number To Display",
+                    "name": "auto_display_count",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 3,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_5f0f6b8a2bb96",
+                    "label": "Order by",
+                    "name": "auto_order_by",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "datedesc": "Date Latest",
+                        "dateasc": "Date Oldest",
+                        "random": "Random",
+                        "menuorder": "Menu Order"
+                    },
+                    "default_value": [
+                        "datedesc"
+                    ],
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "return_format": "value",
+                    "ajax": 0,
+                    "placeholder": ""
+                }
+            ]
         },
         {
             "key": "field_5f0e1c6c81bc1",
@@ -230,33 +324,6 @@
             ]
         },
         {
-            "key": "field_5f0e1e56ad663",
-            "label": "Post Type",
-            "name": "auto_post_type",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_5f0e1c2081bc0",
-                        "operator": "==",
-                        "value": "auto"
-                    }
-                ]
-            ],
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
             "key": "field_5f0e1ec1ad665",
             "label": "Style",
             "name": "",
@@ -287,10 +354,12 @@
             },
             "choices": {
                 "default": "Default",
-                "center": "Centered",
+                "center": "Center",
                 "split": "Split (Column direction only)"
             },
-            "default_value": [],
+            "default_value": [
+                "default"
+            ],
             "allow_null": 0,
             "multiple": 0,
             "ui": 0,
@@ -303,7 +372,7 @@
             "label": "Direction",
             "name": "style_direction",
             "type": "select",
-            "instructions": "row : Row\r\ncolumn : Column",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -311,8 +380,13 @@
                 "class": "",
                 "id": ""
             },
-            "choices": [],
-            "default_value": [],
+            "choices": {
+                "row": "Row",
+                "column": "Column"
+            },
+            "default_value": [
+                "row"
+            ],
             "allow_null": 0,
             "multiple": 0,
             "ui": 0,
@@ -338,5 +412,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1594761473
+    "modified": 1594894775
 }

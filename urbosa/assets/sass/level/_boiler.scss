@@ -41,33 +41,23 @@
 .slick-sliders{ width:100%; height: 100%; position: relative; }
   .slick-sliders >div,.slick-sliders >div>div {  height: 100%; z-index: 1; outline: none;}
   .slick-sliders .slick-arrow{font-size: 2rem;color: white; cursor: pointer; position: absolute; top: calc(50% - 1em); display: block; z-index: 2;}
-  .slick-sliders.slick-dotted .slick-arrow{
-    top: calc(50% - 25px);
-    height: calc(2vw + 1rem);
-    width: calc(2vw + 1rem);
-    line-height: 1rem;
-  }
-  .slick-sliders.slick-dotted span.slick-arrow{
-    font-size: calc(2vw + 2rem);
-  }
-  .slick-sliders.slick-dotted span.slick-prev{
-    top: calc(50% - 27px);
-    
-  }
-    .slick-sliders .slick-nav-prev,
-    .slick-sliders .slick-prev
-    { left: 1rem;  right: auto; transform: rotate(180deg);}
+  .slick-sliders.slick-dotted .slick-arrow{ top: calc(50% - 25px); height: calc(2vw + 1rem); width: calc(2vw + 1rem); line-height: 1rem; }
+  .slick-sliders.slick-dotted span.slick-arrow{ font-size: calc(2vw + 2rem); }
+  .slick-sliders.slick-dotted span.slick-prev{ top: calc(50% - 27px); }
+  .slick-sliders .slick-nav-prev,
+  .slick-sliders .slick-prev
+  { left: 1rem;  right: auto; transform: rotate(180deg);}
 
-    .slick-sliders .slick-nav-next, 
-    .slick-sliders .slick-next{ 
-      left: auto; right: 1rem;
-    }
-    .slick-sliders .slick-dots{ height: 25px; margin: 0; padding: 0; list-style: none; display: flex; width: 100%; text-align: center; justify-content: center; align-items: center;}
-    .slick-sliders .slick-dots li{ display: inline-block; overflow: hidden; width: 10px; height: 10px; border-radius: 50%; margin: 0 .5em;       }
-    .slick-sliders .slick-dots button{ border: none; outline: none; cursor: pointer; text-indent: 999%;}
-    .slick-sliders .slick-dots li button{ background-color: #bbb;}
-    .slick-sliders .slick-dots li.slick-active button{ background-color: #aaa;}
-    .slick-sliders .slick-dots button:hover{ background-color: #aaa;}
+  .slick-sliders .slick-nav-next, 
+  .slick-sliders .slick-next{ 
+    left: auto; right: 1rem;
+  }
+  .slick-sliders .slick-dots{ height: 25px; margin: 0; padding: 0; list-style: none; display: flex; width: 100%; text-align: center; justify-content: center; align-items: center;}
+  .slick-sliders .slick-dots li{ display: inline-block; overflow: hidden; width: 10px; height: 10px; border-radius: 50%; margin: 0 .5em;       }
+  .slick-sliders .slick-dots button{ border: none; outline: none; cursor: pointer; text-indent: 999%;}
+  .slick-sliders .slick-dots li button{ background-color: #bbb; line-height: initial; display: block;}
+  .slick-sliders .slick-dots li.slick-active button{ background-color: #aaa;}
+  .slick-sliders .slick-dots button:hover{ background-color: #aaa;}
 
 /* animated underline  */
   a.urbosa.underline{  display: inline-block;  position: relative; text-decoration: none; padding-bottom: .5em; }

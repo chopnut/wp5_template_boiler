@@ -414,7 +414,7 @@ if(is_array($slider_feature)){
         initProgressive('<?=$theme_slider_id?>');
         <?php
 
-      }else{
+      }else if(!is_admin()){
         ?>
         initProgressive();
         <?php

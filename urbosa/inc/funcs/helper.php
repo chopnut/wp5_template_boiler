@@ -48,7 +48,16 @@ if(!function_exists('getPosts')){
    * @param  mixed $order
    * @return void
    */
-  function getPosts( $post_type='post',  $slug='', $acfFields = array(),  $categories = array(),  $perPage = -1,  $offset = 0, $metaArray = array(),  $orderby = 'menu_order',  $order = 'DESC')
+  function getPosts( 
+    $post_type='post',  
+    $slug='', 
+    $acfFields = array(),  
+    $categories = array(),  
+    $perPage = -1,  
+    $offset = 0, 
+    $metaArray = array(),  
+    $orderby = 'menu_order',  
+    $order = 'DESC')
   {
     $args = array(
       'post_type' => $post_type,
