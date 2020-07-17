@@ -254,7 +254,7 @@
                 ]
             ],
             "wrapper": {
-                "width": "",
+                "width": "100",
                 "class": "",
                 "id": ""
             },
@@ -491,6 +491,27 @@
             "return_format": "value",
             "ajax": 0,
             "placeholder": ""
+        },
+        {
+            "key": "field_5f1206dbb40b1",
+            "label": "Word Limit",
+            "name": "words_limit",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 25,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
         }
     ],
     "location": [
@@ -510,5 +531,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1594928570
+    "modified": 1595017445
 }

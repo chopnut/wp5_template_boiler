@@ -10,7 +10,54 @@ if( !empty($block['align']) ) {
     $className .= ' align' . $block['align'];
 }
 //--------------------------------------------------------------------------
+//    Normalise posts
 
+if(!function_exists('cb_normalise_posts')){
+  function cb_normalise_posts($posts){
+    $is_progressive = function_exists('');
+    $tmp = [];
+    foreach($posts as $post){
+      $type = $post['object_type'];
+      $ctaPost = $post['object_cta'];
+      switch($type){
+        case 'cta':
+          $data = [
+            'post_title' => $ctaPost['cta_title'],
+            'post_excerpt' => $ctaPost['cta_description'],
+            'gateway_image'=> $ctaPost['cta_image'],
+            'featured_image' => array(
+              'normal'=> $ctaPost['cta_image']['sizes']['large'],
+              'progressive' => ($ctaPost['cta_image'])?$ctaPost['cta_image']['sizes']['progressive_landscape']:'',
+              'alt' => ($ctaPost['cta_image'])?$ctaPost['cta_image']['alt']:'',
+            
+            ),
+            'link' => $ctaPost['cta_link'],
+            'post_date' => ''
+          ];
+          $tmp[]= $data;
+        break;
+        default: 
+          $thePost = $post['object_post'];
+          $alt = '';
+          $data = [
+            'post_title' =>   $thePost->post_title,
+            'post_excerpt' => $thePost->post_excerpt,
+            'gateway_image'=> get_field('gateway_image', $thePost->ID),
+            'featured_image' => array(
+              'normal'=> getFeaturedImage($thePost->ID,'large',$alt),
+              'progressive' => (function_exists('urbosa_progressive')? getFeaturedImage($thePost->ID ,'progressive_landscape') :''),
+              'alt' => $alt
+            
+            ),
+            'link' => get_permalink($thePost)
+          ];
+          $tmp[]= $data;
+      }
+    }
+    return $tmp;
+  }
+}
+//--------------------------------------------------------------------------
 $repeaterType = get_field('repeater_type');
 
 $manual       = get_field('manual_objects');
@@ -75,6 +122,8 @@ $autoOption   = get_field('auto_post_options');
       );
       debug($res['posts']);
     }else { // manual
+      $posts = cb_normalise_posts($manual);
+      debug($manual);
 
     }
 

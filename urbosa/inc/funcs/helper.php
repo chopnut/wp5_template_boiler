@@ -114,9 +114,11 @@ if(!function_exists('getPosts')){
         }
       }
       if($withFeaturedImage){
+        $alt = '';
         $featImage = array(
-          'normal' => getFeaturedImage($thisID,'large'),
-          'progressive' => (function_exists('urbosa_progressive')? getFeaturedImage($thisID,'progressive_landscape') :'')
+          'normal' => getFeaturedImage($thisID,'large',$alt),
+          'progressive' => (function_exists('urbosa_progressive')? getFeaturedImage($thisID,'progressive_landscape') :''),
+          'alt' => $alt
         );
         $data['featured_image'] = $featImage;
       }
@@ -388,14 +390,19 @@ if(!function_exists('getFeaturedImage')){
    * @param  mixed $size eg: 'thumbnail','medium','large','full'
    * @return string
    */
-  function getFeaturedImage($postID=null, $size='medium'){
+  function getFeaturedImage($postID=null, $size='medium', &$alt=NULL){
     $pID = 0;
     if($postID){
       $pID = $postID;
     } else {
       $pID = get_the_ID();
     }
-    $url = wp_get_attachment_image_src( get_post_thumbnail_id( $pID), $size );
+    
+    $thumbID = get_post_thumbnail_id( $pID);
+    $alt = get_post_meta($thumbID, '_wp_attachment_image_alt', true); 
+    $url = wp_get_attachment_image_src( $thumbID, $size );
+
+    if($alt!==NULL) $alt = $alt;
     if(is_array($url) && count($url)>0){
       return $url[0];
     }
