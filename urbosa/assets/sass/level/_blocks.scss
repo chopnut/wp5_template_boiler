@@ -4,6 +4,8 @@
 
 
 .urbosa-block{
+  min-height: 300px;
+  
   &.cb_content_panel{
     &::before{ padding-bottom: 20%;}
     /* content-holder */

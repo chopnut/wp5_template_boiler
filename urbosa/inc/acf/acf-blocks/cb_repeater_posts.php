@@ -14,16 +14,20 @@ if( !empty($block['align']) ) {
 
 if(!function_exists('cb_normalise_posts')){
   function cb_normalise_posts($posts){
-    $is_progressive = function_exists('');
+    $is_progressive = function_exists('urbosa_progressive');
     $tmp = [];
     foreach($posts as $post){
-      $type = $post['object_type'];
-      $ctaPost = $post['object_cta'];
+      $type='post';
+      if(isset($post['object_type']) && $post['object_type']== 'cta'){
+        $type = 'cta';
+        $ctaPost = $post['object_cta'];
+      }
+
       switch($type){
         case 'cta':
           $data = [
-            'post_title' => $ctaPost['cta_title'],
-            'post_excerpt' => $ctaPost['cta_description'],
+            'title' => $ctaPost['cta_title'],
+            'excerpt' => $ctaPost['cta_description'],
             'gateway_image'=> $ctaPost['cta_image'],
             'featured_image' => array(
               'normal'=> $ctaPost['cta_image']['sizes']['large'],
@@ -32,24 +36,45 @@ if(!function_exists('cb_normalise_posts')){
             
             ),
             'link' => $ctaPost['cta_link'],
-            'post_date' => ''
+            'date' => ''
           ];
           $tmp[]= $data;
         break;
         default: 
-          $thePost = $post['object_post'];
+          $theID = $theTitle = $theExcerpt = $theDate = '' ;
           $alt = '';
+
+          if(isset($post['object_type']) && $post['object_type']== 'post'){
+            $thePost = $post['object_post'];
+            $theID = $thePost->ID; 
+            $theTitle = $thePost->post_title;
+            $theExcerpt = $thePost->post_excerpt;
+            $theDate = $thePost->post_date;
+
+          }else{
+
+            $theID = $post['ID']; 
+            $theTitle = $post['post_title'];
+            $theExcerpt = $post['post_excerpt']; 
+            $theDate = $post['post_date'];
+
+          }
           $data = [
-            'post_title' =>   $thePost->post_title,
-            'post_excerpt' => $thePost->post_excerpt,
-            'gateway_image'=> get_field('gateway_image', $thePost->ID),
+            'title' =>   $theTitle,
+            'excerpt' => $theExcerpt,
+            'gateway_image'=> get_field('gateway_image', $theID),
             'featured_image' => array(
-              'normal'=> getFeaturedImage($thePost->ID,'large',$alt),
-              'progressive' => (function_exists('urbosa_progressive')? getFeaturedImage($thePost->ID ,'progressive_landscape') :''),
+              'normal'=> getFeaturedImage($theID,'large',$alt),
+              'progressive' => ($is_progressive? getFeaturedImage($theID ,'progressive_landscape') :''),
               'alt' => $alt
             
             ),
-            'link' => get_permalink($thePost)
+            'link' => array(
+              'title'=> $theTitle,
+              'url'=> get_permalink($theID),
+              'target'=> '_self'
+            ),
+            'date' =>  $theDate
           ];
           $tmp[]= $data;
       }
@@ -59,9 +84,7 @@ if(!function_exists('cb_normalise_posts')){
 }
 //--------------------------------------------------------------------------
 $repeaterType = get_field('repeater_type');
-
 $manual       = get_field('manual_objects');
-$autoOption   = get_field('auto_post_options');
 
 ?>
 <div class="urbosa-block <?=$className?>">
@@ -69,6 +92,8 @@ $autoOption   = get_field('auto_post_options');
     $posts =[];
 
     if($repeaterType == 'auto'){ 
+      $autoOption     = get_field('auto_post_options');
+
       // default
       $metaArray= [];
       $orderBy = 'date';
@@ -77,14 +102,13 @@ $autoOption   = get_field('auto_post_options');
       $taxonomies = [];
 
       $postType = get_field('auto_post_type');
-      $taxonomy = get_field('auto_taxonomy');
-      $count    = get_field('auto_display_count');
-      $orderBy  = get_field('auto_order_by');
+      $count    = $autoOption['auto_display_count'];
+      $orderBy  = $autoOption['auto_order_by'];
+      $catOption = $autoOption['auto_cat_option'];
 
-      $catOption = get_field('auto_cat_option');
-      $catType   = get_field('auto_cat_type');
-      $autoCat   = get_field('auto_categories');
-      $autoTax   = get_field('auto_taxonomies');
+      $catType   = $catOption['auto_cat_type'];
+      $autoCat   = $catOption['auto_categories'];
+      $autoTax   = $catOption['auto_taxonomies'];
 
       if($catType == 'category' && !empty($autoCat)){
         $categories = array_map('trim', explode(',', $autoCat));
@@ -120,16 +144,21 @@ $autoOption   = get_field('auto_post_options');
         $orderBy, 
         $order
       );
-      debug($res['posts']);
+      
+      $posts = cb_normalise_posts($res['posts']);
+
     }else { // manual
       $posts = cb_normalise_posts($manual);
-      debug($manual);
 
     }
-
-    $styleType = get_field('style_type');
-    
     $styleDirection = get_field('style_direction');
+    $columns        = get_field('columns');
+    $wordsLimit     = get_field('words_limit');
+    $styleType      = get_field('style_type');
+
+    debug($styleType);
+    debug($styleDirection);
+
 
   ?>
   Urbosa repeater posts

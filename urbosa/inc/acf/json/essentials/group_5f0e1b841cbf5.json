@@ -512,6 +512,35 @@
             "min": "",
             "max": "",
             "step": ""
+        },
+        {
+            "key": "field_5f14b0a0eaa57",
+            "label": "Columns",
+            "name": "columns",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5f0e1ef8ad666",
+                        "operator": "==",
+                        "value": "column"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 3,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
         }
     ],
     "location": [
@@ -531,5 +560,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1595017445
+    "modified": 1595191499
 }
