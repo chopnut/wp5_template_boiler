@@ -495,7 +495,7 @@
         {
             "key": "field_5f1206dbb40b1",
             "label": "Word Limit",
-            "name": "words_limit",
+            "name": "style_words_limit",
             "type": "number",
             "instructions": "",
             "required": 0,
@@ -516,7 +516,7 @@
         {
             "key": "field_5f14b0a0eaa57",
             "label": "Columns",
-            "name": "columns",
+            "name": "style_columns",
             "type": "number",
             "instructions": "",
             "required": 0,
@@ -525,7 +525,7 @@
                     {
                         "field": "field_5f0e1ef8ad666",
                         "operator": "==",
-                        "value": "column"
+                        "value": "row"
                     }
                 ]
             ],
@@ -541,6 +541,38 @@
             "min": "",
             "max": "",
             "step": ""
+        },
+        {
+            "key": "field_5f161103732c4",
+            "label": "Split Style Mode",
+            "name": "style_split_mode",
+            "type": "radio",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5f0e1f52ad667",
+                        "operator": "==",
+                        "value": "split"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "alternate": "Alternate"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "default",
+            "layout": "horizontal",
+            "return_format": "value",
+            "save_other_choice": 0
         }
     ],
     "location": [
@@ -560,5 +592,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1595191499
+    "modified": 1595282043
 }

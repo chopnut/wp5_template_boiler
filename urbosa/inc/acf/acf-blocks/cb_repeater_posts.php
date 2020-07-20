@@ -159,25 +159,56 @@ $manual       = get_field('manual_objects');
 
     }
     $styleDirection = get_field('style_direction');
-    $columns        = get_field('columns');
-    $wordsLimit     = get_field('words_limit');
+    $columns        = get_field('style_columns');
+    $wordsLimit     = get_field('style_words_limit');
     $styleType      = get_field('style_type');
+    $styleSplitMode = get_field('style_split_mode');
 
     if(!empty($posts)){
       ?>
+
       <div class="columns is-vcentered is-gapless is-multiline">
+
       <?php
-        for($n=0; $n < count($posts); $n++){
-          $post = $posts[$n];
-          $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
-          ?>
-            <div class="column is-6">
-              <?=$excerpt?>
+
+        if($styleDirection=='column' && $styleType='split'){
+
+          for($n=0; $n < count($posts); $n++){
+            $post = $posts[$n];
+            $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
+            
+            ?>
+            <div class="column is-12">
+
+              <?=$excerpt?>  
             </div>
+            <?php
+          }
+
+        }else{
+
+          ?>
+
           <?php
+            for($n=0; $n < count($posts); $n++){
+              $post = $posts[$n];
+              $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
+              ?>
+                <div class="column">
+                  <?=$excerpt?>
+                </div>
+              <?php
+            }
+          ?>
+
+          <?php
+
         }
+
       ?>
+
       </div>
+
       <?php
     }
   ?>
