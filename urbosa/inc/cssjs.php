@@ -9,7 +9,6 @@ function theme_setup()
 {
   $suffix = get_theme_suffix();
 
-  
   wp_enqueue_script('lib', get_template_directory_uri() . "/assets/dist/js/bundle.js", array(), null, false);  
   wp_enqueue_script('blocks', get_template_directory_uri() . "/assets/js/blocks.js$suffix" , array(), null, true);
   wp_enqueue_script('custom', get_template_directory_uri() . "/assets/js/custom.js$suffix" , array('lib'), null, true);       
@@ -18,7 +17,7 @@ function theme_setup()
   wp_enqueue_style('main', get_template_directory_uri() . "/assets/dist/css/layout.css$suffix");
   
   add_feature(array('parallax','font-awesome'));
-  // add_feature('debug');
+  add_feature('debug');
 
   // local object
   wp_localize_script('custom', 'websiteData', array( 'is_search' => is_search()));
@@ -28,9 +27,9 @@ function load_admin_style()
 {
   $suffix = get_theme_suffix();
 
-  wp_enqueue_style('admin-template', get_template_directory_uri() . "/assets/dist/css/template.css$suffix" , array(), null, false); // This holds resources/fonts/grids/theme/colors
-  wp_enqueue_style('admin-blocks', get_template_directory_uri() . "/assets/dist/css/blocks.css$suffix" , array(), null, false);
-  wp_enqueue_style('admin-style', get_template_directory_uri() . "/assets/dist/css/admin.css$suffix" , array(), null,false);
+  wp_enqueue_style ('admin-template', get_template_directory_uri() . "/assets/dist/css/template.css$suffix" , array(), null, false); // This holds resources/fonts/grids/theme/colors
+  wp_enqueue_style ('admin-blocks', get_template_directory_uri() . "/assets/dist/css/blocks.css$suffix" , array(), null, false);
+  wp_enqueue_style ('admin-style', get_template_directory_uri() . "/assets/dist/css/admin.css$suffix" , array(), null,false);
   wp_enqueue_script('admin-blocks', get_template_directory_uri() . "/assets/js/blocks.js$suffix" , array('jquery'), null, true);
   wp_enqueue_script('admin-helper', get_template_directory_uri() . "/assets/lib/helper.js$suffix" , array('jquery'), null, true);
   wp_enqueue_script('admin-js', get_template_directory_uri() . "/assets/js/admin.js$suffix" , array('jquery'), null, true);

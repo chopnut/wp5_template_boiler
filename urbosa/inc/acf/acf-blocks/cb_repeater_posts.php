@@ -41,7 +41,7 @@ if(!function_exists('cb_normalise_posts')){
           $tmp[]= $data;
         break;
         default: 
-          $theID = $theTitle = $theExcerpt = $theDate = '' ;
+          $theID = $theTitle = $theExcerpt = $theDate =  $theContent = '' ;
           $alt = '';
 
           if(isset($post['object_type']) && $post['object_type']== 'post'){
@@ -50,6 +50,7 @@ if(!function_exists('cb_normalise_posts')){
             $theTitle = $thePost->post_title;
             $theExcerpt = $thePost->post_excerpt;
             $theDate = $thePost->post_date;
+            $theContent = $thePost->post_content;
 
           }else{
 
@@ -57,8 +58,14 @@ if(!function_exists('cb_normalise_posts')){
             $theTitle = $post['post_title'];
             $theExcerpt = $post['post_excerpt']; 
             $theDate = $post['post_date'];
+            $theContent = $post['post_content'];
 
           }
+
+          if(empty($theExcerpt)){
+            $theExcerpt = $theContent;
+          }
+
           $data = [
             'title' =>   $theTitle,
             'excerpt' => $theExcerpt,
@@ -156,10 +163,22 @@ $manual       = get_field('manual_objects');
     $wordsLimit     = get_field('words_limit');
     $styleType      = get_field('style_type');
 
-    debug($styleType);
-    debug($styleDirection);
-
-
+    if(!empty($posts)){
+      ?>
+      <div class="columns is-vcentered is-gapless is-multiline">
+      <?php
+        for($n=0; $n < count($posts); $n++){
+          $post = $posts[$n];
+          $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
+          ?>
+            <div class="column is-6">
+              <?=$excerpt?>
+            </div>
+          <?php
+        }
+      ?>
+      </div>
+      <?php
+    }
   ?>
-  Urbosa repeater posts
 </div>
