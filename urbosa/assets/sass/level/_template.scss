@@ -36,3 +36,8 @@ main{
   >.alignfull { max-width: 100%;}
   >.alignwide { max-width: 80%;}
 }
+@media (max-width: 768px){
+  main{
+    >.alignwide { max-width: 100%;}
+  }
+}

@@ -5,7 +5,7 @@
 
 .urbosa-block{
   min-height: 300px;
-  
+
   &.cb_content_panel{
     &::before{ padding-bottom: 20%;}
     /* content-holder */
@@ -144,6 +144,22 @@
       align-items: center;
       justify-content: center;
     }
+  }
+
+  &.cb_repeater_posts{
+    /* style */
+    >.split{
+      .image{
+        width: 80%;
+        margin: 0 auto;
+      }
+      &.alternate{
+        >.column:nth-child(even){
+          flex-direction: row-reverse;
+        }
+      }
+    }
+
   }
 }
 

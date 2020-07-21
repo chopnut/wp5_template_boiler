@@ -654,7 +654,7 @@ function initProgressive(className='progressive'){
     <img class="progressive parallax" src="{encodedLowImage}" data-high="{highImageURL}" />
   */
 
- $elements = $('.'+className);
+ $elements = $('.'+className+':not(.enhanced)');
   for (let n = 0; n < $elements.length; n++) {
     // Load low-res
     initProgressiveSingle($('.'+ className)[n])
@@ -705,7 +705,7 @@ function initProgressiveSingle(jEl){
 }
 </script>
 <style>
-.progressive { background-size: cover; transform: translateZ(0); transition: filter .5s ease-in; filter: blur(45px);}
+.progressive { background-repeat: no-repeat; background-size: cover; transform: translateZ(0); transition: filter .5s ease-in; filter: blur(45px);}
 .progressive.enhanced{ filter: blur(0px); }
 </style>
     <?php

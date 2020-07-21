@@ -25,15 +25,25 @@ if(!function_exists('cb_normalise_posts')){
 
       switch($type){
         case 'cta':
+          $lowImage = $highImage = $alt = '';
+          $ctaImage = $ctaPost['cta_image'];
+          if($ctaImage){
+
+            $lowImage = $ctaImage['sizes']['progressive_landscape'];
+            $highImage = $ctaImage['sizes']['large'];
+            $alt = $ctaImage['alt'];
+
+            if(!$is_progressive){
+              $lowImage = $highImage;
+            }
+          }
           $data = [
             'title' => $ctaPost['cta_title'],
             'excerpt' => $ctaPost['cta_description'],
-            'gateway_image'=> $ctaPost['cta_image'],
-            'featured_image' => array(
-              'normal'=> $ctaPost['cta_image']['sizes']['large'],
-              'progressive' => ($ctaPost['cta_image'])?$ctaPost['cta_image']['sizes']['progressive_landscape']:'',
-              'alt' => ($ctaPost['cta_image'])?$ctaPost['cta_image']['alt']:'',
-            
+            'image' => array(
+              'high'=> $highImage,
+              'low' => $lowImage,
+              'alt' => $alt,
             ),
             'link' => $ctaPost['cta_link'],
             'date' => ''
@@ -42,7 +52,7 @@ if(!function_exists('cb_normalise_posts')){
         break;
         default: 
           $theID = $theTitle = $theExcerpt = $theDate =  $theContent = '' ;
-          $alt = '';
+
 
           if(isset($post['object_type']) && $post['object_type']== 'post'){
             $thePost = $post['object_post'];
@@ -66,15 +76,30 @@ if(!function_exists('cb_normalise_posts')){
             $theExcerpt = $theContent;
           }
 
+          $lowImage = $highImage = $alt = '';
+          $gatewayImage = get_field('gateway_image', $theID);
+
+          if($gatewayImage){
+
+            $lowImage = $gatewayImage['sizes']['progressive_landscape'];
+            $highImage = $gatewayImage['sizes']['large'];
+            $alt = $gatewayImage['alt'];
+
+          }else{
+            $lowImage = getFeaturedImage($theID,'progressive_landscape');
+            $highImage = getFeaturedImage($theID,'large',$alt);
+          }
+
+          if(!$is_progressive){
+            $lowImage = $highImage;
+          }
           $data = [
             'title' =>   $theTitle,
             'excerpt' => $theExcerpt,
-            'gateway_image'=> get_field('gateway_image', $theID),
-            'featured_image' => array(
-              'normal'=> getFeaturedImage($theID,'large',$alt),
-              'progressive' => ($is_progressive? getFeaturedImage($theID ,'progressive_landscape') :''),
+            'image' => array(
+              'high'=> $highImage,
+              'low' => $lowImage,
               'alt' => $alt
-            
             ),
             'link' => array(
               'title'=> $theTitle,
@@ -92,6 +117,7 @@ if(!function_exists('cb_normalise_posts')){
 //--------------------------------------------------------------------------
 $repeaterType = get_field('repeater_type');
 $manual       = get_field('manual_objects');
+$is_progressive = function_exists('urbosa_progressive');
 
 ?>
 <div class="urbosa-block <?=$className?>">
@@ -167,7 +193,7 @@ $manual       = get_field('manual_objects');
     if(!empty($posts)){
       ?>
 
-      <div class="columns is-vcentered is-gapless is-multiline">
+      <div class="columns is-vcentered is-gapless is-multiline <?=$styleType?> <?=$styleSplitMode?>">
 
       <?php
 
@@ -176,11 +202,24 @@ $manual       = get_field('manual_objects');
           for($n=0; $n < count($posts); $n++){
             $post = $posts[$n];
             $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
-            
-            ?>
-            <div class="column is-12">
+            $title = $post['title'];
 
-              <?=$excerpt?>  
+            $low = $post['image']['low'];
+            $high = $post['image']['high'];
+            if($low && $is_progressive){
+              $low = encodeDataImage($low);
+            }
+            ?>
+            <div class="column is-12 columns is-vcentered ">
+              <div class="column pr-0 pl-0">
+                <figure>
+                  <div class="image ratio square progressive <?=$block['id']?>" data-low="<?=$low?>" data-high="<?=$high?>" style="background-image:url(<?=$low?>)"></div>
+                </figure>
+              </div>  
+              <div class="column pr-0 pl-0">
+                <div class="title"><?=$title?></div>
+                <div class="desc"><?=$excerpt?></div>
+              </div>     
             </div>
             <?php
           }
@@ -213,3 +252,8 @@ $manual       = get_field('manual_objects');
     }
   ?>
 </div>
+<script>
+  $(document).ready(function(){
+    initProgressive('<?=$block['id']?>')
+  })
+</script>
