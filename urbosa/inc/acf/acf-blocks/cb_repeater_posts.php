@@ -191,13 +191,14 @@ $is_progressive = function_exists('urbosa_progressive');
     $styleSplitMode = get_field('style_split_mode');
 
     if(!empty($posts)){
+
       ?>
 
       <div class="columns is-vcentered is-gapless is-multiline <?=$styleType?> <?=$styleSplitMode?>">
 
       <?php
 
-        if($styleDirection=='column' && $styleType='split'){
+        if($styleDirection=='column' && $styleType=='split'){
 
           for($n=0; $n < count($posts); $n++){
             $post = $posts[$n];
@@ -209,16 +210,19 @@ $is_progressive = function_exists('urbosa_progressive');
             if($low && $is_progressive){
               $low = encodeDataImage($low);
             }
+            $link = $post['link'];
             ?>
             <div class="column is-12 columns is-vcentered ">
               <div class="column pr-0 pl-0">
                 <figure>
-                  <div class="image ratio square progressive <?=$block['id']?>" data-low="<?=$low?>" data-high="<?=$high?>" style="background-image:url(<?=$low?>)"></div>
+                  <a href="<?=$link['url']?>" target="<?=$link['target']?>">
+                    <div class="image ratio square progressive <?=$block['id']?>" data-low="<?=$low?>" data-high="<?=$high?>" style="background-image:url(<?=$low?>)"></div>
+                  </a>
                 </figure>
               </div>  
               <div class="column pr-0 pl-0">
                 <div class="title"><?=$title?></div>
-                <div class="desc"><?=$excerpt?></div>
+                <div class="desc pt-4 pb-4"><?=$excerpt?></div>
               </div>     
             </div>
             <?php
@@ -229,12 +233,34 @@ $is_progressive = function_exists('urbosa_progressive');
           ?>
 
           <?php
+            $columnClass = 'is-12';
+            if($styleDirection=='row'){
+              $columnClass = 'is-'.$columns;
+            }
+
             for($n=0; $n < count($posts); $n++){
+
               $post = $posts[$n];
               $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
+              $title = $post['title'];
+
+              $image = $post['image'];
+              $high = $image['high'];
+              $alt  = $image['alt'];
+
+              $link = $post['link'];
+
               ?>
-                <div class="column">
-                  <?=$excerpt?>
+                <div class="column <?=$columnClass?>">
+                  <div class="card">
+                    <figure class="ratio wide force">
+                      <a href="<?=$link['url']?>" target="<?=$link['target']?>">
+                        <img class="urbosa-lazy-load" data-src="<?=$high?>" alt="<?=$alt?>"/>
+                      </a>
+                    </figure>
+                    <div class="title pt-4"><a href=""><?=$title?></a></div>
+                    <div class="desc pb-4"><?=$excerpt?></div>
+                  </div>
                 </div>
               <?php
             }

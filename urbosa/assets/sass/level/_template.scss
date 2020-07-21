@@ -34,7 +34,7 @@
 }
 main{
   >.alignfull { max-width: 100%;}
-  >.alignwide { max-width: 80%;}
+  >.alignwide { max-width: $contentCorridorMaxWidth;}
 }
 @media (max-width: 768px){
   main{

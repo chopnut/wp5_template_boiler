@@ -17,7 +17,7 @@ function theme_setup()
   wp_enqueue_style('main', get_template_directory_uri() . "/assets/dist/css/layout.css$suffix");
   
   add_feature(array('parallax','font-awesome'));
-  add_feature('debug');
+  // add_feature('debug');
 
   // local object
   wp_localize_script('custom', 'websiteData', array( 'is_search' => is_search()));

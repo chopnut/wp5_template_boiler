@@ -355,7 +355,8 @@ window.initLoginPage = function () {
 }
 
 window.initLazyLoadImage = function () {
-  if ($.visibility) {
+ 
+  if ($.fn.visibility) {
     $('img.urbosa-lazy-load').visibility({
       type: 'image',
       transition: 'fade in',

@@ -148,6 +148,9 @@
 
   &.cb_repeater_posts{
     /* style */
+    .title{font-weight: bold;font-size: 1.5rem;}
+    a,img{ display: block; }
+    img { width:100%; height: 100%; object-fit: cover;}
     >.split{
       .image{
         width: 80%;
@@ -160,6 +163,9 @@
       }
     }
 
+    >.default{
+
+    }
   }
 }
 
