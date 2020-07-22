@@ -93,13 +93,15 @@ if(!function_exists('cb_normalise_posts')){
           if(!$is_progressive){
             $lowImage = $highImage;
           }
+
+
           $data = [
             'title' =>   $theTitle,
             'excerpt' => $theExcerpt,
             'image' => array(
               'high'=> $highImage,
               'low' => $lowImage,
-              'alt' => $alt
+              'alt' => $alt,
             ),
             'link' => array(
               'title'=> $theTitle,
@@ -118,6 +120,7 @@ if(!function_exists('cb_normalise_posts')){
 $repeaterType = get_field('repeater_type');
 $manual       = get_field('manual_objects');
 $is_progressive = function_exists('urbosa_progressive');
+$placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
 
 ?>
 <div class="urbosa-block <?=$className?>">
@@ -199,30 +202,38 @@ $is_progressive = function_exists('urbosa_progressive');
       <?php
 
         if($styleDirection=='column' && $styleType=='split'){
-
+          
           for($n=0; $n < count($posts); $n++){
+
             $post = $posts[$n];
             $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
             $title = $post['title'];
 
             $low = $post['image']['low'];
             $high = $post['image']['high'];
+            $placeHolderImage = $placeholder;
+
             if($low && $is_progressive){
               $low = encodeDataImage($low);
             }
+            if($low){
+              $placeHolderImage = $low;
+            }
+        
             $link = $post['link'];
+            
             ?>
             <div class="column is-12 columns is-vcentered ">
-              <div class="column pr-0 pl-0">
+              <div class="column pr-0 pl-0 pt-0 pb-0">
                 <figure>
                   <a href="<?=$link['url']?>" target="<?=$link['target']?>">
-                    <div class="image ratio square progressive <?=$block['id']?>" data-low="<?=$low?>" data-high="<?=$high?>" style="background-image:url(<?=$low?>)"></div>
+                    <div class="image ratio square progressive <?=$block['id']?>" data-low="<?=$low?>" data-high="<?=$high?>" style="background-image:url(<?=$placeHolderImage?>)"></div>
                   </a>
                 </figure>
               </div>  
               <div class="column pr-0 pl-0">
                 <div class="title"><?=$title?></div>
-                <div class="desc pt-4 pb-4"><?=$excerpt?></div>
+                <div class="desc pt-2 pb-4"><?=$excerpt?></div>
               </div>     
             </div>
             <?php
@@ -250,6 +261,9 @@ $is_progressive = function_exists('urbosa_progressive');
 
               $link = $post['link'];
 
+              if(empty($high)){
+                $high = $placeholder;
+              }
               ?>
                 <div class="column <?=$columnClass?>">
                   <div class="card">

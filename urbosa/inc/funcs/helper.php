@@ -678,34 +678,43 @@ function initProgressiveSingle(jEl){
 
  var $el = $(jEl);
     var base64Image = $el.data('low')
+    var high = $el.data('high')
+
     var all = `data:image/svg+xml;base64,${window.btoa(svgblur.replace('REPLACEME', base64Image ))}`
 
-    if($el.prop('tagName')=='IMG'){
-      $el.attr('src',all);
+    if(base64Image!=='' && high!==''){
+
+      if($el.prop('tagName')=='IMG'){
+        $el.attr('src',all);
+      }else{
+        $el.css('background-image','url(' + all + ')');
+      }
+
+      // Load hi-res
+      var imgHigh = new Image();
+  
+      imgHigh.onload = function() {
+
+        if($el.prop('tagName')=='IMG'){
+          $el.attr('src',high);
+        }else{
+          $el.css('background-image',`url(${high})`)
+          
+        }
+        $el.addClass('enhanced')
+        $el.attr('data-low','')
+    
+      };
+      if (high) { imgHigh.src = high; }
+
     }else{
-      $el.css('background-image','url(' + all + ')');
+      $el.addClass('enhanced')
     }
   
-    // Load hi-res
-    var high = $el.data('high')
-    var imgHigh = new Image();
-
-    imgHigh.onload = function() {
-      if($el.prop('tagName')=='IMG'){
-        $el.attr('src',high);
-      }else{
-        $el.css('background-image',`url(${high})`)
-        
-      }
-      $el.addClass('enhanced')
-      $el.attr('data-low','')
-  
-    };
-    if (high) { imgHigh.src = high; }
 }
 </script>
 <style>
-.progressive { background-repeat: no-repeat; background-size: cover; transform: translateZ(0); transition: filter .5s ease-in; filter: blur(45px);}
+.progressive { background-position: center;background-repeat: no-repeat; background-size: cover; transform: translateZ(0); transition: filter .5s ease-in; filter: blur(45px);}
 .progressive.enhanced{ filter: blur(0px); }
 </style>
     <?php
