@@ -19,7 +19,7 @@
   .html5-video-container video{  min-width: 100%;  min-height: 100%;  height: auto; width: auto; top: 50%; left: 50%;  position: absolute;  transform: translateX(-50%) translateY(-50%);}
 
 /* image behave like background */
-.img-bg { position: relative; overflow: hidden; }
+.img-bg { position: relative; overflow: hidden; transition: all .3s ease-in-out;}
   .img-bg.contain img { position: absolute; left:-10000%; right: -10000%;  top: -10000%; bottom: -10000%; margin: auto auto; max-width: 10%; max-height: 10%; -webkit-transform:scale(10); transform: scale(10); }
   .img-bg.cover img { position: absolute; left:-10000%; right: -10000%;  top: -10000%; bottom: -10000%; margin: auto auto; min-width: 1000%; min-height: 1000%; -webkit-transform:scale(0.1); transform: scale(0.1); }
 
@@ -39,7 +39,7 @@
 
 /* for forcing ratio with child position absolute */
 .ratio.force { overflow: hidden; height:0;}
-.ratio.force>*{position: absolute; }
+.ratio.force>*{position: absolute;height: 100%; }
 .ratio.force.wide { padding-bottom: 56.25%; }
 .ratio.force.square { padding-bottom: 100%; }
 .ratio.force.tv { padding-bottom: 75%; }

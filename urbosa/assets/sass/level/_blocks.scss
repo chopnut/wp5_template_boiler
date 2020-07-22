@@ -2,7 +2,12 @@
 @import './fonts';
 @import './mixins';
 
-
+.wp-block-group.wide{
+  >.wp-block-group__inner-container{
+    max-width: $contentCorridorMaxWidth;
+    margin: 0 auto;
+  }
+}
 .urbosa-block{
   min-height: 300px;
 
@@ -164,6 +169,33 @@
       }
       &.default{
         >.column>.column:last-child>*{padding-left: 2rem;}
+      }
+    }
+
+    >.center{
+      .card{
+        position: relative;
+        .title{ 
+          padding-top: 0!important;
+          position: absolute;
+          top: 0;
+          width: 100%;
+          z-index: 99;
+          height: 100%;
+
+          a{
+          display: flex;
+          height: 100%;
+
+            align-items: center;
+            justify-content: center;
+            text-shadow: 1px 1px 1px rgba(0,0,0,.5);
+            color: white;
+          }
+        }
+        .desc{
+          display: none;
+        }
       }
     }
 

@@ -28,7 +28,7 @@ if(!function_exists('cb_normalise_posts')){
           $lowImage = $highImage = $alt = '';
           $ctaImage = $ctaPost['cta_image'];
           if($ctaImage){
-
+            
             $lowImage = $ctaImage['sizes']['progressive_landscape'];
             $highImage = $ctaImage['sizes']['large'];
             $alt = $ctaImage['alt'];
@@ -45,7 +45,11 @@ if(!function_exists('cb_normalise_posts')){
               'low' => $lowImage,
               'alt' => $alt,
             ),
-            'link' => $ctaPost['cta_link'],
+            'link' => ($ctaPost['cta_link']?$ctaPost['cta_link']: array(
+              'url'=>'',
+              'target' => '_self',
+              'title'=> ''
+            )),
             'date' => ''
           ];
           $tmp[]= $data;
@@ -121,13 +125,14 @@ $repeaterType = get_field('repeater_type');
 $manual       = get_field('manual_objects');
 $is_progressive = function_exists('urbosa_progressive');
 $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
-
 ?>
 <div class="urbosa-block <?=$className?>">
   <?php 
     $posts =[];
 
+
     if($repeaterType == 'auto'){ 
+      
       $autoOption     = get_field('auto_post_options');
 
       // default
@@ -195,15 +200,39 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
 
     if(!empty($posts)){
 
+      // Root properties
+      $mainClasses = array();
+      $mainAttr  = '';
+      
+
+      if(
+        $styleType=='default' || 
+        $styleType=='center'  ||
+        ($styleType=='split' && $styleDirection=='row')
+        ){
+          
+        // Do nothing
+        $mainClasses[] = 'mt-0';
+        $mainClasses[] = 'mb-0';
+      }else{
+
+        $mainClasses[] ='is-vcentered';
+        $mainClasses[] ='is-gapless';
+
+      }
+
+      $mainClass = implode(' ', $mainClasses);
+
       ?>
 
-      <div class="columns is-vcentered is-gapless is-multiline <?=$styleType?> <?=$styleSplitMode?>">
+      <div class="columns is-multiline <?=$mainClass?> <?=$styleType?> <?=$styleSplitMode?>" <?=$mainAttr?>>
 
       <?php
 
         if($styleDirection=='column' && $styleType=='split'){
-          
+
           for($n=0; $n < count($posts); $n++){
+
 
             $post = $posts[$n];
             $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
@@ -211,6 +240,7 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
 
             $low = $post['image']['low'];
             $high = $post['image']['high'];
+            $rawLow = $low;
             $placeHolderImage = $placeholder;
 
             if($low && $is_progressive){
@@ -219,15 +249,17 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
             if($low){
               $placeHolderImage = $low;
             }
-        
-            $link = $post['link'];
             
+            
+            $link = $post['link'];
+
             ?>
             <div class="column is-12 columns is-vcentered ">
               <div class="column pr-0 pl-0 pt-0 pb-0">
                 <figure>
                   <a href="<?=$link['url']?>" target="<?=$link['target']?>">
-                    <div class="image ratio square progressive <?=$block['id']?>" data-low="<?=$low?>" data-high="<?=$high?>" style="background-image:url(<?=$placeHolderImage?>)"></div>
+                    <div class="image ratio square progressive <?=$block['id']?>" data-raw-low="<?=$rawLow?>" data-low="<?=$low?>" data-high="<?=$high?>" style="background-image:url(<?=$placeHolderImage?>)">
+                  </div>
                   </a>
                 </figure>
               </div>  
@@ -237,7 +269,9 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
               </div>     
             </div>
             <?php
+
           }
+
 
         }else{
 
@@ -246,7 +280,9 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
           <?php
             $columnClass = 'is-12';
             if($styleDirection=='row'){
-              $columnClass = 'is-'.$columns;
+              
+              $tmpColumn = 12/$columns;
+              $columnClass = 'is-'.$tmpColumn;
             }
 
             for($n=0; $n < count($posts); $n++){
@@ -254,8 +290,8 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
               $post = $posts[$n];
               $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
               $title = $post['title'];
-
               $image = $post['image'];
+              
               $high = $image['high'];
               $alt  = $image['alt'];
 
@@ -264,15 +300,35 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
               if(empty($high)){
                 $high = $placeholder;
               }
+
+              $imgAttr = '';
+              if(is_admin()){
+                $imgAttr  = "src='$high'";
+              }
               ?>
                 <div class="column <?=$columnClass?>">
                   <div class="card">
+                    <?php 
+                      if($styleType=='center'){
+                        ?>
+                       <div class="title pt-4"><a href="<?=$link['url']?>" target="<?=$link['target']?>"><?=$title?></a></div>
+                        <?php
+                      }
+                    ?>
                     <figure class="ratio wide force">
                       <a href="<?=$link['url']?>" target="<?=$link['target']?>">
-                        <img class="urbosa-lazy-load" data-src="<?=$high?>" alt="<?=$alt?>"/>
+                        <div class="img-bg cover">
+                          <img class="urbosa-lazy-load" data-src="<?=$high?>" alt="<?=$alt?>" <?=$imgAttr?>/>
+                        </div>
                       </a>
                     </figure>
-                    <div class="title pt-4"><a href=""><?=$title?></a></div>
+                    <?php 
+                      if($styleType!=='center'){
+                        ?>
+                        <div class="title pt-4"><a href="<?=$link['url']?>" target="<?=$link['target']?>"><?=$title?></a></div>
+                        <?php
+                      }
+                    ?>
                     <div class="desc pb-4"><?=$excerpt?></div>
                   </div>
                 </div>
@@ -292,8 +348,14 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
     }
   ?>
 </div>
-<script>
-  $(document).ready(function(){
-    initProgressive('<?=$block['id']?>')
-  })
-</script>
+<?php 
+  if(!is_admin()){
+    ?>
+    <script>
+      $(document).ready(function(){
+        initProgressive('<?=$block['id']?>')
+      })
+    </script>
+    <?php
+  }
+?>
