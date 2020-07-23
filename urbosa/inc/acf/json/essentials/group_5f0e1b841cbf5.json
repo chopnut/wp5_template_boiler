@@ -220,8 +220,8 @@
                         "id": ""
                     },
                     "choices": {
-                        "datedesc": "Date Latest",
-                        "dateasc": "Date Oldest",
+                        "datedesc": "Latest",
+                        "dateasc": "Oldest",
                         "random": "Random",
                         "menuorder": "Menu Order"
                     },
@@ -592,5 +592,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1595318255
+    "modified": 1595536951
 }

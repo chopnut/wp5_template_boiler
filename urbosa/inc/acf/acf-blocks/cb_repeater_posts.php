@@ -142,7 +142,7 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
       $categories = [];
       $taxonomies = [];
 
-      $postType = get_field('auto_post_type');
+      $postType = $autoOption['auto_post_type'];
       $count    = $autoOption['auto_display_count'];
       $orderBy  = $autoOption['auto_order_by'];
       $catOption = $autoOption['auto_cat_option'];
@@ -172,6 +172,8 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
         break;
 
       }
+
+     
 
       $res = getPosts(
         $postType,
@@ -344,6 +346,12 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
 
       </div>
 
+      <?php
+    } else {
+      ?>
+      <div class="no-posts">
+        <div>No posts/object found.</div>
+      </div>
       <?php
     }
   ?>
