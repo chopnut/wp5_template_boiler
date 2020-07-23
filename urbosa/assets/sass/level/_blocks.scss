@@ -6,6 +6,7 @@
   >.wp-block-group__inner-container{
     max-width: $contentCorridorMaxWidth;
     margin: 0 auto;
+    padding: 0 $globalPadding;
   }
 }
 .urbosa-block{
@@ -201,7 +202,14 @@
 
   }
 }
-
+/* within-content-corridor */
+@media (max-width: $contentCorridorMaxWidth){
+  .wp-block-group.wide{
+    >.wp-block-group__inner-container{
+      padding: 0;
+    }
+  }
+}
 /* desktop */
 @media (min-width: 1025px){}
 /* tablet */
@@ -262,4 +270,5 @@
       }
     }
   }
+
 }
