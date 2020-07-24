@@ -223,13 +223,63 @@
       }
     }
 
-    .no-posts{
-      min-height: 300px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+
+  }
+
+  &.cb_accordion {
+    .item {
+      position: relative;
+      .q,.a .content{ 
+        padding: 1rem 0;
+      }
+      .q{
+        border-bottom: 1px solid grey;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .a{
+        width: 100%;
+        max-height: 0px;
+        overflow: hidden;
+        display: block;
+        transition: all .3s linear;
+        border-bottom: none;
+        opacity: 0;
+      }
     }
+    .icon {
+      height: 20px;
+      width: 20px;
+      display: inline-block;
+      background-image: url('../../img/icons/cross.png');
+      background-position: center;
+      background-size: cover;
+      float: right;
+      transition: all .3s linear;
+      pointer-events: none;
+    }
+    .item:first-child .q{
+      border-top: 1px solid grey;
+      padding-top: .9rem;
+    }
+    .item.active{
+      .icon {
+        transform: rotate(135deg);
+      }
+      .a{
+        max-height: initial;
+        border-bottom: 1px solid grey;
+        opacity: 1;
+      }
+    }
+  }
+  /* common */
+  .no-posts{
+    min-height: 300px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 /* within-content-corridor */

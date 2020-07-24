@@ -49,6 +49,16 @@ if(function_exists('acf_register_block')){
       'icon'	=> 'location',
       'keywords'=> array( 'Theme Google Map' ),
     ));
+    // 5. Accordion
+    acf_register_block(array(
+      'name'=> 'cb_accordion',
+      'title'=> __('Accordion'),
+      'description'=>__('Theme Accordion'),
+      'render_template'=> $acfBlocksLocation.'cb_accordion.php',
+      'category'=> 'urbosa-blocks',
+      'icon'	=> 'list-view',
+      'keywords'=> array( 'Theme Accordion' ),
+    ));
   }
 
   add_action('acf/init', 'register_blocks');
