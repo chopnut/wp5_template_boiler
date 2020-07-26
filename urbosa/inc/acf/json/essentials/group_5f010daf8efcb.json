@@ -103,7 +103,7 @@
         },
         {
             "key": "field_5f0ccc7a5b1ab",
-            "label": "Pages",
+            "label": "Configure",
             "name": "",
             "type": "tab",
             "instructions": "",
@@ -156,6 +156,25 @@
             "multiple": 0,
             "return_format": "object",
             "ui": 1
+        },
+        {
+            "key": "field_5f1def5bad2ec",
+            "label": "Google Map API Key",
+            "name": "google_map_api_key",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         }
     ],
     "location": [
@@ -175,5 +194,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1595371776
+    "modified": 1595797361
 }

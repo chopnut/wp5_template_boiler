@@ -348,3 +348,26 @@ function urbosa_theme_init(){
     }
 }
 
+function urbosa_setup_options(){
+  global $post;
+  // Use template_redirect instead of "init" to run every page load
+  if(!is_admin()){
+
+    if(is_page() || is_single()){
+
+      $post404 = get_field('404_page', 'options');
+
+      if($post404 && $post->ID == $post404->ID){
+
+        add_action('wp_head', 'urbosa_404_do_not_follow', 0);
+
+      }
+    }
+  }
+}
+function urbosa_404_do_not_follow(){
+  ?>
+  <meta name="robots" content="noindex,nofollow" />
+  <?
+}
+add_action( "template_redirect", "urbosa_setup_options" );

@@ -16,7 +16,7 @@ function theme_setup()
   wp_enqueue_style('template', get_template_directory_uri() . "/assets/dist/css/template.css$suffix"); 
   wp_enqueue_style('main', get_template_directory_uri() . "/assets/dist/css/layout.css$suffix");
   
-  add_feature(array('parallax','font-awesome'));
+  add_feature(array('parallax','font-awesome','google-map'));
   // add_feature('debug');
 
   // local object
@@ -26,9 +26,12 @@ add_action('wp_enqueue_scripts', 'theme_setup');
 function load_admin_style()
 {
   $suffix = get_theme_suffix();
+  $screen = get_current_screen();
 
-  wp_enqueue_style ('admin-template', get_template_directory_uri() . "/assets/dist/css/template.css$suffix" , array(), null, false); // This holds resources/fonts/grids/theme/colors
-  wp_enqueue_style ('admin-blocks', get_template_directory_uri() . "/assets/dist/css/blocks.css$suffix" , array(), null, false);
+  if($screen->parent_base=='edit'){
+    wp_enqueue_style ('admin-template', get_template_directory_uri() . "/assets/dist/css/template.css$suffix" , array(), null, false); // This holds resources/fonts/grids/theme/colors
+    wp_enqueue_style ('admin-blocks', get_template_directory_uri() . "/assets/dist/css/blocks.css$suffix" , array(), null, false);
+  }
   wp_enqueue_style ('admin-style', get_template_directory_uri() . "/assets/dist/css/admin.css$suffix" , array(), null,false);
   wp_enqueue_script('admin-blocks', get_template_directory_uri() . "/assets/js/blocks.js$suffix" , array('jquery'), null, true);
   wp_enqueue_script('admin-helper', get_template_directory_uri() . "/assets/lib/helper.js$suffix" , array('jquery'), null, true);

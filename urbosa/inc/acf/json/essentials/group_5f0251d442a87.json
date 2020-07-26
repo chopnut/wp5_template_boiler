@@ -81,25 +81,6 @@
                     "toolbar": "full",
                     "media_upload": 1,
                     "delay": 0
-                },
-                {
-                    "key": "field_5f0251d448327",
-                    "label": "Width",
-                    "name": "width_percentage",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
                 }
             ]
         },
@@ -128,7 +109,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
@@ -144,6 +125,44 @@
             "mime_types": ""
         },
         {
+            "key": "field_5f1bfab26bff5",
+            "label": "Background size",
+            "name": "left_image_background_size",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "initial",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5f1c93dcb8486",
+            "label": "Width",
+            "name": "left_image_width",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "100%",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_5f0251d44d8a4",
             "label": "Left Margin",
             "name": "left_image_margin",
@@ -152,11 +171,11 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
-            "default_value": "-10%",
+            "default_value": "0%",
             "placeholder": "",
             "prepend": "",
             "append": "",
@@ -171,11 +190,11 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
+            "default_value": 0,
             "placeholder": "",
             "prepend": "",
             "append": "",
@@ -190,11 +209,11 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
+            "default_value": 1,
             "placeholder": "",
             "prepend": "",
             "append": "",
@@ -225,7 +244,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
@@ -241,6 +260,44 @@
             "mime_types": ""
         },
         {
+            "key": "field_5f1bfb646bff6",
+            "label": "Background size",
+            "name": "right_image_background_size",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "initial",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5f1c9411b8487",
+            "label": "Width",
+            "name": "right_image_width",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "100%",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
             "key": "field_5f0251d450df6",
             "label": "Right Margin",
             "name": "right_image_margin",
@@ -249,11 +306,11 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
-            "default_value": "-10%",
+            "default_value": "0%",
             "placeholder": "",
             "prepend": "",
             "append": "",
@@ -268,11 +325,11 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
+            "default_value": 0,
             "placeholder": "",
             "prepend": "",
             "append": "",
@@ -287,11 +344,11 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
+            "default_value": 1,
             "placeholder": "",
             "prepend": "",
             "append": "",
@@ -404,5 +461,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1595371797
+    "modified": 1595713459
 }

@@ -331,7 +331,7 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
                         <?php
                       }
                     ?>
-                    <div class="desc pb-4"><?=$excerpt?></div>
+                    <div class="desc pt-4 pb-4"><?=$excerpt?></div>
                   </div>
                 </div>
               <?php

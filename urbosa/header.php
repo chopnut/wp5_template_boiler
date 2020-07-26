@@ -9,6 +9,7 @@
   <?php wp_head(); ?>
 
 </head>
-<body <?php body_class('page-' . $post->post_name); ?>>
+
+<body <?php body_class(!empty($post)?'page-' . $post->post_name:''); ?>>
 
 <main>

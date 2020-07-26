@@ -12,12 +12,16 @@ function get_theme_suffix(){
 }
 function _add_feature($feature, $option=''){
   switch($feature){
-    case 'googlemap':
-        wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key='.$option, array(), null, false);
-        add_filter('acf/fields/google_map/api', function($api) use (&$option){
-            $api['key'] = $option;
-            return $api;
-        });
+    case 'google-map':
+        $option = get_field('google_map_api_key', 'options');
+        if(!empty($option)){
+
+          wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key='.$option, array(), null, false);
+          add_filter('acf/fields/google_map/api', function($api) use (&$option){
+              $api['key'] = $option;
+              return $api;
+          });
+        }
     break;
     case 'parallax':
         wp_enqueue_script('parallax', get_template_directory_uri() . "/assets/lib/simpleParallax.min.js" , array('lib'), null, true);
