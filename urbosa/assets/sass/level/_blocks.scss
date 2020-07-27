@@ -2,7 +2,7 @@
 @import './fonts';
 @import './mixins';
 
-.wp-block-group.corridor{
+.wp-block-group.center{
   >.wp-block-group__inner-container{
     max-width: $contentCorridorMaxWidth;
     margin: 0 auto;
@@ -15,7 +15,7 @@
   &.cb_content_panel{
     max-width: 100%;
     &::before{ padding-bottom: 20%;}
-    &.corridor {
+    &.center {
       max-width: 100%;
       .content-wrapper{ 
         max-width: $contentCorridorMaxWidth;
@@ -298,7 +298,7 @@
 }
 /* within-content-corridor */
 @media (max-width: $contentCorridorMaxWidth){
-  .wp-block-group.corridor{
+  .wp-block-group.center{
     >.wp-block-group__inner-container{
       padding: 0;
     }
