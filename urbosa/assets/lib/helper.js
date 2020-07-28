@@ -209,7 +209,7 @@ window.initSlideOutMenu = function (opt) {
     })
   } else {
     console.log(
-      `Warning: initSlideOutMenu - (${opt.container}) or (${opt.menu}) doesnt exist.`
+      `Warning: SlideOutMenu - (${opt.container}) or (${opt.menu}) dont exist.`
     )
   }
 }
@@ -365,15 +365,22 @@ window.initLazyLoadImage = function () {
     }
 }
 window.initSimpleParallax = function () {
+
   var parallaxClass = 'parallax'
-  if (
-    $('.' + parallaxClass).length > 0 &&
-    typeof simpleParallax === 'function'
-  ) {
-    var image = document.getElementsByClassName(parallaxClass)
-    new simpleParallax(image)
-  } else{
-    console.log('Warning: Parallax is not enabled on this template.')
-  }
+
+  if ($('.' + parallaxClass).length) {
+
+    if(typeof simpleParallax === 'function'){
+
+      var image = document.getElementsByClassName(parallaxClass)
+      new simpleParallax(image)
+
+    }else{
+      
+      console.log('Warning: Parallax is not enabled on this template.')
+
+    }
+    
+  } 
 
 }

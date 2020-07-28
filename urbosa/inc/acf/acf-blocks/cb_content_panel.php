@@ -51,9 +51,9 @@ if($imageRightZIndex){ $rightStyle .= "z-index: $imageRightZIndex;"; }
 if($imageRightWidth){ $rightStyle .= "width: $imageRightWidth;"; }
 
 ?>
-<div class="urbosa-block <?=$className?> ratio <?=$jumpID?>" style="<?=$blockStyle?>">
+<div class="urbosa-block <?=$className?> <?=$jumpID?>" style="<?=$blockStyle?>">
   <div class="wrapper">
-    <div class="content-holder" style="<?=$contentHolderStyle?>">
+    <div class="content-holder ratio wide" style="<?=$contentHolderStyle?>">
       <div class="content-wrapper">
         <div class="columns is-gapless">
 

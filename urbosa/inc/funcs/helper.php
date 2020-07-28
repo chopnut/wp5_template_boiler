@@ -639,12 +639,14 @@ if(!function_exists('doCurl')){
 }
 
 if(!function_exists('progressiveBG') && !function_exists('enableProgressiveBG')){
+
   function progressiveBG(){
     ?>
 <script>
+
 function initProgressive(className='progressive'){
 
- $elements = $('.'+className+':not(.enhanced)');
+  $elements = $('.'+className+':not(.enhanced)');
   for (let n = 0; n < $elements.length; n++) {
     initProgressiveSingle($('.'+ className)[n])
   }
@@ -667,7 +669,6 @@ function initProgressiveSingle(jEl){
           $el.css('background-image',`url(${high})`)
         }
         $el.addClass('enhanced')
-        $el.attr('data-low','')
       };
       if (high) { imgHigh.src = high; }
     }else{
@@ -677,14 +678,7 @@ function initProgressiveSingle(jEl){
 }
 </script>
 <style>
-.progressive { 
-  background-position: center;
-  background-repeat: no-repeat; 
-  background-size: cover; 
-  transform: translateZ(0); 
-  will-change: transform;
-  transition: filter .5s ease-in; 
-}
+.progressive { background-position: center;background-repeat: no-repeat; background-size: cover; transform: translateZ(0); will-change: transform;}
 </style>
     <?php
   }
