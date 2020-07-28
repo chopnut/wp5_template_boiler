@@ -91,10 +91,11 @@ if(!function_exists('__cb_theme_slider_video_mobile_poster')){
 
     if($mobile_poster){
       
-      
-      $lowRes = encodeDataImage($mobile_poster['sizes']['progressive_landscape']);
+      $lowRes = $mobile_poster['sizes']['progressive_landscape'];
       $hiRes  = $mobile_poster['url'];
-      $containerAttr = "data-low='$lowRes' data-high='$hiRes' ";
+
+      $containerAttr = "data-high='$hiRes' ";
+      $containerAttr.= " style='background-image: url($lowRes);'"
 
       ?>
         <div class="image-wrapper progressive mobile poster" <?=$containerAttr?>></div>
@@ -160,6 +161,7 @@ if(is_array($slider_feature)){
     $lightBoxCollection = $theme_slider_id. '_lightbox_collection';
     $lightboxInstance   = $theme_slider_id. '_lightbox_instance';
     $lightboxFunc       = $theme_slider_id. '_lightbox_func';
+    $fixImageClones     = $theme_slider_id. '_fix_image_clones';
 
     if($is_lightbox){
       ?>
@@ -228,13 +230,10 @@ if(is_array($slider_feature)){
                 ?>
               <div class="each-slider ">
                 
-              
-              
                 <div class="wrapper">
                   <div class="content-holder ratio <?=$proportion?>">
                     
-                    <div class="padders">
-                      <div class="padders">
+
 
                 <div class="actual-content">
 
@@ -285,44 +284,54 @@ if(is_array($slider_feature)){
                 }else{ // Image
 
          
-                  $lowRes = encodeDataImage($image['sizes']['progressive_landscape']);
+                  $lowRes = $image['sizes']['progressive_landscape'];
                   $hiRes  = $image['url'];
                   $alt    = $image['alt'];
                 
-                  $innerContent = "";
-
-                  $containerClass= "";
+                  $innerContent  = $containerClass = $containerAttr = "";
                   $containerStyle= "background-image: url($hiRes)";
-                  $containerAttr = "";
 
                   if($image){
-                    $imageID = $image['ID'];
+                    
 
+                    $imageID = $image['ID'].'_id'.$ctr;
+                    
                     if($is_progressive && !is_admin()){
                       
                       $containerClass .= 'progressive '.$theme_slider_id;
-                      $containerAttr .= "data-low='$lowRes' data-high='$hiRes' ";
-                      $containerStyle = '';
+                      $containerAttr .= "data-high='$hiRes' ";
+                      $containerStyle= "background-image: url($lowRes)";
+
                     }
 
                     if($is_parallax && !is_admin()){
+
                       $innerContent = "<img class='parallax {class} $theme_slider_id' {progressive} alt='$alt'/>";
+
+                      if(!$is_lazy) {
+
+                        $innerContent = "<img class='parallax {class} $theme_slider_id' {progressive} alt='$alt' src='$hiRes' />";
+
+                      }
+
                       if($is_progressive){
+
                         $innerContent = str_replace('{progressive}',$containerAttr, $innerContent);
                         $innerContent = str_replace('{class}','progressive', $innerContent);
-                        $containerClass = $containerStyle = "";
-                        $containerAttr  = "";
+                        $containerAttr = $containerClass = "";
 
                       }else{
+
                         $innerContent = str_replace('{progressive}','', $innerContent);
                         $innerContent = str_replace('{class}','', $innerContent);
-                        $containerStyle = "";
                       }
+
+                      $containerStyle = "";
                     }
 
                     if($is_lazy && !is_admin()){
    
-                      $innerContent = "<img data-lazy='$hiRes' class='{parallax} 'alt='$alt' />";
+                      $innerContent = "<img data-src='$hiRes' class='{parallax} urbosa-lazy-load $imageID'alt='$alt' data-id='$imageID'/>";
                       
                       $containerClass = $containerStyle = "";
                       if($is_parallax){
@@ -346,7 +355,6 @@ if(is_array($slider_feature)){
                     }
                     
 
- 
                   ?>
                     <div class="image-wrapper <?=$imageID?> <?=$containerClass?>"  <?=$containerAttr?> style="<?=$containerStyle?>" data-id="<?=$imageID?>" >
                       <?=$innerContent?>
@@ -364,11 +372,7 @@ if(is_array($slider_feature)){
                 }
 
                 ?>
-                </div><!--actual content-->
-
-
-                      </div><!-- padders -->
-                    </div><!-- padders -->
+                      </div><!--actual content-->
 
 
                     </div><!-- ratio -->
@@ -404,7 +408,21 @@ if(is_array($slider_feature)){
     // Trigger lightbox only when this is true
     $triggerLightBoxVar = $lightboxInstance.'_trigger_lightbox';
   ?>
+  function <?=$fixImageClones?>(){
+
+    // Copy original to the clones for image types, so it doesnt blur anymore //progressive only
+
+    $actual = $('#<?=$theme_slider_id?>_slick .slick-slide:not(.slick-cloned) .image-wrapper.enhanced:not(.copied)')
+    $clones = $('#<?=$theme_slider_id?>_slick .slick-cloned .image-wrapper')
+    
+    if($actual.length){
+      copyClonesAttributes($actual,$clones);
+      $actual.addClass('.copied');
+    }
+
+  }
   var  <?=$triggerLightBoxVar?>= true;
+
   jQuery(document).ready(function($){
     <?php 
 
@@ -428,7 +446,9 @@ if(is_array($slider_feature)){
 
       if($is_lightbox && !is_admin()){
         ?>
-        $('.youtube-lightbox').simpleLightbox()
+
+        if($.fn.simpleLightbox){
+          $('.youtube-lightbox').simpleLightbox()
         var <?=$lightboxInstance?> = new SimpleLightbox({
           items: <?=$lightBoxCollection?>
         })
@@ -467,13 +487,18 @@ if(is_array($slider_feature)){
            SimpleLightbox.open(<?=$lightboxInstance?>)
           }
         }
+        
+      } else{
+        console.log('Warning: Lightbox is disabled in the template.');
+      }
+
         <?php
       }
       
     ?>
 
     var slickOptions = {
-      slideToShow: 1
+      slideToShow: 1,
     }
 
     <?php 
@@ -527,15 +552,15 @@ if(is_array($slider_feature)){
         $('#<?=$theme_slider_id?>_slick').on('afterChange',function(slick){
           <?=$triggerLightBoxVar?> = true;
 
-          // Copy original to the clones for image types, so it doesnt blur anymore 
-          $actual = $('#<?=$theme_slider_id?>_slick .slick-slide:not(.slick-cloned) .image-wrapper.enhanced')
-          $clones = $('#<?=$theme_slider_id?>_slick .slick-cloned .image-wrapper')
-          copyClonesAttributes($actual,$clones);
+          <?=$fixImageClones?>();
 
           <?php 
             if($is_lightbox){
               ?>
-              $('.youtube-lightbox').simpleLightbox()
+              if($.fn.simpleLightbox){
+
+                $('.youtube-lightbox').simpleLightbox()
+              }
 
               <?php
             }
@@ -546,15 +571,13 @@ if(is_array($slider_feature)){
         });
         $('#<?=$theme_slider_id?>_slick').on('init',function(slick){
 
-          // Copy original to the clones for image types, so it doesnt blur anymore 
-          $actual = $('#<?=$theme_slider_id?>_slick .slick-slide:not(.slick-cloned) .image-wrapper.enhanced')
-          $clones = $('#<?=$theme_slider_id?>_slick .slick-cloned .image-wrapper')
-          copyClonesAttributes($actual,$clones);
+          <?=$fixImageClones?>();
+
+
         })
 
-
-
         $('#<?=$theme_slider_id?>_slick').slick(slickOptions);
+
         <?php
       }
     ?>

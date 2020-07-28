@@ -637,76 +637,39 @@ if(!function_exists('doCurl')){
     return $result;
   }
 }
-/* 
-  Progressive background
-  How to use: 
-  1. Call enableProgressiveBG() 
-  2. Use progressive_landscape/progressive_portrait image size for lowResImageURL
-  3. Set your element eg: <div class="progressive" data-low="<?=encodeDataImage(lowResImageURL)?>" data-high="{highResImageURL}"></div>
-*/
+
 if(!function_exists('progressiveBG') && !function_exists('enableProgressiveBG')){
   function progressiveBG(){
     ?>
 <script>
 function initProgressive(className='progressive'){
-    /* 
-    Parallax and Progressive Example
-    <img class="progressive parallax" src="{encodedLowImage}" data-high="{highImageURL}" />
-  */
 
  $elements = $('.'+className+':not(.enhanced)');
   for (let n = 0; n < $elements.length; n++) {
-    // Load low-res
     initProgressiveSingle($('.'+ className)[n])
   }
 }
 function initProgressiveSingle(jEl){
-  if(!jEl) return;
+    if(!jEl) return;
 
-  var svgblur =`<svg xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"
-     width="1500" height="823"
-     viewBox="0 0 1500 823">
-   <filter id="blur" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-     <feGaussianBlur stdDeviation="100 100" edgeMode="duplicate" />
-     <feComponentTransfer>
-       <feFuncA type="discrete" tableValues="1 1" />
-     </feComponentTransfer>
-   </filter>
-   <image filter="url(#blur)" xlink:href="REPLACEME" x="0" y="0" height="100%" width="100%"/>
- </svg>`
-
- var $el = $(jEl);
-    var base64Image = $el.data('low')
+    var $el = $(jEl);
     var high = $el.data('high')
 
-    var all = `data:image/svg+xml;base64,${window.btoa(svgblur.replace('REPLACEME', base64Image ))}`
-
-    if(base64Image!=='' && high!==''){
-
-      if($el.prop('tagName')=='IMG'){
-        $el.attr('src',all);
-      }else{
-        $el.css('background-image','url(' + all + ')');
-      }
+    if(high!==''){
 
       // Load hi-res
       var imgHigh = new Image();
   
       imgHigh.onload = function() {
-
         if($el.prop('tagName')=='IMG'){
           $el.attr('src',high);
         }else{
           $el.css('background-image',`url(${high})`)
-          
         }
         $el.addClass('enhanced')
         $el.attr('data-low','')
-    
       };
       if (high) { imgHigh.src = high; }
-
     }else{
       $el.addClass('enhanced')
     }
@@ -714,8 +677,14 @@ function initProgressiveSingle(jEl){
 }
 </script>
 <style>
-.progressive { background-position: center;background-repeat: no-repeat; background-size: cover; transform: translateZ(0); transition: filter .5s ease-in; filter: blur(45px);}
-.progressive.enhanced{ filter: blur(0px); }
+.progressive { 
+  background-position: center;
+  background-repeat: no-repeat; 
+  background-size: cover; 
+  transform: translateZ(0); 
+  will-change: transform;
+  transition: filter .5s ease-in; 
+}
 </style>
     <?php
   }

@@ -209,7 +209,7 @@ window.initSlideOutMenu = function (opt) {
     })
   } else {
     console.log(
-      `initSlideOutMenu: error - (${opt.container}) or (${opt.menu}) doesnt exist.`
+      `Warning: initSlideOutMenu - (${opt.container}) or (${opt.menu}) doesnt exist.`
     )
   }
 }
@@ -355,14 +355,14 @@ window.initLoginPage = function () {
 }
 
 window.initLazyLoadImage = function () {
- 
-  if ($.fn.visibility) {
-    $('img.urbosa-lazy-load').visibility({
-      type: 'image',
-      transition: 'fade in',
-      duration: 1000
-    })
-  }
+    if ($.fn.visibility) {
+    
+      $('img.urbosa-lazy-load').visibility({
+        type: 'image',
+        transition: 'fade in',
+        duration: 1000
+      })
+    }
 }
 window.initSimpleParallax = function () {
   var parallaxClass = 'parallax'
@@ -372,5 +372,8 @@ window.initSimpleParallax = function () {
   ) {
     var image = document.getElementsByClassName(parallaxClass)
     new simpleParallax(image)
+  } else{
+    console.log('Warning: Parallax is not enabled on this template.')
   }
+
 }

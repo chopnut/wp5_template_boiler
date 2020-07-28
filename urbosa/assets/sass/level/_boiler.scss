@@ -26,10 +26,8 @@
 /* 
   Maintaining aspect ratio wrapping long content
 */
-.ratio { width: 100%; position: relative; display: flex; }
-.ratio>*{width: 100%;}
-.ratio>*>*{height: 100%;}
-.ratio:not(.force)::after { clear: left; content: " "; display: table; }
+.ratio { width: 100%; position: relative; max-height: calc(100vh - #{$heightHeader});}
+.ratio:not(.force)::after { clear: left; content: " "; display: block; }
 .ratio:not(.force)::before { content: ""; float: left; }
 .ratio:not(.force).wide::before { padding-bottom: 56.25%; }
 .ratio:not(.force).square::before { padding-bottom: 100%; }
@@ -42,7 +40,7 @@
 .ratio.force>*{position: absolute;height: 100%; }
 .ratio.force.wide { padding-bottom: 56.25%; }
 .ratio.force.square { padding-bottom: 100%; }
-.ratio.force.tv { padding-bottom: 75%; }
+.ratio.force.tv { padding-bottom: 75%; }  
 .ratio.force.small { padding-bottom:  66.6%; }
 .ratio.force.strip { padding-bottom: 62.5%; }
 
