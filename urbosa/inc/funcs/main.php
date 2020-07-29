@@ -332,6 +332,8 @@ function urbosa_theme_init(){
     if(class_exists('Urbosa_ACF_Import_Export')){
       $urbosaACF = new Urbosa_ACF_Import_Export();
       $urbosaACF->init();
+      $urbosaACF->urbosa_merge_jsons();
+
       $urbosaACF->process($actioned);
     }
 

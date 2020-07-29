@@ -7,7 +7,7 @@ require_once("inc/lib/urbosa_custom_type.php");
 require_once("inc/funcs/helper.php");
 require_once("inc/feature.php");
 require_once("inc/funcs/layouts.php");
-require_once("inc/register-acf-blocks.php");
+require_once("inc/register_acf_blocks.php");
 require_once("inc/funcs/optimize.php");
 require_once("inc/cssjs.php");
 require_once('inc/funcs/main.php');

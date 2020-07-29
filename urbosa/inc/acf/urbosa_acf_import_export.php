@@ -4,11 +4,14 @@ class Urbosa_ACF_Import_Export{
   var $back_up_folder = '';
   var $copy_folder = '';
   var $default_folder ='';
+  var $root_folder = '';
 
   function __construct(){
-    $this->copy_folder    = get_stylesheet_directory().'/inc/acf/json/copy';
-    $this->back_up_folder = get_stylesheet_directory().'/inc/acf/json/backup';
-    $this->default_folder = get_stylesheet_directory().'/inc/acf/json/default';
+    $this->root_folder    = get_stylesheet_directory().'/inc/acf';
+    $this->copy_folder    = $this->root_folder.'/json/copy';
+    $this->back_up_folder = $this->root_folder.'/json/backup';
+    $this->default_folder = $this->root_folder.'/json/default';
+   
   }
    function init(){
     if(function_exists('acf_get_field_group')){
@@ -95,6 +98,7 @@ class Urbosa_ACF_Import_Export{
   function urbosa_acf_field_group_copy($field_group){
     $this->urbosa_acf_write_json_field_group($field_group, $this->copy_folder);
     $this->urbosa_acf_write_json_field_group($field_group, $this->back_up_folder);
+    $this->urbosa_merge_jsons();
   }
   function urbosa_acf_save_json_folder() {
     return $this->default_folder;
@@ -150,6 +154,23 @@ class Urbosa_ACF_Import_Export{
     foreach ($acfGroups as $acf) {
       acf_trash_field_group($acf['ID']);
     }
+  }
+  function urbosa_merge_jsons(){
+    $files = array_diff(scandir($this->default_folder), array('.', '..'));
+    $dest  = $this->root_folder.'/merge.json';
+    $f = fopen($dest, 'w');
+    fwrite($f, '[');
+    $tmp = [];
+    foreach ($files as $file) {
+      $fullPath = $this->default_folder.'/'.$file;
+      if(pathinfo($file, PATHINFO_EXTENSION) == 'json'){
+        $json = file_get_contents($fullPath);
+        $tmp[]= $json;
+      }
+    }
+    fwrite($f, implode(",\n", $tmp));
+    fwrite($f, ']');
+    fclose($f);
   }
   function urbosa_acf_import_from_json_to_db($path){
 		$path = untrailingslashit( $path );
