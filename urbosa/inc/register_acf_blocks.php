@@ -3,7 +3,7 @@
 if(function_exists('acf_register_block')){
   //----------------------------------------------
   function register_blocks(){
-    $acfBlocksLocation = 'inc/acf/acf-blocks/';
+    $acfBlocksLocation = 'inc/acf/blocks/';
     /* 
       Instruction: Copy the acf_register_block , 1 per each block set the render template.
       Create the template php file in the blocks folder. Icon should be dashicon of wordpress without the 'dashicons'

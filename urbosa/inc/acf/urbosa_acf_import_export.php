@@ -157,7 +157,7 @@ class Urbosa_ACF_Import_Export{
   }
   function urbosa_merge_jsons(){
     $files = array_diff(scandir($this->default_folder), array('.', '..'));
-    $dest  = $this->root_folder.'/merge.json';
+    $dest  = $this->root_folder.'/json/merge.json';
     $f = fopen($dest, 'w');
     fwrite($f, '[');
     $tmp = [];
