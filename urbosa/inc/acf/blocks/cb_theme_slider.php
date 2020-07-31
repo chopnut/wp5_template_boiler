@@ -115,6 +115,7 @@ $mobile_height_ratio    = get_field('mobile_height_ratio');
 $desktopRatio           = get_field('ratio');
 
 $theme_slider_id = 'theme_slider_'.$block['id'];
+
 //-------------------------------------------------------------------------
 // Slider
 $show_arrows = $slider_properties['show_arrows'];

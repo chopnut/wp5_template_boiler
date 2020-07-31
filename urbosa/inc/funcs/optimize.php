@@ -15,12 +15,14 @@ function _add_feature($feature, $option=''){
     case 'google-map':
         $option = get_field('google_map_api_key', 'options');
         if(!empty($option)){
-
-          wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key='.$option, array(), null, false);
-          add_filter('acf/fields/google_map/api', function($api) use (&$option){
-              $api['key'] = $option;
-              return $api;
-          });
+          if(!is_admin()){
+            wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?key='.$option, array(), null, false);
+          }else{
+            add_filter('acf/fields/google_map/api', function($api) use (&$option){
+                $api['key'] = $option;
+                return $api;
+            });
+          }
         }
     break;
     case 'parallax':

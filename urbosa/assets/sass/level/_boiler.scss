@@ -53,7 +53,7 @@
   .slick-sliders.slick-dotted span.slick-prev{ top: calc(50% - 27px); }
   .slick-sliders .slick-nav-prev,
   .slick-sliders .slick-prev
-  { left: 1rem;  right: auto; transform: rotate(180deg);}
+  { left: 1rem;  right: auto; transform: rotate(180deg); display: flex; align-items: center;}
 
   .slick-sliders .slick-nav-next, 
   .slick-sliders .slick-next{ 
