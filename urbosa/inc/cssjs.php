@@ -20,7 +20,11 @@ function theme_setup()
   wp_enqueue_script('custom', get_template_directory_uri() . "/assets/js/custom.js$suffix" , array('lib'), null, true);       
 
   // local object
-  wp_localize_script('custom', 'websiteData', array( 'is_search' => is_search()));
+  wp_localize_script('custom', 'websiteData', array( 
+      'is_search' => is_search(),
+      'stylesheet_directory_uri' => get_stylesheet_directory_uri()
+    )
+  );
 }
 add_action('wp_enqueue_scripts', 'theme_setup');
 function load_admin_style()

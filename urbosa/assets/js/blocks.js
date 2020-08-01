@@ -14,7 +14,8 @@ function initBlockAccordion(){
 }
 
 function initBlockGoogleMap(){
-
+  window.overlays    = []
+  window.markerIcons = []
 
   /* Create the map */
 
@@ -56,92 +57,66 @@ function initBlockGoogleMap(){
 
     // vars
     var bounds = new google.maps.LatLngBounds()
-    var stateBounds = new google.maps.LatLngBounds()
 
-    var selectedState        = getParameterByName('state', 'state')
-    var selectedStateMarkers = 0
 
     // loop through all markers and create bounds
+
+
     $.each(map.markers, function (i, marker) {
 
       var latlng = new google.maps.LatLng(
         marker.position.lat(),
         marker.position.lng()
       )
-      // center the map according to the state selected
-      if (
-        selectedState !== 'state' &&
-        marker.state.indexOf(selectedState) >= 0
-      ) {
-        stateBounds.extend(latlng)
-        selectedStateMarkers++
-      }
 
       bounds.extend(latlng)
     })
 
-    // only 1 marker?
+    // single marker
     if (map.markers.length == 1) {
 
       // set center of map
       map.setCenter(bounds.getCenter())
       map.setZoom(15)
 
-    } else if (selectedStateMarkers) {
-
-      // center map to state specific
-
-      map.fitBounds(stateBounds)
-      if (selectedStateMarkers == 1) {
-        window.zoomChangeBoundsListener = google.maps.event.addListenerOnce(
-          map,
-          'bounds_changed',
-          function (event) {
-            if (this.getZoom()) {
-              this.setZoom(13)
-            }
-          }
-        )
-        setTimeout(function () {
-          google.maps.event.removeListener(zoomChangeBoundsListener)
-        }, 2000)
-      }
-
     } else {
-      // fit to bounds
+      // multiple markers
+      // fit to bounds so it all fits in one view
+
       map.fitBounds(bounds)
     }
   }
 
   /* Add marker */
 
-  window.add_marker = function($marker, map) {
+  window.add_marker = function($marker, map ) {
     // vars
     var latlng = new google.maps.LatLng(
       $marker.data('lat'),
       $marker.data('lng')
     )
     $blueMarker = $marker.data('blue-marker')
+
     var markerImg =
       websiteData.stylesheet_directory_uri +
-      '/assets/img/icons/map-building-blue.svg'
+      '/assets/img/icons/map-marker.svg'
     var selectedImg =
       websiteData.stylesheet_directory_uri +
-      '/assets/img/icons/map-building.svg'
+      '/assets/img/icons/map-marker.svg'
 
     var selectedMarker = markerImg
     if ($blueMarker) selectedMarker = selectedImg
 
     var icon = {
       url: selectedMarker, // url
-      scaledSize: new google.maps.Size(50, 50), // scaled size
+      scaledSize: new google.maps.Size(30, 30), // scaled size
       origin: new google.maps.Point(0, 0), // origin
       anchor: new google.maps.Point(0, 0) // anchor
     }
 
     var iconSelected = {
       url: selectedImg, // url
-      scaledSize: new google.maps.Size(50, 50), // scaled size
+      scaledSize: new google.maps.Size(30, 30), // scaled size
       origin: new google.maps.Point(0, 0), // origin
       anchor: new google.maps.Point(0, 0) // anchor
     }
@@ -159,7 +134,8 @@ function initBlockGoogleMap(){
     var markerIconIndex = markerIcons.length
     markerIcons.push(marker)
 
-    if (windowInfo) {
+    if (windowInfo && $('#'+windowInfo).length) {
+      
       var overlaysIndex = overlays.length
 
       // ------- Pop up set up----------
@@ -188,12 +164,15 @@ function initBlockGoogleMap(){
         markerIcons[markerIconIndex].setIcon(iconSelected)
         overlays[overlaysIndex].setMap(map)
       })
+
     }
 
     // add to array
     map.markers.push(marker)
 
-    // if marker contains HTML, add it to an infoWindow
+    // if marker contains HTML/Content, add it to an infoWindow
+    // infoWindow is a generic popup window not a custom one.
+    
     if ($marker.html()) {
       // create info window
       var infowindow = new google.maps.InfoWindow({
