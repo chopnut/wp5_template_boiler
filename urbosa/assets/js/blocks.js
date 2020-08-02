@@ -95,7 +95,7 @@ function initBlockGoogleMap(){
       $marker.data('lat'),
       $marker.data('lng')
     )
-    $blueMarker = $marker.data('blue-marker')
+    customMarker = $marker.data('custom-marker')
 
     var markerImg =
       websiteData.stylesheet_directory_uri +
@@ -105,7 +105,7 @@ function initBlockGoogleMap(){
       '/assets/img/icons/map-marker.svg'
 
     var selectedMarker = markerImg
-    if ($blueMarker) selectedMarker = selectedImg
+    if (customMarker) selectedMarker = selectedImg
 
     var icon = {
       url: selectedMarker, // url

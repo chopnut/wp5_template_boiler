@@ -60,6 +60,7 @@ if($proportion=='override'){
               data-lat="<?=$lat?>" 
               data-lng="<?=$lng?>" 
               data-window-info="<?=$windowID?>"
+              data-custom-marker="<?=$gmMarker?>"
             ></div>
             
             <?php 
