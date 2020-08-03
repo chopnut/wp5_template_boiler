@@ -59,6 +59,16 @@ if(function_exists('acf_register_block')){
       'icon'	=> 'list-view',
       'keywords'=> array( 'Theme Accordion' ),
     ));
+    // 6. Search Result
+    acf_register_block(array(
+      'name'=> 'cb_seach_result',
+      'title'=> __('Seach Result'),
+      'description'=>__('Theme Seach Result'),
+      'render_template'=> $acfBlocksLocation.'cb_seach_result.php',
+      'category'=> 'urbosa-blocks',
+      'icon'	=> 'search',
+      'keywords'=> array( 'Theme Seach Result' ),
+    ));
   }
 
   add_action('acf/init', 'register_blocks');

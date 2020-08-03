@@ -2320,4 +2320,98 @@
     "active": 1,
     "description": "",
     "modified": 1595886864
+},
+{
+    "key": "group_5f2871dfdf9a1",
+    "title": "Block - Search Result",
+    "fields": [
+        {
+            "key": "field_5f287209d81f8",
+            "label": "Main",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5f287263d81fa",
+            "label": "Template",
+            "name": "template",
+            "type": "textarea",
+            "instructions": "Use this template snippets: {image} {date} {excerpt} {title}",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "<section>\r\n   <div>{image}<\/div>\r\n   <div>\r\n       <h2>{title}<\/h2>\r\n       <p class=\"date\">{date}<\/p>\r\n       <p class=\"excerpt\">{excerpt}<\/p>\r\n   <\/div>\r\n<\/section>",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_5f28725ad81f9",
+            "label": "Options",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5f28748b3b406",
+            "label": "Search post types",
+            "name": "search_post_types",
+            "type": "text",
+            "instructions": "Enter post types separated by comma",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "post,page",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf\/cb-seach-result"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1596493713
 }]

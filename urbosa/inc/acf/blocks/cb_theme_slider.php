@@ -9,10 +9,9 @@ if( !empty($block['className']) ) {
 if( !empty($block['align']) ) {
     $className .= ' align' . $block['align'];
 }
-
-
 //-------------------------------------------------------------------------
 // Functions
+
 if(!function_exists('__cb_theme_slider_video')){
   
   function __cb_theme_slider_video($src,$videoType,$deviceMode,$settingMobileHeightRatio, $is_lightbox,$mobile_poster=''){

@@ -733,8 +733,8 @@ if(!function_exists('encodeDataImage')){
   }
 }
 /* Allows you to set AJAX content loading.*/
-if(!function_exists('initAJAXContent')){
-  function initAJAXContent(
+if(!function_exists('ajaxContent')){
+  function ajaxContent(
       $action,
       $contentSelector,
       $loadMoreSelector, 
