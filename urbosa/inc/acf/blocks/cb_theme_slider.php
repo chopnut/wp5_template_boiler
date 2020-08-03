@@ -500,6 +500,7 @@ if(is_array($slider_feature)){
 
     var slickOptions = {
       slideToShow: 1,
+      rows: 0
     }
 
     <?php 

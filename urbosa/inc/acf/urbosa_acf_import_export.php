@@ -98,7 +98,9 @@ class Urbosa_ACF_Import_Export{
   function urbosa_acf_field_group_copy($field_group){
     $this->urbosa_acf_write_json_field_group($field_group, $this->copy_folder);
     $this->urbosa_acf_write_json_field_group($field_group, $this->back_up_folder);
-    $this->urbosa_merge_jsons();
+    if(is_admin()){
+      $this->urbosa_merge_jsons();
+    }
   }
   function urbosa_acf_save_json_folder() {
     return $this->default_folder;

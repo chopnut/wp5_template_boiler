@@ -21,9 +21,20 @@ module.exports = env => {
         port: 3000,
         proxy: `http://localhost:8191`,
         files: [
-          `./`, // Will watch any changes from this folder
-          '!./node_modules/',
-          '!./inc/acf/json'
+          {
+            match :['./'],
+            fn: function(e,f){
+              if(e == 'change'){
+                switch(true){
+                  case f.indexOf('node_modules')>=0:
+                  case f.indexOf('.json')>=0:
+                    break;
+                  default:
+                    this.reload();
+                }
+              }
+            }
+          },
         ],
 
         notify: false,

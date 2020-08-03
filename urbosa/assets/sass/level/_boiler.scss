@@ -27,7 +27,8 @@
   Maintaining aspect ratio wrapping long content
 */
 .ratio { width: 100%; position: relative; max-height: calc(100vh - #{$heightHeader}); display: flex;}
-.ratio>*, .ratio > * > *{ width: 100%; height: 100%; }
+.ratio >* { width: 100%;} 
+.ratio > * > *{ height: 100%; }
 .ratio:not(.force)::after { clear: left; content: " "; display: block; }
 .ratio:not(.force)::before { content: ""; float: left; }
 .ratio:not(.force).wide::before { padding-bottom: 56.25%; }
@@ -35,6 +36,7 @@
 .ratio:not(.force).tv::before { padding-bottom: 75%; }
 .ratio:not(.force).small::before { padding-bottom:  66.6%; }
 .ratio:not(.force).strip::before { padding-bottom: 62.5%; }
+
 
 /* for forcing ratio with child position absolute */
 .ratio.force { overflow: hidden; height:0;}
@@ -54,7 +56,7 @@
   .slick-sliders.slick-dotted span.slick-prev{ top: calc(50% - 27px); }
   .slick-sliders .slick-nav-prev,
   .slick-sliders .slick-prev
-  { left: 1rem;  right: auto; transform: rotate(180deg); display: flex; align-items: center;}
+  { left: 1rem;  right: auto; transform: scaleX(-1);}
 
   .slick-sliders .slick-nav-next, 
   .slick-sliders .slick-next{ 

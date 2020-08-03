@@ -588,7 +588,7 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596058076
+    "modified": 1595667219
 },
 {
     "key": "group_5f01059657403",
@@ -643,7 +643,7 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596058076
+    "modified": 1595667270
 },
 {
     "key": "group_5f010daf8efcb",
@@ -841,7 +841,7 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596058076
+    "modified": 1595797361
 },
 {
     "key": "group_5f013d8d4c6e0",
@@ -996,7 +996,7 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596058076
+    "modified": 1595667243
 },
 {
     "key": "group_5f0251d442a87",
@@ -1461,7 +1461,7 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596058076
+    "modified": 1595713459
 },
 {
     "key": "group_5f0e1b841cbf5",
@@ -2057,7 +2057,7 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596058076
+    "modified": 1595667212
 },
 {
     "key": "group_5f1a2323a0f3d",
@@ -2140,7 +2140,7 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596058076
+    "modified": 1595667227
 },
 {
     "key": "group_5f1f45a907a7b",
@@ -2279,8 +2279,8 @@
         },
         {
             "key": "field_5f1f474b7ac6e",
-            "label": "Image Marker",
-            "name": "image_marker",
+            "label": "Image Point",
+            "name": "image_point",
             "type": "image",
             "instructions": "",
             "required": 0,
@@ -2300,64 +2300,6 @@
             "max_height": "",
             "max_size": "",
             "mime_types": ""
-        },
-        {
-            "key": "field_5f23215385d07",
-            "label": "Proportion",
-            "name": "proportion",
-            "type": "select",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "wide": "Wide",
-                "tv": "TV",
-                "small": "Small",
-                "strip": "Strip",
-                "square": "Square",
-                "override": "Override"
-            },
-            "default_value": [
-                "wide"
-            ],
-            "allow_null": 0,
-            "multiple": 0,
-            "ui": 0,
-            "return_format": "value",
-            "ajax": 0,
-            "placeholder": ""
-        },
-        {
-            "key": "field_5f232194dd852",
-            "label": "Override Proportion",
-            "name": "override_proportion",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_5f23215385d07",
-                        "operator": "==",
-                        "value": "override"
-                    }
-                ]
-            ],
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
         }
     ],
     "location": [
@@ -2377,5 +2319,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596137936
+    "modified": 1595886864
 }]
