@@ -160,19 +160,38 @@ class Urbosa_ACF_Import_Export{
   function urbosa_merge_jsons(){
     $files = array_diff(scandir($this->default_folder), array('.', '..'));
     $dest  = $this->root_folder.'/json/merge.json';
-    $f = fopen($dest, 'w');
-    fwrite($f, '[');
-    $tmp = [];
+
+
+
+    $tmp        = [];
+    $fullPaths  = [];
+
+    // Get all json files first
     foreach ($files as $file) {
       $fullPath = $this->default_folder.'/'.$file;
       if(pathinfo($file, PATHINFO_EXTENSION) == 'json'){
+        $fullPaths[] = $fullPath;
+      }
+    }
+
+
+    // Only write to file if there is json file in the folder
+    if(!empty($fullPaths)){
+      $f = fopen($dest, 'w');
+      fwrite($f, '[');
+
+
+      foreach ($fullPaths as $fullPath) {
+    
         $json = file_get_contents($fullPath);
         $tmp[]= $json;
       }
+
+
+      fwrite($f, implode(",\n", $tmp));
+      fwrite($f, ']');
+      fclose($f);
     }
-    fwrite($f, implode(",\n", $tmp));
-    fwrite($f, ']');
-    fclose($f);
   }
   function urbosa_acf_import_from_json_to_db($path){
 		$path = untrailingslashit( $path );

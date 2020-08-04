@@ -138,7 +138,10 @@
         if(!empty($p['query'])) $path .= '?'.$p['query'];
       }
 
-      if($type=='js' || $type =='css'){
+  
+
+      if($type=='js' || $type =='css'){ // only allow same-host 
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $path);
         curl_setopt($ch, CURLOPT_REFERER, $_SERVER['HTTP_HOST']);
@@ -146,6 +149,7 @@
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FILETIME, true);
+
         // Check the return value of curl_exec(), too
         $content = curl_exec($ch);
         if ($content === false) {
