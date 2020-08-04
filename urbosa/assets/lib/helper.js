@@ -347,12 +347,7 @@ window.__initTriggerSlideOut = function (opt) {
 }
 /* end slide-out */
 
-window.initLoginPage = function () {
-  var loginLogo = $('#login h1 a')
-  if (loginLogo.length > 0 && homeURL) {
-    loginLogo.attr('href', homeURL)
-  }
-}
+
 
 window.initLazyLoadImage = function () {
     if ($.fn.visibility) {

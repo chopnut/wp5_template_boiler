@@ -25,10 +25,16 @@ function urbosa_login_page()
       background-color: #eee;
     }
   </style>
-  <script>var homeURL = '<?=home_url('/')?>';</script>
+  <script>
+    var homeURL = '<?=home_url('/')?>';
+    window.onload = function (){
+        document.querySelector('#login h1 a').href = homeURL;
+    }
+  </script>
 <?php
-  wp_enqueue_script('lib', get_template_directory_uri() . "/assets/dist/js/bundle.js", array(), null, false);   // SemanticUI/JQuery/Slick
-  wp_enqueue_script('custom', get_template_directory_uri() . "/assets/js/custom.js$suffix" , array(), null, true);       // Any custom/override changes
+
+
+
 }
 add_action('login_enqueue_scripts', 'urbosa_login_page');
 
