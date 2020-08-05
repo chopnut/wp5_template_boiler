@@ -6,7 +6,6 @@
 
 function urbosa_login_page()
 {
-  $suffix = get_theme_suffix();
   $img = urbosa_custom_logo();
   if(empty($img)){
     $img = get_template_directory_uri().'/assets/img/placeholder.jpg';

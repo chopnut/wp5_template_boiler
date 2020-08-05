@@ -160,13 +160,6 @@ main>.urbosa-block.cb_theme_slider.alignfull{
       }
 
     }
-
-
-    .no-resource-set{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
   }
 
   &.cb_repeater_posts{
@@ -304,8 +297,8 @@ main>.urbosa-block.cb_theme_slider.alignfull{
     }
   }
 
-  /* common */
-  .no-posts{
+  .no-resource-set{
+    background-color: #eeeeee;
     min-height: 300px;
     width: 100%;
     display: flex;

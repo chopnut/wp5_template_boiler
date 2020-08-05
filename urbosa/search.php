@@ -9,8 +9,10 @@
   
     if($searchPage){
   
-      echo $searchPage->post_content;
-  
+      $blocks =  parse_blocks($searchPage->post_content);
+      foreach ($blocks as $block ) {
+        echo render_block($block);
+      }
     } else {
   
       ?>

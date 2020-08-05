@@ -61,13 +61,13 @@ if(function_exists('acf_register_block')){
     ));
     // 6. Search Result
     acf_register_block(array(
-      'name'=> 'cb_seach_result',
-      'title'=> __('Seach Result'),
-      'description'=>__('Theme Seach Result'),
-      'render_template'=> $acfBlocksLocation.'cb_seach_result.php',
+      'name'=> 'cb_search_results',
+      'title'=> __('Seach Results'),
+      'description'=>__('Theme Seach Results'),
+      'render_template'=> $acfBlocksLocation.'cb_search_results.php',
       'category'=> 'urbosa-blocks',
       'icon'	=> 'search',
-      'keywords'=> array( 'Theme Seach Result' ),
+      'keywords'=> array( 'Theme Seach Results' ),
     ));
   }
 

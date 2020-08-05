@@ -84,7 +84,7 @@ if($proportion=='override'){
           <?php
         } else{
           ?>
-          <div class="no-posts">
+          <div class="no-resource-set">
             No location found.
           </div>
           <?php

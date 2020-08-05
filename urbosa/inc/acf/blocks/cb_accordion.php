@@ -44,7 +44,7 @@ $items = get_field('accordion_items');
       <?php
     }else{
       ?>
-      <div class="no-posts">
+      <div class="no-resource-set">
         No items yet.
       </div>
       <?php
