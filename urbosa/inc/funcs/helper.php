@@ -757,7 +757,7 @@ if(!function_exists('ajaxContent')){
       'label_not_found' => $labels['label_not_found'],
     );
     ?>
-    <script>var optionData= <?=json_encode($defaultData)?></script>
+    <script>var <?=$contentSelector?>_optionData= <?=json_encode($defaultData)?></script>
     <?php
   }
 }

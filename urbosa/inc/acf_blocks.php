@@ -84,4 +84,17 @@ if(function_exists('acf_register_block')){
   add_filter('block_categories','theme_category_block',10,2);
 }
 
+
+
+/* helper blocks */
+function cb_search_results($data){
+  if(isset($_POST['data'])){
+    $allData = json_decode(stripslashes($_POST['data']),true);
+    echo '<script>foundPosts=0</script>'; // always return overall total posts found
+  }
+  exit;
+}
+add_action('wp_ajax_cb_search_results', 'cb_search_results');
+add_action('wp_ajax_nopriv_cb_search_results', 'cb_search_results');//for users that are not logged in.
+
 ?>
