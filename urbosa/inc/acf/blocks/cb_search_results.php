@@ -26,7 +26,7 @@ $noResult = get_field('template_no_result');
 
 $blockData = array(
   'template' => get_field('template'),
-  'search_post_types', explode(',' , get_field('search_post_types'))
+  'search_post_types' => explode(',' , get_field('search_post_types'))
 );
 
 ajaxContent('cb_search_results', $contentSelector, $loadMoreSelector, $blockData);

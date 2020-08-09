@@ -89,7 +89,19 @@ if(function_exists('acf_register_block')){
 /* helper blocks */
 function cb_search_results($data){
   if(isset($_POST['data'])){
-    $allData = json_decode(stripslashes($_POST['data']),true);
+    $data = json_decode(stripslashes($_POST['data']),true);
+
+    // Prep variables
+
+    $initialPage = $data['initial_page'];
+    $page      = $data['page'];
+    $postTypes = $data['post']['search_post_types'];
+    $template  = $data['post']['template'];
+    $perPage   = $data['per_page'];
+
+    // Build query
+
+    
     echo '<script>foundPosts=0</script>'; // always return overall total posts found
   }
   exit;
