@@ -65,7 +65,7 @@ class Custom_Type
 
   //----- custom taxonomy ------.
   var $custom_taxonomy = false; 
-  var $tax_label = '';
+  var $tax_label = false;
   var $tax_labels = array(
     'name'              => '{tax_name} Categories',
     'singular_name'     => '{tax_name} Category',
@@ -153,7 +153,7 @@ class Custom_Type
     $tmpArgs      = $this->tax_args;
     foreach($this->tax_labels as $key=>$value){
       $name = $this->name;
-      if(!empty($this->tax_label)) $name = $this->tax_label;
+      if(($this->tax_label)!==false) $name = $this->tax_label;
 
       foreach($this->ucFirstKeys as $ucKey){
         if($ucKey == $key){
