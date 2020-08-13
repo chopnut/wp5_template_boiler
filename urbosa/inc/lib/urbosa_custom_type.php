@@ -54,7 +54,7 @@ class Urbosa_Custom_Type
     'menu_icon' => '', // dashicons or URL to the icon image
     'exclude_from_search'=> true,
     'show_ui' => true,
-    'show_in_menu' => '', // main menu to put it under
+    'show_in_menu' => true, // main menu to put it under
     'show_in_nav_menus' => true,
     'show_in_menu_string' => '',
     'show_in_rest' => true,// whether allow for REST API
@@ -86,7 +86,7 @@ class Urbosa_Custom_Type
     'publicly_queryable' => true,
     'hierarchical' => false,                // parent/child relationship
     'show_ui' => true,
-    'show_in_menu' => '',                   // main menu to put it under
+    'show_in_menu' => true,                   // main menu to put it under
     'show_in_nav_menus' => true,
     'show_in_rest' => true,                 // whether allow for REST API
     'show_in_quick_edit' => true,
