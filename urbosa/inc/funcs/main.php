@@ -326,7 +326,9 @@ function urbosa_exact_search($search, $wp_query){
 
 add_action('init', 'urbosa_theme_init');
 function urbosa_theme_init(){
+
   // Process global theme process
+
     $themeStatus  = get_option('urbosa_theme_status');
     if(!$themeStatus && $themeStatus!==0) add_option('urbosa_theme_status', 0);
     $actioned = false;
@@ -334,11 +336,17 @@ function urbosa_theme_init(){
       update_option('urbosa_theme_status',$_GET['d']);
       $actioned = true;
     }
+
+    // disable admin bar when on dev mode
+    if(!$themeStatus && !is_admin()){
+      add_filter('show_admin_bar', '__return_false');
+      add_action( 'wp_print_styles', 'deregister_dashicons' );
+      function deregister_dashicons()    {  wp_deregister_style( 'dashicons' ); }
+    }
+
     if(class_exists('Urbosa_ACF_Import_Export')){
       $urbosaACF = new Urbosa_ACF_Import_Export();
       $urbosaACF->init();
-      $urbosaACF->urbosa_merge_jsons();
-
       $urbosaACF->process($actioned);
     }
 

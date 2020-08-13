@@ -13,6 +13,7 @@ function get_theme_suffix(){
 function _add_feature($feature, $option=''){
   switch($feature){
     case 'google-map':
+      if(function_exists('get_field')){
         $option = get_field('google_map_api_key', 'options');
         if(!empty($option)){
           if(!is_admin()){
@@ -24,6 +25,7 @@ function _add_feature($feature, $option=''){
             });
           }
         }
+      }
     break;
     case 'parallax':
         wp_enqueue_script('parallax', get_template_directory_uri() . "/assets/lib/simpleParallax.min.js" , array('lib'), null, true);
@@ -105,8 +107,6 @@ function add_style_sheet_attr($html, $handle){
     return str_replace(' src', ' async defer src', $url);
   }
   add_filter('script_loader_tag', 'defer_js', 11, 2);
-  function deregister_dashicons()    {  wp_deregister_style( 'dashicons' ); }
-  add_action( 'wp_print_styles', 'deregister_dashicons' );
   function urbosa_add_custom_to_footer() {
     $suffix = get_theme_suffix();
     wp_enqueue_style('other', get_template_directory_uri() . "/assets/dist/css/style.css$suffix"); // fonts/pages/single

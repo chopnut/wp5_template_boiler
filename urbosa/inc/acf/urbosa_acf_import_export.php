@@ -63,11 +63,6 @@ class Urbosa_ACF_Import_Export{
           die();
         }
       }
-
-       // disable admin bar when on dev mode
-       if(!$themeStatus){
-        add_filter('show_admin_bar', '__return_false');
-       }
     }
   }
   /* Helper function below */
