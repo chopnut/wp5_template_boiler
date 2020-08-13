@@ -50,6 +50,7 @@ class Custom_Type
       'author',
       'page-attributes' 
     ),
+    'taxonomies' => array(),
     'has_archive'   => true,
     'menu_icon' => '', // dashicons or URL to the icon image
     'exclude_from_search'=> true,
@@ -84,13 +85,13 @@ class Custom_Type
     'description'   => 'Holds our {name}s and {name} specific data',
     'public'        => true,
     'publicly_queryable' => true,
-    'hierarchical' => false,                // parent/child relationship
+    'hierarchical' => true,                // parent/child relationship
     'show_ui' => true,
     'show_in_menu' => true,                   // main menu to put it under
     'show_in_nav_menus' => true,
     'show_in_rest' => true,                 // whether allow for REST API
     'show_in_quick_edit' => true,
-    'meta_box_cb' => false,                 // set a string for callback to show in metabox
+    'show_admin_column' => true,
     'capabilities' => array(
       'manage_terms' => 'manage_categories',
       'edit_terms' => 'manage_categories',
@@ -108,17 +109,21 @@ class Custom_Type
       $this->merge();
       switch($this->type){
         case 'post':
-          register_post_type( $this->name, $this->args );
-          if($this->custom_taxonomy){
+          if($this->custom_taxonomy!==false){
             // (taxonomy_name , post_type , args)
-            register_taxonomy( $this->name.'_category', $this->name, $this->tax_args );
+            $taxName = $this->name.'_category';
+            register_taxonomy( $taxName, $this->name, $this->tax_args );
+            $this->_set_args([$taxName], 'taxonomies');
           }
+
+          register_post_type( $this->name, $this->args );
+
           if(!empty($this->page1_main) && !empty($this->page2_edit)){
             add_action( 'contextual_help', array($this,'contextual_help'), 10, 3 );
           }
         break;
         case 'taxonomy':
-          if($this->custom_taxonomy){
+          if($this->custom_taxonomy!==false){
             // if set as taxonomy type this becomes the post
             register_taxonomy( $this->name, $this->custom_taxonomy, $this->tax_args );
           }
@@ -197,7 +202,9 @@ class Custom_Type
 
   /* common */
   function set_label($val){ $this->label = $val;}
-  function set_taxonomy($val=true){ $this->custom_taxonomy = $val; }
+  function set_taxonomy($val=true){
+     $this->custom_taxonomy = $val; 
+  }
   function set_tax_label($val){ $this->tax_label = $val;}
   
   function set_archive($val){ $this->_set_args($val,'has_archive');}
