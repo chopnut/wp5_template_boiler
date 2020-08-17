@@ -48,12 +48,13 @@ if($postData['initial_page']){
 ?>
 
 <div class="urbosa-block <?=$className?>">
-  <div class="cb-heading" id="<?=$headingSelector?>">
-    <?=$heading?>
-  </div>
+
   <?php 
     if(!is_admin()){
       ?>
+      <div class="cb-heading" id="<?=$headingSelector?>">
+        <?=$heading?>
+      </div>
       <div class="cb-content" id="<?=$contentSelector?>">
       <?php 
         if($foundPosts){
@@ -74,11 +75,9 @@ if($postData['initial_page']){
       </div>
       <?php
     }else{
-      ?>
-      <div class="no-resource-set">
-        Search results block is not available in the admin.
-      </div>
-      <?php
+
+      cb_no_resource_set('Search results block', 'is not available in the admin.');
+
     }
   ?>
 </div>

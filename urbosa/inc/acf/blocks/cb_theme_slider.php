@@ -269,13 +269,7 @@ if(is_array($slider_feature)){
                   } else {
 
 
-                   ?>
-
-                    <div class="no-resource-set">
-                          No video set for this slide.
-                    </div>
-<?php
-
+                    cb_no_resource_set('Theme slider block', 'No video set for this slide.');
 
                   }
 
@@ -363,11 +357,7 @@ if(is_array($slider_feature)){
                   <?php
 
                   } else{
-                    ?>
-                    <div class="no-resource-set">
-                          No image set for this slide.
-                    </div>
-                    <?php
+                    cb_no_resource_set('Theme slider block', 'No image set for this slide.');
                   }
                 }
 
@@ -394,9 +384,8 @@ if(is_array($slider_feature)){
           <?php
         } else {
 
-          ?>
-          <div class="ratio wide no-resource-set">No slides has been set up yet.</div>
-          <?php
+          cb_no_resource_set('Theme slider block', 'No slides has been set up yet.');
+
         }
       ?>
 

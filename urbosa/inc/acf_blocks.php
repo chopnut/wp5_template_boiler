@@ -84,8 +84,17 @@ if(function_exists('acf_register_block')){
   add_filter('block_categories','theme_category_block',10,2);
 }
 
-
-
+/* common */
+function cb_no_resource_set($head,$body){
+  ?>
+  <div class="no-resource-set">  
+    <div style="text-align:center;">
+      <strong><?=$head?></strong><br/>
+      <?=$body?>
+    </div> 
+  </div>
+  <?php
+}
 /* search blocks */
 function cb_search_block_content($data){
 
@@ -165,8 +174,10 @@ function cb_search_block_content($data){
         $template = str_replace('{image}', $imgTag, $template);
 
         // title, permalink, excerpt
-        $template = str_replace('{title}', $post['post_title'], $template);
-        $template = str_replace('{permalink}',get_permalink( $post['ID']), $template);
+        $permalink = get_permalink( $post['ID']);
+        $titleLink = '<a href="'.$permalink.'">'.$post['post_title'].'</a>';
+        $template = str_replace('{title}', $titleLink, $template);
+        $template = str_replace('{permalink}',$permalink, $template);
         
         $excerpt  = $post['post_excerpt'];
         if(empty($excerpt)) {

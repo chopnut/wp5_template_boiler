@@ -370,9 +370,18 @@ function urbosa_setup_options(){
 
     if(is_page() || is_single()){
 
-      $post404 = get_field('404_page', 'options');
+      $post404    = get_field('404_page', 'options');
+      $searchPage = get_field('search_page', 'options');
 
+      // is 404 do not index
       if($post404 && $post->ID == $post404->ID){
+  
+        add_action('wp_head', 'urbosa_404_do_not_follow', 0);
+        
+      }
+      
+      // is search page do not index
+      if($searchPage && $post->ID == $searchPage->ID){
 
         add_action('wp_head', 'urbosa_404_do_not_follow', 0);
 

@@ -348,11 +348,8 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
 
       <?php
     } else {
-      ?>
-      <div class="no-resource-set">
-        <div>No posts/object found.</div>
-      </div>
-      <?php
+      cb_no_resource_set('Repeater posts block', 'No posts/object found.');
+
     }
   ?>
 </div>

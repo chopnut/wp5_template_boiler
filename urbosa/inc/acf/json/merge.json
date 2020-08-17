@@ -2300,6 +2300,64 @@
             "max_height": "",
             "max_size": "",
             "mime_types": ""
+        },
+        {
+            "key": "field_5f3aed5b57e35",
+            "label": "Proportion",
+            "name": "proportion",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "wide": "Wide",
+                "tv": "TV",
+                "small": "Small",
+                "strip": "Strip",
+                "square": "Square",
+                "override": "Override"
+            },
+            "default_value": [
+                "wide"
+            ],
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_5f3aed7157e36",
+            "label": "Override Proportion",
+            "name": "override_proportion",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5f3aed5b57e35",
+                        "operator": "==",
+                        "value": "override"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         }
     ],
     "location": [
@@ -2319,7 +2377,7 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596508850
+    "modified": 1597697453
 },
 {
     "key": "group_5f2871dfdf9a1",
@@ -2354,7 +2412,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "<section>\r\n <h2>Search \"{search_term}\"<\/h2>\r\n {found_posts}\r\n<\/section>",
+            "default_value": "<section>\r\n <h2>Search \"{search_term}\",  {found_posts} result found.<\/h2>\r\n<\/section>",
             "placeholder": "",
             "maxlength": "",
             "rows": "",
@@ -2373,7 +2431,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "<section>\r\n   <div>{image}<\/div>\r\n   <div>\r\n       <h2>{title}<\/h2>\r\n       <p class=\"date\">{date}<\/p>\r\n       <p class=\"excerpt\">{excerpt}<\/p>\r\n   <\/div>\r\n<\/section>",
+            "default_value": "<section>\r\n   <div>{image}<\/div>\r\n   <div>\r\n       <div>\r\n          <h2>{title}<\/h2>\r\n          <p class=\"date\">{date}<\/p>\r\n          <p class=\"excerpt\">{excerpt}<\/p>\r\n       <\/div>\r\n   <\/div>\r\n<\/section>",
             "placeholder": "",
             "maxlength": "",
             "rows": "",
@@ -2427,7 +2485,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "post,page",
+            "default_value": "post",
             "placeholder": "",
             "prepend": "",
             "append": "",
@@ -2489,5 +2547,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1597543747
+    "modified": 1597698629
 }]

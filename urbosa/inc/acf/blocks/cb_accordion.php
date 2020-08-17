@@ -43,11 +43,8 @@ $items = get_field('accordion_items');
       </div>
       <?php
     }else{
-      ?>
-      <div class="no-resource-set">
-        No items yet.
-      </div>
-      <?php
+      cb_no_resource_set('Accordion block', 'No items yet.');
+
     }
   ?>
 </div>

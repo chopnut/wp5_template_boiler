@@ -83,11 +83,7 @@ if($proportion=='override'){
           </div>
           <?php
         } else{
-          ?>
-          <div class="no-resource-set">
-            No location found.
-          </div>
-          <?php
+          cb_no_resource_set('Google Map block', 'No items found.');
         }
         ?>
       <?php 
