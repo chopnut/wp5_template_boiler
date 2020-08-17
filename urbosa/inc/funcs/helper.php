@@ -60,7 +60,8 @@ if(!function_exists('getPosts')){
     $metaArray = array(),  
     $orderby = 'menu_order',  
     $order = 'DESC',
-    $withFeaturedImage= true
+    $withFeaturedImage= true,
+    $isSearch = false
   )
   {
     $args = array(
@@ -79,7 +80,6 @@ if(!function_exists('getPosts')){
     if(count($taxonomies)){
       $args['tax_query'] = array_map(function($v){
         return array(
-          'taxonomy' => 'fabric_building_types',
           'field' => 'name',
           'terms' => $v,
         );
@@ -88,7 +88,11 @@ if(!function_exists('getPosts')){
     if(!empty($slug)){
       $args['name'] = $slug;
     }
-  
+    if($isSearch){
+      if(isset($_GET['s'])){
+        $args['s'] = $_GET['s'];
+      }
+    }
     if (count($metaArray)) {
       foreach ($metaArray as $meta) {
         if ($meta['value'] != '') {
@@ -107,10 +111,12 @@ if(!function_exists('getPosts')){
   
     foreach ($dataItems as $data) {
       $thisID = $data['ID'];
-      foreach ($acfFields as $field) {
-        $data[$field] = get_field($field, $thisID);
-        if (stripos($field, 'image') !== false) {
-          $data[$field] = $data[$field];
+      if(function_exists('get_field')){
+        foreach ($acfFields as $field) {
+          $data[$field] = get_field($field, $thisID);
+          if (stripos($field, 'image') !== false) {
+            $data[$field] = $data[$field];
+          }
         }
       }
       if($withFeaturedImage){
@@ -740,25 +746,25 @@ if(!function_exists('ajaxContent')){
       $loadMoreSelector, 
       $postData = array(),
       $labels= array(
+        'label_load_more'=>'Load More',
         'label_loading'=> 'Loading',
         'label_not_found'=> 'Nothing has been found',
       )){
     $defaultData = array(
       'initial_page' => isset($_GET['pg'])?$_GET['pg']:0,
+      'page' => 1, // this value will be changed
       'action' => $action,
       'content_container_selector'=> $contentSelector,
       'load_more_selector' => $loadMoreSelector,
-      'page' => 1, // this value will be changed
-      'post'=>$postData,
+      'post'=> $postData,
       'busy'=> false,
-      'found'=> null,
       'per_page'=> get_option('posts_per_page'),
-      'label_loading' => $labels['label_loading'],
-      'label_not_found' => $labels['label_not_found'],
+      'labels'=> $labels
     );
     ?>
-    <script>var <?=$contentSelector?>_optionData= <?=json_encode($defaultData)?></script>
+    <script>var <?=$contentSelector?>_optionData= <?=json_encode($defaultData)?>;</script>
     <?php
+    return $defaultData;
   }
 }
 if(!function_exists('setQueryURL')){

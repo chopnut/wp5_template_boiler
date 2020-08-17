@@ -86,23 +86,111 @@ if(function_exists('acf_register_block')){
 
 
 
-/* helper blocks */
+/* search blocks */
+function cb_search_block_content($data){
+
+    // Prepare data
+ 
+    $initialPage    = $data['initial_page'];
+    $page           = $data['page'];
+    $postTypes      = $data['post']['search_post_types'];
+    $rawTemplate    = $data['post']['template'];
+    $postCategories = $data['post']['post_categories'];
+    $postTaxonomies = $data['post']['post_taxonomies'];
+    $perPage        = $data['per_page'];
+
+  
+    if($initialPage){
+      
+      $perPage =$initialPage*$perPage;
+      $offset  = 0;
+      
+    }else{
+      
+      $offset = ($page - 1)*$perPage;
+    }
+
+    $query = getPosts(
+      $postTypes,
+      '',
+      array('gateway_image',),
+      $postCategories,
+      $postTaxonomies,
+      $perPage,
+      $offset,
+      array(),
+      'date',
+      'DESC',
+      true,
+      true
+    );
+    
+    // Aggregate contents
+    $posts = $query['posts'];
+    $contents = array(
+      'found_posts' => $query['query']->found_posts,
+      'render' => '',
+      'posts'=> $posts
+    );
+
+    // Render 
+    ob_start();
+    if(!empty($posts)){
+      foreach ($posts as $post) {
+
+
+        // {image} {date} {excerpt} {title} {permalink}
+
+        // image
+        $img = '';
+        $imgAlt = '';
+        $imgTag = '';
+
+        if($post['gateway_image']){
+
+          $img    = $post['gateway_image']['sizes']['large'];
+          $imgAlt = $post['gateway_image']['alt'];
+
+        } else if($post['featured_image']['normal']!==''){
+
+          $img    = $post['featured_image']['normal'];
+          $imgAlt = $post['featured_image']['alt'];
+        }
+
+        if(!empty($img)){
+          $imgTag = '<img src="'.$img.'" alt="'.$imgAlt.'" />';
+        }
+        
+        $template = $rawTemplate;
+        $template = str_replace('{image}', $imgTag, $template);
+
+        // title, permalink, excerpt
+        $template = str_replace('{title}', $post['post_title'], $template);
+        $template = str_replace('{permalink}',get_permalink( $post['ID']), $template);
+        
+        $excerpt  = $post['post_excerpt'];
+        if(empty($excerpt)) {
+          $excerpt = wp_trim_words($post['post_content']);
+        }
+
+        $template = str_replace('{excerpt}',$excerpt, $template);
+
+        $time = strtotime($post['post_date']);
+        $date = date('d/m/Y', $time);
+        $template = str_replace('{date}',$date, $template);
+
+        echo $template;
+      }
+    }
+    $contents['render']= ob_get_clean();
+
+    return $contents;
+}
 function cb_search_results($data){
   if(isset($_POST['data'])){
     $data = json_decode(stripslashes($_POST['data']),true);
-
-    // Prep variables
-
-    $initialPage = $data['initial_page'];
-    $page      = $data['page'];
-    $postTypes = $data['post']['search_post_types'];
-    $template  = $data['post']['template'];
-    $perPage   = $data['per_page'];
-
-    // Build query
-
-    
-    echo '<script>foundPosts=0</script>'; // always return overall total posts found
+    $searchContents = cb_search_block_content($data);
+    echo $searchContents['render'];
   }
   exit;
 }

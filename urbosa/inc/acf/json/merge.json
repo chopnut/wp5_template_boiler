@@ -2365,7 +2365,7 @@
             "label": "Template",
             "name": "template",
             "type": "textarea",
-            "instructions": "Use this template snippets: {image} {date} {excerpt} {title}",
+            "instructions": "Use this template snippets: {image} {date} {excerpt} {title} {permalink}",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -2432,6 +2432,44 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_5f379a906801d",
+            "label": "Post categories",
+            "name": "post_categories",
+            "type": "text",
+            "instructions": "Enter post categories separated by comma",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5f379aeb6801e",
+            "label": "Taxonomies\/Tags",
+            "name": "post_taxonomies",
+            "type": "text",
+            "instructions": "Enter post taxonomies separated by comma",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         }
     ],
     "location": [
@@ -2451,5 +2489,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596753026
+    "modified": 1597543747
 }]
