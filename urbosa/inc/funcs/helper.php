@@ -68,7 +68,7 @@ if(!function_exists('getPosts')){
       'post_type' => $postType,
       'post_status' => 'publish',
       'ignore_sticky_posts' => 0,
-      // 'posts_per_page' => $perPage,
+      'posts_per_page' => $perPage,
       'orderby' => $orderby,
       'order' => $order,
       'offset' => $offset,
