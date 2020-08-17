@@ -8,6 +8,10 @@ module.exports = env => {
       filename: 'css/[name].css',
       chunkFilename: 'css/[id].css'
     }),
+    /*
+      Note: If you need to remove jquery from the build uncomment below. 
+      new webpack.IgnorePlugin(/jquery/), 
+     */
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'
