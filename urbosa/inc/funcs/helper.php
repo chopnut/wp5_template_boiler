@@ -41,6 +41,7 @@ if(!function_exists('getPosts')){
    * @param  mixed $slug
    * @param  mixed $acfFields
    * @param  mixed $categories
+   * @param  mixed $taxonomies
    * @param  mixed $perPage
    * @param  mixed $offset
    * @param  mixed $metaArray
@@ -60,15 +61,14 @@ if(!function_exists('getPosts')){
     $metaArray = array(),  
     $orderby = 'menu_order',  
     $order = 'DESC',
-    $withFeaturedImage= true,
-    $isSearch = false
+    $withFeaturedImage= true
   )
   {
     $args = array(
       'post_type' => $postType,
       'post_status' => 'publish',
       'ignore_sticky_posts' => 0,
-      'posts_per_page' => $perPage,
+      // 'posts_per_page' => $perPage,
       'orderby' => $orderby,
       'order' => $order,
       'offset' => $offset,
@@ -78,21 +78,24 @@ if(!function_exists('getPosts')){
       $args['category_name'] = implode(',', $categories);
     }
     if(count($taxonomies)){
-      $args['tax_query'] = array_map(function($v){
-        return array(
-          'field' => 'name',
-          'terms' => $v,
-        );
-      }, $taxonomies);
+      /* 
+        Example of taxonomies:
+        array(
+          [
+            'taxonomy' => 'advert_tag',
+            'field' => 'slug',
+            'terms' => 'politics',
+          ]
+          );
+        
+      */
+      $args['tax_query'] = $taxonomies;
+
     }
     if(!empty($slug)){
       $args['name'] = $slug;
     }
-    if($isSearch){
-      if(isset($_GET['s'])){
-        $args['s'] = $_GET['s'];
-      }
-    }
+  
     if (count($metaArray)) {
       foreach ($metaArray as $meta) {
         if ($meta['value'] != '') {
@@ -111,12 +114,10 @@ if(!function_exists('getPosts')){
   
     foreach ($dataItems as $data) {
       $thisID = $data['ID'];
-      if(function_exists('get_field')){
-        foreach ($acfFields as $field) {
-          $data[$field] = get_field($field, $thisID);
-          if (stripos($field, 'image') !== false) {
-            $data[$field] = $data[$field];
-          }
+      foreach ($acfFields as $field) {
+        $data[$field] = get_field($field, $thisID);
+        if (stripos($field, 'image') !== false) {
+          $data[$field] = $data[$field];
         }
       }
       if($withFeaturedImage){
@@ -134,6 +135,7 @@ if(!function_exists('getPosts')){
       array(
         'posts' => $dataArray,
         'query' => $query,
+        'args'=> $args
       );  
     
   }
