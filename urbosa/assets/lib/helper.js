@@ -151,7 +151,7 @@ function helper () {
   this.replacePageURL = function (page) {
     ar = []
     ar.push(['pg', page])
-    q = setQueryParameter(ar)
+    q = this.setQueryParameter(ar)
     window.history.pushState('Page ' + page, '', q)
   }
   this.copyAttributes = function ($src, $dst) {

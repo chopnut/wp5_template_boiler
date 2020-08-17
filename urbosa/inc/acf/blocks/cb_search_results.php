@@ -45,6 +45,7 @@ $currentPage = $postData['page'];
 if($postData['initial_page']){
   $currentPage = $postData['initial_page'];
 }
+
 ?>
 
 <div class="urbosa-block <?=$className?>">
@@ -66,7 +67,7 @@ if($postData['initial_page']){
       </div>
       <div class="cb-nav" id="<?=$loadMoreSelector?>">
         <?php 
-          if($pages>=$currentPage){
+          if($pages>$currentPage){
             ?>
             <button onclick="<?=$loadMoreFunc?>(this)"><?=$postData['labels']['label_load_more']?></button>
             <?php
@@ -109,9 +110,14 @@ if($postData['initial_page']){
             // Reset options
             opt.busy = false;
             $loadButton.prop('disabled',  false).html(opt.labels.label_load_more);
+
+            // Remove button if page reach the end
             if(opt.page>=<?=$pages?>){
               $loadButton.css('display','none');
             }
+
+            // Change url
+            Helper.replacePageURL(opt.page);
           }
         })
         
