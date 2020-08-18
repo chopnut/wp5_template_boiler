@@ -2512,7 +2512,7 @@
         },
         {
             "key": "field_5f379aeb6801e",
-            "label": "Taxonomies\/Tags",
+            "label": "Terms\/Tags",
             "name": "post_taxonomies",
             "type": "text",
             "instructions": "Enter post taxonomies separated by comma",
@@ -2528,6 +2528,75 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_5f3c42975fb98",
+            "label": "Taxonomy Option",
+            "name": "post_taxonomies_option",
+            "type": "group",
+            "instructions": "Enter post taxonomies separated by comma",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5f379aeb6801e",
+                        "operator": "!=empty"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_5f3c43465fb99",
+                    "label": "Taxonomy",
+                    "name": "taxonomy",
+                    "type": "text",
+                    "instructions": "The main taxonomy against the terms",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_5f3c43855fb9a",
+                    "label": "Field Compare",
+                    "name": "tax_comparison",
+                    "type": "select",
+                    "instructions": "Select id, slug, name",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "slug": "Slug",
+                        "id": "ID",
+                        "name": "Name"
+                    },
+                    "default_value": [],
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "return_format": "value",
+                    "ajax": 0,
+                    "placeholder": ""
+                }
+            ]
         }
     ],
     "location": [
@@ -2547,5 +2616,5 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1597698629
+    "modified": 1597785178
 }]

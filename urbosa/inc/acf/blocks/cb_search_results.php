@@ -25,11 +25,17 @@ $s = isset($_GET['s'])?$_GET['s']:'';
 $postCategories = get_field('post_categories');
 $postTaxonomies = get_field('post_taxonomies');
 
+$taxOption      = get_field('post_taxonomies_option');
+$taxMain        = $taxOption['taxonomy'];
+$taxField       = $taxOption['tax_comparison'];
+
 $blockData = array(
   'template' => get_field('template'),
   'search_post_types' => explode(',' , get_field('search_post_types')),
   'post_categories'   => !empty($postCategories)?explode(',' , $postCategories):array(),
-  'post_taxonomies'   => !empty($postTaxonomies)?explode(',' , $postTaxonomies):array()
+  'post_taxonomies'   => !empty($postTaxonomies)?explode(',' , $postTaxonomies):array(),
+  'tax_main' => $taxMain,
+  'tax_field' => $taxField,
 );
 
 $postData = ajaxContent('cb_search_results', $contentSelector, $loadMoreSelector, $blockData);

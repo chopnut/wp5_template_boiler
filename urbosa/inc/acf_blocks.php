@@ -105,10 +105,22 @@ function cb_search_block_content($data){
     $postTypes      = $data['post']['search_post_types'];
     $rawTemplate    = $data['post']['template'];
     $postCategories = $data['post']['post_categories'];
-    $postTaxonomies = $data['post']['post_taxonomies'];
     $perPage        = $data['per_page'];
 
+    $postTaxonomies = $data['post']['post_taxonomies'];
+    $taxMain        = $data['post']['tax_main'];
+    $taxField       = $data['post']['tax_field'];
+
   
+    $tmpTaxonomies  = array();
+    if(!empty($postTaxonomies)){
+      $tmpTaxonomies[] = array(
+        'taxonomy' => $taxMain,
+        'field' => $taxField,
+        'terms' => $postTaxonomies
+      );
+    }
+
     if($initialPage){
       
       $perPage =$initialPage*$perPage;
@@ -122,9 +134,9 @@ function cb_search_block_content($data){
     $query = getPosts(
       $postTypes,
       '',
-      array('gateway_image',),
+      array('gateway_image'),
       $postCategories,
-      $postTaxonomies,
+      $tmpTaxonomies,
       $perPage,
       $offset,
       array(),
