@@ -1,6 +1,6 @@
 <?php 
 
-class Custom_Type  
+class Custom_Type
 {
   /* common */
   var $name = '';

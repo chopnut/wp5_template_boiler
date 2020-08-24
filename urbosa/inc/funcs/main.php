@@ -351,9 +351,9 @@ function urbosa_theme_init(){
     }
 
 
-    if(class_exists('Urbosa_Custom_Type')){
+    if(class_exists('Custom_Type')){
 
-      $slider = new Urbosa_Custom_Type('theme_slider');
+      $slider = new Custom_Type('theme_slider');
       $slider->set_label('Slider');
       $slider->set_icon('dashicons-image-flip-horizontal');
       $slider->set_menu_under('#urbosa_resources');
@@ -370,21 +370,24 @@ function urbosa_setup_options(){
 
     if(is_page() || is_single()){
 
-      $post404    = get_field('404_page', 'options');
-      $searchPage = get_field('search_page', 'options');
+      if(function_exists('get_field')){
 
-      // is 404 do not index
-      if($post404 && $post->ID == $post404->ID){
-  
-        add_action('wp_head', 'urbosa_404_do_not_follow', 0);
+        $post404    = get_field('404_page', 'options');
+        $searchPage = get_field('search_page', 'options');
+
+        // is 404 do not index
+        if($post404 && $post->ID == $post404->ID){
+    
+          add_action('wp_head', 'urbosa_404_do_not_follow', 0);
+          
+        }
         
-      }
-      
-      // is search page do not index
-      if($searchPage && $post->ID == $searchPage->ID){
+        // is search page do not index
+        if($searchPage && $post->ID == $searchPage->ID){
 
-        add_action('wp_head', 'urbosa_404_do_not_follow', 0);
+          add_action('wp_head', 'urbosa_404_do_not_follow', 0);
 
+        }
       }
     }
   }

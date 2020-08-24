@@ -18,6 +18,6 @@
   "permission": 755,
   "autoInstall": true,
   "rtl": false,
-  "components": ["visibility", "sticky"],
+  "components": ["visibility", "dimmer"],
   "version": "2.8.6"
 }
