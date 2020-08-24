@@ -2,7 +2,6 @@
 @import './fonts';
 @import './mixins';
 
-
 .wp-block-group.center{
   >.wp-block-group__inner-container{
     max-width: $contentCorridorMaxWidth;
@@ -168,7 +167,9 @@ main>.urbosa-block.cb_theme_slider.alignfull{
     /* common */
 
     .title:not(h1){font-weight: bold;font-size: 1.5rem;}
+    .title a:hover{ text-decoration: none;}
     a,img{ display: block; }
+    a.button{ display: inline-block; }
     img { width:100%; height: 100%; object-fit: cover;}
     figure{ overflow: hidden;}
     .ratio{

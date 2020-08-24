@@ -425,11 +425,10 @@ if(!function_exists('youtubeEmbed')){
    *
    * @param  mixed $embed_video eg: raw iframe code from youtube
    * @param  mixed $mode eg: 'normal' or 'background'
-   * @param  mixed $properties
    * @param  mixed $srcquery
    * @return void
    */
-  function youtubeEmbed($embed_video,$mode='normal',$properties="width='100%' height='100%' frameborder='0' allowfullscreen",$srcquery="autoplay=1&controls=0&html5=1&loop=1&mute=1&rel=0"){
+  function youtubeEmbed($embed_video,$mode='normal',$srcquery="autoplay=1&controls=0&html5=1&loop=1&mute=1&rel=0"){
     $new_embed = $embed_video;
     $tmp = array(
       'render' => '',

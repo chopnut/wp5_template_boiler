@@ -13,7 +13,7 @@ if( !empty($block['align']) ) {
 //    Normalise posts
 
 if(!function_exists('cb_normalise_posts')){
-  function cb_normalise_posts($posts){
+  function cb_normalise_posts($posts, $viewButton = '',$category = null){
     $is_progressive = function_exists('urbosa_progressive');
     $tmp = [];
     foreach($posts as $post){
@@ -38,6 +38,7 @@ if(!function_exists('cb_normalise_posts')){
             }
           }
           $data = [
+            'ID' => 0,
             'title' => $ctaPost['cta_title'],
             'excerpt' => $ctaPost['cta_description'],
             'image' => array(
@@ -50,12 +51,15 @@ if(!function_exists('cb_normalise_posts')){
               'target' => '_self',
               'title'=> ''
             )),
-            'date' => ''
+            'date' => '',
+            'post' => $ctaPost,
+            'button_label' => $post['object_button_label'],
+            'terms' => '',
           ];
           $tmp[]= $data;
         break;
         default: 
-          $theID = $theTitle = $theExcerpt = $theDate =  $theContent = '' ;
+          $theID = $theTitle = $theExcerpt = $theDate =  $theContent = $terms = '' ;
 
 
           if(isset($post['object_type']) && $post['object_type']== 'post'){
@@ -98,8 +102,29 @@ if(!function_exists('cb_normalise_posts')){
             $lowImage = $highImage;
           }
 
+          $tmpTerms = [];
+          if($category){
+            switch($category['type']){
+              case 'category':
+                $tmpTerms = get_the_category($theID);
+              break;
+              default;
+                $tmpTerms = get_the_terms($theID, $category['taxonomy']);
+
+            }
+          }
+
+          if(!empty($tmpTerms)){
+
+            $tmpArrTerms  = array();
+            foreach($tmpTerms as $term){
+              $tmpArrTerms[] = $term->name;
+            }
+            $terms = implode(',',$tmpArrTerms);
+          }
 
           $data = [
+            'ID' => $theID,
             'title' =>   $theTitle,
             'excerpt' => $theExcerpt,
             'image' => array(
@@ -112,7 +137,10 @@ if(!function_exists('cb_normalise_posts')){
               'url'=> get_permalink($theID),
               'target'=> '_self'
             ),
-            'date' =>  $theDate
+            'date' =>  $theDate,
+            'post' => $post,
+            'button_label' => $viewButton,
+            'terms' => $terms
           ];
           $tmp[]= $data;
       }
@@ -141,18 +169,27 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
       $order   = 'DESC';
       $categories = [];
       $taxonomies = [];
+      $tmpTaxonomies = [];
 
       $postType = $autoOption['auto_post_type'];
       $count    = $autoOption['auto_display_count'];
       $orderBy  = $autoOption['auto_order_by'];
       $catOption = $autoOption['auto_cat_option'];
+      $viewButton = $autoOption['button_label'];
 
       $catType   = $catOption['auto_cat_type'];
       $autoCat   = $catOption['auto_categories'];
       $autoTax   = $catOption['auto_taxonomies'];
 
+      $category  = array(
+        'type' => '',
+        'taxonomy' => ''
+      );
+      
+
       if($catType == 'category' && !empty($autoCat)){
         $categories = array_map('trim', explode(',', $autoCat));
+        $category['type'] = 'category';
       }
       if($catType == 'taxonomy' && !empty($autoTax)){
         $taxonomies = array_map('trim', explode(',', $autoTax));
@@ -173,14 +210,27 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
 
       }
 
+      if(!empty($taxonomies)){
+        $customTaxGroup = $catOption['auto_taxonomy_option'];
+
+        $category['type'] = 'taxonomy';
+        $category['taxonomy'] = $customTaxGroup['main_taxonomy'];
+
+        $tmpTaxonomies[] = array(
+          'taxonomy' => $customTaxGroup['main_taxonomy'],
+          'field' => $customTaxGroup['tax_comparison'],
+          'terms' => $taxonomies
+        );
+      }
      
+
 
       $res = getPosts(
         $postType,
         '', 
         ['gateway_image'],// acf 
         $categories,// categories
-        $taxonomies,// taxonomies
+        $tmpTaxonomies,// taxonomies
         $count, //per_page
         0, 
         $metaArray,
@@ -188,17 +238,22 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
         $order
       );
       
-      $posts = cb_normalise_posts($res['posts']);
+      $posts = cb_normalise_posts($res['posts'], $viewButton, $category);
+
 
     }else { // manual
-      $posts = cb_normalise_posts($manual);
+      
+      $posts = cb_normalise_posts($manual, '');
 
     }
+
+
     $styleDirection = get_field('style_direction');
     $columns        = get_field('style_columns');
     $wordsLimit     = get_field('style_words_limit');
     $styleType      = get_field('style_type');
     $styleSplitMode = get_field('style_split_mode');
+    $overrideTemplate = get_field('override_template');
 
     if(!empty($posts)){
 
@@ -230,8 +285,7 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
       <div class="columns is-multiline <?=$mainClass?> <?=$styleType?> <?=$styleSplitMode?>" <?=$mainAttr?>>
 
       <?php
-
-        if($styleDirection=='column' && $styleType=='split'){
+         if($styleDirection=='column' && $styleType=='split'){
 
           for($n=0; $n < count($posts); $n++){
 
@@ -239,11 +293,12 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
             $post = $posts[$n];
             $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
             $title = $post['title'];
-
             $low = $post['image']['low'];
             $high = $post['image']['high'];
             $rawLow = $low;
             $placeHolderImage = $placeholder;
+            $postData = $post['post'];
+            $buttonLabel = $post['button_label'];
 
             if($low && $is_progressive){
               $low = encodeDataImage($low);
@@ -255,22 +310,62 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
             
             $link = $post['link'];
 
+
             ?>
             <div class="column is-12 columns is-vcentered ">
-              <div class="column pr-0 pl-0 pt-0 pb-0">
-                <figure>
-                  <a href="<?=$link['url']?>" target="<?=$link['target']?>">
-                    <div class="image ratio square progressive <?=$block['id']?>" data-raw-low="<?=$rawLow?>" data-low="<?=$low?>" data-high="<?=$high?>" style="background-image:url(<?=$placeHolderImage?>)">
-                  </div>
-                  </a>
-                </figure>
-              </div>  
-              <div class="column pr-0 pl-0">
-                <div class="title"><?=$title?></div>
-                <div class="desc pt-2 pb-4"><?=$excerpt?></div>
-              </div>     
+              <?php 
+                if(!empty($overrideTemplate)){
+
+                  $template = str_replace('{title}',$title, $overrideTemplate);
+                  $template = str_replace('{excerpt}',$excerpt, $template);
+                  $template = str_replace('{content}',$post['excerpt'], $template);
+                  $template = str_replace('{image_url}',$high, $template);
+                  $template = str_replace('{permalink}',$link, $template);
+                  $template = str_replace('{category}',$post['terms'], $template);
+
+                  $pregGroup = pregMatchGrouping('/{(.*)?}/', $template);
+                  if(!empty($pregGroup)){
+                    foreach ($pregGroup as $acfField) {
+                      $fieldName = $acfField[1];
+                      if(isset($postData[$fieldName])){
+                        $template = str_replace($acfField[0], $postData[$fieldName], $template);
+                      }else{
+                        $template = str_replace($acfField[0], get_field($fieldName,$post['ID']), $template);
+
+                      }
+                    }
+                  }
+
+                  echo $template;
+
+                }else{
+                  ?>
+                    <div class="column pr-0 pl-0 pt-0 pb-0">
+                      <figure>
+                        <a href="<?=$link['url']?>" target="<?=$link['target']?>">
+                          <div class="image ratio square progressive <?=$block['id']?>" data-raw-low="<?=$rawLow?>" data-low="<?=$low?>" data-high="<?=$high?>" style="background-image:url(<?=$placeHolderImage?>)">
+                        </div>
+                        </a>
+                      </figure>
+                    </div>  
+                    <div class="column pr-0 pl-0">
+                      <div class="title"><?=$title?></div>
+                      <div class="desc pt-2 pb-4"><?=$excerpt?></div>
+                      <?php 
+                        if(!empty($buttonLabel)){
+                          ?>
+                          <a href="<?=$link?>" class="button"><?=$buttonLabel?></a>
+                          <?php
+                        }
+                      ?>
+                    </div> 
+                  <?php
+                }
+
+              ?>
             </div>
             <?php
+            
 
           }
 
@@ -298,7 +393,9 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
               $alt  = $image['alt'];
 
               $link = $post['link'];
-
+              $postData = $post['post'];
+              $buttonLabel = $post['button_label'];
+              
               if(empty($high)){
                 $high = $placeholder;
               }
@@ -307,32 +404,71 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
               if(is_admin()){
                 $imgAttr  = "src='$high'";
               }
+
+
+
               ?>
                 <div class="column <?=$columnClass?>">
-                  <div class="card">
-                    <?php 
-                      if($styleType=='center'){
-                        ?>
-                       <div class="title pt-4"><a href="<?=$link['url']?>" target="<?=$link['target']?>"><?=$title?></a></div>
-                        <?php
+                  <?php 
+                    if(!empty($overrideTemplate)){
+
+                      $template = str_replace('{title}',$title, $overrideTemplate);
+                      $template = str_replace('{excerpt}',$excerpt, $template);
+                      $template = str_replace('{content}',$post['excerpt'], $template);
+                      $template = str_replace('{image_url}',$high, $template);
+                      $template = str_replace('{permalink}',$link['url'], $template);
+                      $template = str_replace('{category}',$post['terms'], $template);
+
+                      $pregGroup = pregMatchGrouping('/{(.*)?}/', $template);
+                      if(!empty($pregGroup)){
+                        foreach ($pregGroup as $acfField) {
+                          $fieldName = $acfField[1];
+                          if(isset($postData[$fieldName])){
+                            $template = str_replace($acfField[0], $postData[$fieldName], $template);
+                          }else{
+                            $template = str_replace($acfField[0], get_field($fieldName,$post['ID']), $template);
+                          }
+                        }
                       }
-                    ?>
-                    <figure class="ratio wide force">
-                      <a href="<?=$link['url']?>" target="<?=$link['target']?>">
-                        <div class="img-bg cover">
-                          <img class="urbosa-lazy-load" data-src="<?=$high?>" alt="<?=$alt?>" <?=$imgAttr?>/>
-                        </div>
-                      </a>
-                    </figure>
-                    <?php 
-                      if($styleType!=='center'){
+
+                      echo $template;
+    
+                    } else{
+                      ?>
+                      <div class="card">
+                        <?php 
+                          if($styleType=='center'){
+                            ?>
+                          <div class="title pt-4"><a href="<?=$link['url']?>" target="<?=$link['target']?>"><?=$title?></a></div>
+                            <?php
+                          }
                         ?>
-                        <div class="title pt-4"><a href="<?=$link['url']?>" target="<?=$link['target']?>"><?=$title?></a></div>
-                        <?php
-                      }
-                    ?>
-                    <div class="desc pt-4 pb-4"><?=$excerpt?></div>
-                  </div>
+                        <figure class="ratio tv force">
+                          <a href="<?=$link['url']?>" target="<?=$link['target']?>">
+                            <div class="img-bg cover">
+                              <img class="urbosa-lazy-load" data-src="<?=$high?>" alt="<?=$alt?>" <?=$imgAttr?>/>
+                            </div>
+                          </a>
+                        </figure>
+                        <?php 
+                          if($styleType!=='center'){
+                            ?>
+                            <div class="title pt-4"><a href="<?=$link['url']?>" target="<?=$link['target']?>"><?=$title?></a></div>
+                            <?php
+                          }
+                        ?>
+                        <div class="desc pt-4 pb-4"><?=$excerpt?></div>
+                        <?php 
+                          if(!empty($buttonLabel)){
+                            ?>
+                            <a href="<?=$link?>" class="button"><?=$buttonLabel?></a>
+                            <?php
+                          }
+                        ?>
+                      </div>
+                      <?php
+                    }
+                  ?>
                 </div>
               <?php
             }
