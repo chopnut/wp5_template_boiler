@@ -108,6 +108,7 @@ $theme_slider           = get_field('selected_slider');
 $sliders                = get_field('sliders',$theme_slider);
 $slider_properties      = get_field('slider_properties',$theme_slider);
 $slider_feature         = get_field('feature', $theme_slider);
+$testimonialTemplate    = get_field('testimonial_template', $theme_slider);
 
 $proportion             = get_field('container_proportion');
 $mobile_height_ratio    = get_field('mobile_height_ratio');
@@ -267,15 +268,14 @@ if(is_array($slider_feature)){
 
 
                   } else {
-
-
-                    cb_no_resource_set('Theme slider block', 'No video set for this slide.');
-
+                    if(empty($content)){
+                      cb_no_resource_set('Theme Slider Block', 'No video set for this slide.');
+                    }
                   }
 
                   
                 //-----------------------------------------------------------
-                }else{ // Image
+                }else if($background_type=='image'){ // Image
 
          
                   $lowRes = $image['sizes']['progressive_landscape'];
@@ -357,7 +357,55 @@ if(is_array($slider_feature)){
                   <?php
 
                   } else{
-                    cb_no_resource_set('Theme slider block', 'No image set for this slide.');
+                    // If the content is empty too just display the notification
+                    if(empty($content)){
+                      cb_no_resource_set('Theme Slider Block', 'No image set for this slide.');
+                    }
+                  }
+
+                //-----------------------------------------------------
+                } else{   // Testimonials
+
+                  // Prep variables
+                  $testimonial    = $slider['testimonial'];
+                  $testimony      = $testimonial['testimony'];
+                  $testimonyName  = $testimonial['name'];
+                  $position       = $testimonial['position'];
+                  
+                  $photo          = $testimonial['photo'];
+                  $attr           = '';
+
+                  if($photo){
+                    $alt = $photo['alt'];
+                    $src = $photo['url'];
+                    if(is_admin()){
+                      $attr = "src='$src'";
+                    }
+                    $photo =  "<div class='image-wrapper'><img data-src='$src' class='urbosa-lazy-load' $attr/></div>";
+                  }
+
+                  if(!empty($testimonialTemplate)){
+                    $template = str_replace('{testimony}', $testimony, $testimonialTemplate);
+                    $template = str_replace('{image}', $testimonyName, $testimonialTemplate);
+                    $template = str_replace('{name}', $photo, $testimonialTemplate);
+                    $template = str_replace('{position}', $position, $testimonialTemplate);
+
+                    echo $template;
+                  
+                  }else{
+
+                    ?>
+                    <div class="testimonial-content">
+                      <p class="testimonial"><?=$testimony?></p>
+                      <figure>
+                        <?=$photo?>
+                      </figure>
+                      <p class="info">
+                        <span class="name"><?=$testimonyName?></span>
+                        <span class="position"><?=$position?></span>
+                      </p>
+                    </div>
+                    <?php
                   }
                 }
 

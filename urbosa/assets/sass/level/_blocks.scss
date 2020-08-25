@@ -2,11 +2,23 @@
 @import './fonts';
 @import './mixins';
 
-.wp-block-group.center{
-  >.wp-block-group__inner-container{
-    max-width: $contentCorridorMaxWidth;
-    margin: 0 auto;
-    padding: 0 $globalPadding;
+.wp-block-group{
+  &.center{
+    >.wp-block-group__inner-container{
+      max-width: $contentCorridorMaxWidth;
+      margin: 0 auto;
+      padding: 0 $globalPadding;
+    }
+  }
+  &.wide{
+    >.wp-block-group__inner-container{
+      max-width: $contentCorridorMaxWidth2;
+    }
+  }
+  &.narrow{
+    >.wp-block-group__inner-container{
+      max-width: $contentCorridorMaxWidthNarrow;
+    }
   }
 }
 /* special treatment to theme_slider who is used without nesting */
@@ -69,7 +81,12 @@ main>.urbosa-block.cb_theme_slider.alignfull{
 
   &.cb_theme_slider {
     padding:0;
-    &.admin{ overflow: hidden;}
+    &.admin{ 
+      overflow: hidden;
+      .ratio.content::before{
+        min-height: 350px;
+      }
+    }
 
 
     /* each-slider */
@@ -150,6 +167,37 @@ main>.urbosa-block.cb_theme_slider.alignfull{
           top: 0;
         }
 
+        /* testimonials */
+        .testimonial-content{
+          display: flex;
+          flex-direction: column;
+          max-width: 60%;
+          margin: 0 auto;
+          align-items: center;
+
+
+          .testimonial{
+            font-size: 1.5em;
+            text-align: center;
+          }
+          figure{
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: block;
+            overflow: hidden;
+
+            img{
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+          .name{
+            font-weight: bold;
+            text-transform: uppercase;
+          }
+        }
 
         .mobile{ display: none;}
         .desktop{ display: block;}
@@ -325,6 +373,45 @@ main>.urbosa-block.cb_theme_slider.alignfull{
       }
     }
   }
+  &.cb_media_dimmer{
+    .media-dimmer-trigger{
+      text-decoration: none;
+      display: block;
+      position: relative;
+      img{ display: block;}
+      figure{
+
+        position: relative;
+
+        figcaption{
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          color: white;
+          font-weight: bold;
+          background-color: rgba(14,133,82,.5);
+          padding: .5em;
+          text-align: center;
+        }
+      }
+    }
+    .ui.dimmer{
+      .content{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .wrapper{
+          width: 850px;
+        }
+      }
+    }
+    .ui.dimmer.active{
+      display:block;
+
+    }
+  }
   .no-resource-set{
     background-color: #eeeeee;
     min-height: 300px;
@@ -380,6 +467,8 @@ main>.urbosa-block.cb_theme_slider.alignfull{
     &.cb_theme_slider {
       /* each-slider */
       .each-slider{
+
+
         .actual-content{
 
           /* content-wrapper */
@@ -415,6 +504,18 @@ main>.urbosa-block.cb_theme_slider.alignfull{
           .desktop{ display: none;}
         }
 
+
+        /* 
+          for content aware on mobile 
+          tested on image only
+          */
+        .content-holder.ratio.content{
+          .image-wrapper img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
       }
     }
     &.cb_repeater_posts{
@@ -442,4 +543,11 @@ main>.urbosa-block.cb_theme_slider.alignfull{
     }
   }
 
+  /* wp-core blocks that doesnt have responsive rule*/
+  .wp-block-media-text{
+    display: block;
+    >figure{
+      margin-bottom: 2rem!important;
+    }
+  }
 }

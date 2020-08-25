@@ -62,12 +62,23 @@ if(function_exists('acf_register_block')){
     // 6. Search Result
     acf_register_block(array(
       'name'=> 'cb_search_results',
-      'title'=> __('Seach Results'),
-      'description'=>__('Theme Seach Results'),
+      'title'=> __('Seach/Blog Results'),
+      'description'=>__('Theme Seach/Blog Results'),
       'render_template'=> $acfBlocksLocation.'cb_search_results.php',
       'category'=> 'urbosa-blocks',
       'icon'	=> 'search',
-      'keywords'=> array( 'Theme Seach Results' ),
+      'keywords'=> array( 'Theme Seach/Blog Results' ),
+    ));
+
+    // 7. Media dimmer
+    acf_register_block(array(
+      'name'=> 'cb_media_dimmer',
+      'title'=> __('Media Dimmer'),
+      'description'=>__('Theme Media Dimmer'),
+      'render_template'=> $acfBlocksLocation.'cb_media_dimmer.php',
+      'category'=> 'urbosa-blocks',
+      'icon'	=> 'format-video',
+      'keywords'=> array( 'Theme Media Dimmer' ),
     ));
   }
 
@@ -110,6 +121,7 @@ function cb_search_block_content($data){
     $postTaxonomies = $data['post']['post_taxonomies'];
     $taxMain        = $data['post']['tax_main'];
     $taxField       = $data['post']['tax_field'];
+    $displayCategory= $data['post']['display_category'];
 
   
     $tmpTaxonomies  = array();
@@ -147,6 +159,7 @@ function cb_search_block_content($data){
     );
     
     // Aggregate contents
+
     $posts = $query['posts'];
     $contents = array(
       'found_posts' => $query['query']->found_posts,
@@ -160,7 +173,7 @@ function cb_search_block_content($data){
       foreach ($posts as $post) {
 
 
-        // {image} {date} {excerpt} {title} {permalink}
+        // {image} {date} {excerpt} {title} {permalink} {category}
 
         // image
         $img = '';
@@ -201,6 +214,24 @@ function cb_search_block_content($data){
         $time = strtotime($post['post_date']);
         $date = date('d/m/Y', $time);
         $template = str_replace('{date}',$date, $template);
+
+        // category
+        $tmpTerms = [];
+        $terms    = '';
+        if(!empty($postCategories) || $displayCategory){
+          $tmpTerms = get_the_category($post['ID']);
+        }
+        if(!empty($postTaxonomies)){
+          $tmpTerms = get_the_terms($post['ID'], $taxMain );
+        }
+        if(!empty($tmpTerms)){
+          $tmpArrTerms  = array();
+          foreach($tmpTerms as $term){
+            $tmpArrTerms[] = $term->name;
+          }
+          $terms = implode(',',$tmpArrTerms);
+        }
+        $template = str_replace('{category}',$terms, $template);
 
         echo $template;
       }

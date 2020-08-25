@@ -52,7 +52,8 @@
                     },
                     "choices": {
                         "image": "Image",
-                        "video": "Video"
+                        "video": "Video",
+                        "testimonial": "Testimonial Style"
                     },
                     "default_value": [
                         "image"
@@ -341,13 +342,134 @@
                     "mime_types": ""
                 },
                 {
+                    "key": "field_5f44b180814fa",
+                    "label": "Testimonial",
+                    "name": "testimonial",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5f00f7c293079",
+                                "operator": "==",
+                                "value": "testimonial"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_5f44b280814fd",
+                            "label": "Testimony",
+                            "name": "testimony",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "maxlength": "",
+                            "rows": "",
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_5f44b294814fe",
+                            "label": "Name",
+                            "name": "name",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        },
+                        {
+                            "key": "field_5f44b2a7814ff",
+                            "label": "Photo",
+                            "name": "photo",
+                            "type": "image",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "array",
+                            "preview_size": "medium",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": ""
+                        },
+                        {
+                            "key": "field_5f44b2ba81500",
+                            "label": "Position",
+                            "name": "position",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": ""
+                        }
+                    ]
+                },
+                {
                     "key": "field_5f00e3c1c764c",
                     "label": "Content",
                     "name": "content",
                     "type": "wysiwyg",
                     "instructions": "",
                     "required": 0,
-                    "conditional_logic": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5f00f7c293079",
+                                "operator": "==",
+                                "value": "image"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_5f00f7c293079",
+                                "operator": "==",
+                                "value": "video"
+                            }
+                        ]
+                    ],
                     "wrapper": {
                         "width": "",
                         "class": "",
@@ -366,7 +488,22 @@
                     "type": "select",
                     "instructions": "",
                     "required": 0,
-                    "conditional_logic": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_5f00f7c293079",
+                                "operator": "==",
+                                "value": "image"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_5f00f7c293079",
+                                "operator": "==",
+                                "value": "video"
+                            }
+                        ]
+                    ],
                     "wrapper": {
                         "width": "",
                         "class": "",
@@ -569,6 +706,25 @@
             "toggle": 0,
             "return_format": "value",
             "save_custom": 0
+        },
+        {
+            "key": "field_5f44b30a3dff2",
+            "label": "Testimonial Template",
+            "name": "testimonial_template",
+            "type": "textarea",
+            "instructions": "Only for testimonial background type only. Use tags below\r\n{testimony} {image} {name} {position}",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
         }
     ],
     "location": [
@@ -586,9 +742,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1596508849
+    "modified": 1598351505
 },
 {
     "key": "group_5f01059657403",
@@ -643,7 +799,7 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596508849
+    "modified": 1598351505
 },
 {
     "key": "group_5f010daf8efcb",
@@ -822,6 +978,81 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_5f446f7bd2467",
+            "label": "Miscellaneous",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_5f446fd9d2468",
+            "label": "Information",
+            "name": "information",
+            "type": "repeater",
+            "instructions": "Only 3 entries are allowed.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "",
+            "sub_fields": [
+                {
+                    "key": "field_5f447017d2469",
+                    "label": "Left Content",
+                    "name": "content",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "all",
+                    "toolbar": "full",
+                    "media_upload": 1,
+                    "delay": 0
+                },
+                {
+                    "key": "field_5f447023d246a",
+                    "label": "Right Content",
+                    "name": "right_content",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "all",
+                    "toolbar": "full",
+                    "media_upload": 1,
+                    "delay": 0
+                }
+            ]
         }
     ],
     "location": [
@@ -839,9 +1070,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1596508850
+    "modified": 1598351506
 },
 {
     "key": "group_5f013d8d4c6e0",
@@ -920,6 +1151,7 @@
                 "small": "Small",
                 "strip": "Strip",
                 "square": "Square",
+                "content": "Content Aware",
                 "override": "Override"
             },
             "default_value": [
@@ -994,9 +1226,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1596508850
+    "modified": 1598351506
 },
 {
     "key": "group_5f0251d442a87",
@@ -1461,7 +1693,7 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596508850
+    "modified": 1598351506
 },
 {
     "key": "group_5f0e1b841cbf5",
@@ -2183,7 +2415,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1598270536
+    "modified": 1598351506
 },
 {
     "key": "group_5f1a2323a0f3d",
@@ -2266,7 +2498,7 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1596508850
+    "modified": 1598351506
 },
 {
     "key": "group_5f1f45a907a7b",
@@ -2503,11 +2735,11 @@
     "hide_on_screen": "",
     "active": 1,
     "description": "",
-    "modified": 1597697453
+    "modified": 1598351506
 },
 {
     "key": "group_5f2871dfdf9a1",
-    "title": "Block - Search Results",
+    "title": "Block - Search\/Blog Results",
     "fields": [
         {
             "key": "field_5f287209d81f8",
@@ -2549,7 +2781,7 @@
             "label": "Template",
             "name": "template",
             "type": "textarea",
-            "instructions": "Use this template snippets: {image} {date} {excerpt} {title} {permalink}",
+            "instructions": "Use this template snippets: {image} {date} {excerpt} {title} {permalink} {category}",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -2616,6 +2848,25 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_5f44e50b2486b",
+            "label": "Display Category",
+            "name": "display_category",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
         },
         {
             "key": "field_5f379a906801d",
@@ -2740,7 +2991,171 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1597785178
+    "modified": 1598351506
+},
+{
+    "key": "group_5f435c7ec8121",
+    "title": "Staff",
+    "fields": [
+        {
+            "key": "field_5f435c957f633",
+            "label": "Job Title",
+            "name": "job_title",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5f435ca47f634",
+            "label": "Phone",
+            "name": "phone_number",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5f435cb87f635",
+            "label": "Email Address",
+            "name": "email_address",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "staff"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "modified": 1598351506
+},
+{
+    "key": "group_5f43b049743f2",
+    "title": "Block - Media Dimmer",
+    "fields": [
+        {
+            "key": "field_5f43b0c5aee63",
+            "label": "Initial Image",
+            "name": "initial_image",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "thumbnail",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_5f43b11caee64",
+            "label": "Link",
+            "name": "link",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_5f43b1aeaee65",
+            "label": "Is Dimmer",
+            "name": "is_dimmer",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "acf\/cb-media-dimmer"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "modified": 1598351507
 }]

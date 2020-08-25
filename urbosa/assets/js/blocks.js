@@ -1,10 +1,20 @@
 jQuery(document).ready(function($){
-
-  initBlockAccordion()
-  initBlockGoogleMap()
+  initMediaDimmer();
+  initBlockAccordion();
+  initBlockGoogleMap();
 
 })
 
+function initMediaDimmer(){
+  $('.media-dimmer-trigger').click(function(e){
+    var dimmerID = $(this).data('dimmer-id')
+    if($('#'+dimmerID).length){
+      var $dimmer = $('#'+dimmerID);
+      e.preventDefault();
+      $dimmer.dimmer('toggle');
+    }
+  })
+}
 function initBlockAccordion(){
   if($('.cb_accordion').length){
     $('.cb_accordion.trigger').click(function(){

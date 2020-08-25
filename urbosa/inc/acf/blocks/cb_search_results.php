@@ -31,6 +31,7 @@ $taxField       = $taxOption['tax_comparison'];
 
 $blockData = array(
   'template' => get_field('template'),
+  'display_category' => (get_field('display_category')?1:0),
   'search_post_types' => explode(',' , get_field('search_post_types')),
   'post_categories'   => !empty($postCategories)?explode(',' , $postCategories):array(),
   'post_taxonomies'   => !empty($postTaxonomies)?explode(',' , $postTaxonomies):array(),
@@ -83,7 +84,7 @@ if($postData['initial_page']){
       <?php
     }else{
 
-      cb_no_resource_set('Search results block', 'is not available in the admin.');
+      cb_no_resource_set('Search/Blog Results Block', 'is not available in the admin.');
 
     }
   ?>
