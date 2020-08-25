@@ -2383,7 +2383,7 @@
             "label": "Override Template",
             "name": "override_template",
             "type": "textarea",
-            "instructions": "Override template use these template tags:\r\n{title} {image_url} {permalink} {category} {excerpt} {content} {acf_field_name}",
+            "instructions": "Override template use these template tags:\r\n{title} {image_url} {permalink} {category} {excerpt} {content} {acf_field_name:function_name} {dummy:function_name}",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -2413,9 +2413,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": true,
+    "active": 1,
     "description": "",
-    "modified": 1598351506
+    "modified": 1598384770
 },
 {
     "key": "group_5f1a2323a0f3d",
@@ -2781,7 +2781,7 @@
             "label": "Template",
             "name": "template",
             "type": "textarea",
-            "instructions": "Use this template snippets: {image} {date} {excerpt} {title} {permalink} {category}",
+            "instructions": "Use this template snippets: {image} {date} {excerpt} {title} {permalink} {category} {acf_field_name:function_name} {dummy:function_name}:\r\nfunction_name(value,post) is your current custom function.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -2991,90 +2991,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": true,
+    "active": 1,
     "description": "",
-    "modified": 1598351506
-},
-{
-    "key": "group_5f435c7ec8121",
-    "title": "Staff",
-    "fields": [
-        {
-            "key": "field_5f435c957f633",
-            "label": "Job Title",
-            "name": "job_title",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_5f435ca47f634",
-            "label": "Phone",
-            "name": "phone_number",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_5f435cb87f635",
-            "label": "Email Address",
-            "name": "email_address",
-            "type": "text",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        }
-    ],
-    "location": [
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "staff"
-            }
-        ]
-    ],
-    "menu_order": 0,
-    "position": "normal",
-    "style": "default",
-    "label_placement": "top",
-    "instruction_placement": "label",
-    "hide_on_screen": "",
-    "active": true,
-    "description": "",
-    "modified": 1598351506
+    "modified": 1598384518
 },
 {
     "key": "group_5f43b049743f2",
