@@ -422,12 +422,29 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
                       $pregGroup = pregMatchGrouping('/{(.*)?}/', $template);
                       if(!empty($pregGroup)){
                         foreach ($pregGroup as $acfField) {
-                          $fieldName = $acfField[1];
-                          if(isset($postData[$fieldName])){
-                            $template = str_replace($acfField[0], $postData[$fieldName], $template);
-                          }else{
-                            $template = str_replace($acfField[0], get_field($fieldName,$post['ID']), $template);
+                          $fieldName  = $acfField[1];
+                          $toReplace  = $acfField[0];
+                          $func       = explode(':', $fieldName); 
+                          $value      = '';
+
+                          // -----------------------------------
+                          if(!empty($fieldName)){
+                            if(isset($postData[$fieldName])){
+                              $value = $postData[$fieldName];
+                            }else{
+                              $value = get_field($fieldName,$post['ID']);
+                            }
+                            if(!empty($func) && count($func)>1){ // check for function name
+                              $funcName = $func[1];
+                              if(function_exists($funcName)){
+                                $value = $funcName($value, $post);
+                              }
+                            }
                           }
+                          // -----------------------------------
+
+                          $template = str_replace($toReplace, $value , $template);
+
                         }
                       }
 

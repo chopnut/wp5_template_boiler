@@ -233,6 +233,34 @@ function cb_search_block_content($data){
         }
         $template = str_replace('{category}',$terms, $template);
 
+        // get manual tags
+
+        $pregGroup = pregMatchGrouping('/{(.*)?}/', $template);
+        if(!empty($pregGroup)){
+          foreach ($pregGroup as $acfField) {
+            $fieldName  = $acfField[1];
+            $toReplace  = $acfField[0];
+            $func       = explode(':', $fieldName); 
+            $value      = '';
+
+            // -----------------------------------
+            if(!empty($fieldName)){
+
+              $value = get_field($fieldName,$post['ID']);      
+              if(!empty($func) && count($func)>1){ // check for function name
+                $funcName = $func[1];
+                if(function_exists($funcName)){
+                  $value = $funcName($value, $post);
+                }
+              }
+            }
+            // -----------------------------------
+
+            $template = str_replace($toReplace, $value , $template);
+
+          }
+        }
+
         echo $template;
       }
     }
