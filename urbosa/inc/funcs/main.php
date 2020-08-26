@@ -358,6 +358,8 @@ function urbosa_theme_init(){
       $slider->set_icon('dashicons-image-flip-horizontal');
       $slider->set_menu_under('#urbosa_resources');
       $slider->set_support(array('title'));
+      $slider->set_taxonomy();
+      $slider->set_tax_label('');
       $slider->disable_editor();
       $slider->init();
     }

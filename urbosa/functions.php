@@ -1,7 +1,7 @@
 <?php
 /* classes */
 require_once("inc/acf/urbosa_acf_import_export.php");
-require_once("inc/lib/urbosa_custom_type.php");
+require_once("inc/lib/custom_type.php");
 
 /* functions */
 require_once("inc/funcs/helper.php");
