@@ -744,7 +744,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1598351505
+    "modified": 1598476119
 },
 {
     "key": "group_5f01059657403",
@@ -797,9 +797,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1598351505
+    "modified": 1598476119
 },
 {
     "key": "group_5f010daf8efcb",
@@ -1072,7 +1072,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1598351506
+    "modified": 1598476120
 },
 {
     "key": "group_5f013d8d4c6e0",
@@ -1228,7 +1228,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1598351506
+    "modified": 1598476120
 },
 {
     "key": "group_5f0251d442a87",
@@ -1691,9 +1691,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1598351506
+    "modified": 1598476120
 },
 {
     "key": "group_5f0e1b841cbf5",
@@ -2334,7 +2334,7 @@
                 ]
             ],
             "wrapper": {
-                "width": "",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -2345,6 +2345,71 @@
             "min": "",
             "max": "",
             "step": ""
+        },
+        {
+            "key": "field_5f45d9045a574",
+            "label": "Fill in empty",
+            "name": "fill_in_empty",
+            "type": "true_false",
+            "instructions": "If the post result is less than the column number, fill the remaining",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5f45f4ee699e9",
+            "label": "Force Category\/Taxonomy",
+            "name": "display_category",
+            "type": "true_false",
+            "instructions": "To force {category} tag to return value even category\/taxonomy is not set.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5f460431f4d4e",
+            "label": "Custom Taxonomy",
+            "name": "custom_taxonomy",
+            "type": "text",
+            "instructions": "If you checked Force Category\/Taxonomy, you will need the custom taxonomy name if the post type is a custom one.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5f45f4ee699e9",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         },
         {
             "key": "field_5f161103732c4",
@@ -2413,9 +2478,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1598384770
+    "modified": 1598476120
 },
 {
     "key": "group_5f1a2323a0f3d",
@@ -2496,9 +2561,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1598351506
+    "modified": 1598476120
 },
 {
     "key": "group_5f1f45a907a7b",
@@ -2733,9 +2798,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1598351506
+    "modified": 1598476120
 },
 {
     "key": "group_5f2871dfdf9a1",
@@ -2991,9 +3056,109 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1598384518
+    "modified": 1598476120
+},
+{
+    "key": "group_5f435c7ec8121",
+    "title": "Staff",
+    "fields": [
+        {
+            "key": "field_5f45efff35b77",
+            "label": "Full Name",
+            "name": "full_name",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5f435c957f633",
+            "label": "Job Title",
+            "name": "job_title",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5f435ca47f634",
+            "label": "Phone",
+            "name": "phone_number",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5f435cb87f635",
+            "label": "Email Address",
+            "name": "email_address",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "staff"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "modified": 1598476120
 },
 {
     "key": "group_5f43b049743f2",
@@ -3076,5 +3241,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1598351507
+    "modified": 1598476121
 }]

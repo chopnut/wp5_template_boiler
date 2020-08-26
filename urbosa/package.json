@@ -4,10 +4,9 @@
   "description": "Another wordpress set up",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack -w --mode=development --env.development --config ./webpack.config.js --host 0.0.0.0 --disable-host-check",
+    "dev": "webpack -w --mode=development --env.development --config ./webpack.config.js --host 0.0.0.0 --disable-host-check && webpack-dev-server",
     "watch": "webpack -w --mode=development --env.watch --config ./webpack.config.js",
-    "build": "webpack --mode=production --env.production --config ./webpack.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode=production --env.production --config ./webpack.config.js"
   },
   "author": "",
   "license": "ISC",

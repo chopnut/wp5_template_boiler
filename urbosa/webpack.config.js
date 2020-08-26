@@ -15,26 +15,56 @@ module.exports = env => {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'
+    }),
+
+    new BrowserSyncPlugin({
+      host: 'localhost',
+      port: 3000,
+      proxy: `http://localhost:8191`,
+      files: [
+        {
+          match: [
+            './',  
+            '!./assets/dist/js/*.js',
+            '!**/*.scss',
+            '!**/*.map',
+            '!**/*.sass',
+            '!./node_modules/',
+            '!./inc/acf/json'
+          ],
+          fn: (event, file) => {
+            if (event == 'change') {
+              const bs = require("browser-sync").get("bs-webpack-plugin");
+              const extension = file.split('.').pop();
+              
+              if(extension=='css'){
+
+                console.log('CSS changed...', file);
+                bs.reload("*.css");
+
+              } else if (extension=='php') {
+
+                console.log('PHP changed...', file);
+                bs.reload();
+
+              } else{
+
+                console.log('Others changed...', file);
+                bs.reload();
+              }
+
+            }
+          }
+        },
+      ],
+      notify: false,
+      reloadDelay: 0
+    },
+    {
+      reload: false,
+      name: 'bs-webpack-plugin'
     })
   ]
-  // When watch is called only monitor the change without autoloading
-  if (!env.watch) {
-    plugins.push(
-      new BrowserSyncPlugin({
-        host: 'localhost',
-        port: 3000,
-        proxy: `http://localhost:8191`,
-        files: [
-          '!./node_modules/',
-          '!./inc/acf/json',
-          './'
-        ],
-
-        notify: false,
-        reloadDelay: 0
-      })
-    )
-  }
 
   return {
     entry: {
@@ -58,7 +88,8 @@ module.exports = env => {
             {
               loader: MiniCssExtractPlugin.loader,
               options: {
-                publicPath: '../../'
+                publicPath: '../../',
+                hmr: true
               }
             },
             {

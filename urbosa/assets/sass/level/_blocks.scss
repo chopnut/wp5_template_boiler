@@ -449,14 +449,7 @@ main>.urbosa-block.cb_theme_slider.alignfull{
 .popup-container{cursor:auto;height:0;position:absolute;}
 
 
-/* within-content-corridor */
-@media (max-width: $contentCorridorMaxWidth){
-  .wp-block-group.center{
-    >.wp-block-group__inner-container{
-      padding: 0;
-    }
-  }
-}
+
 /* desktop */
 @media (min-width: 1025px){}
 /* tablet */

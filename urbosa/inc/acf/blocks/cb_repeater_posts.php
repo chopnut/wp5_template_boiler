@@ -14,7 +14,7 @@ if( !empty($block['align']) ) {
 
 if(!function_exists('cb_normalise_posts')){
   function cb_normalise_posts($posts, $viewButton = '',$category = null){
-    $is_progressive = function_exists('urbosa_progressive');
+    $isProgressive = function_exists('urbosa_progressive');
     $tmp = [];
     foreach($posts as $post){
       $type='post';
@@ -33,7 +33,7 @@ if(!function_exists('cb_normalise_posts')){
             $highImage = $ctaImage['sizes']['large'];
             $alt = $ctaImage['alt'];
 
-            if(!$is_progressive){
+            if(!$isProgressive){
               $lowImage = $highImage;
             }
           }
@@ -64,11 +64,14 @@ if(!function_exists('cb_normalise_posts')){
 
           if(isset($post['object_type']) && $post['object_type']== 'post'){
             $thePost = $post['object_post'];
-            $theID = $thePost->ID; 
-            $theTitle = $thePost->post_title;
-            $theExcerpt = $thePost->post_excerpt;
-            $theDate = $thePost->post_date;
-            $theContent = $thePost->post_content;
+
+            if($thePost){
+              $theID = $thePost->ID; 
+              $theTitle = $thePost->post_title;
+              $theExcerpt = $thePost->post_excerpt;
+              $theDate = $thePost->post_date;
+              $theContent = $thePost->post_content;
+            }
 
           }else{
 
@@ -98,15 +101,23 @@ if(!function_exists('cb_normalise_posts')){
             $highImage = getFeaturedImage($theID,'large',$alt);
           }
 
-          if(!$is_progressive){
+          if(!$isProgressive){
             $lowImage = $highImage;
           }
 
           $tmpTerms = [];
           if($category){
+            
             switch($category['type']){
               case 'category':
-                $tmpTerms = get_the_category($theID);
+                // If taxonomy is set and not empty that means , we are forcing using custom taxonomy
+                if(isset($category['taxonomy']) && !empty($category['taxonomy'])){
+                  $tmpTerms = get_the_terms($theID, $category['taxonomy']);
+
+                }else{
+                  $tmpTerms = get_the_category($theID);
+                }
+
               break;
               default;
                 $tmpTerms = get_the_terms($theID, $category['taxonomy']);
@@ -122,7 +133,15 @@ if(!function_exists('cb_normalise_posts')){
             }
             $terms = implode(',',$tmpArrTerms);
           }
-
+          
+          // Add uncategorized
+          if(
+            $category['type'] == 'category' &&
+            isset($category['taxonomy']) && 
+            !empty($category['taxonomy']) && 
+            empty($tmpTerms)){
+            $terms = 'Uncategorised';
+          }
           $data = [
             'ID' => $theID,
             'title' =>   $theTitle,
@@ -151,9 +170,17 @@ if(!function_exists('cb_normalise_posts')){
 //--------------------------------------------------------------------------
 $repeaterType = get_field('repeater_type');
 $manual       = get_field('manual_objects');
-$is_progressive = function_exists('urbosa_progressive');
+$isProgressive = function_exists('urbosa_progressive');
+$fillEmpty     = get_field('fill_in_empty');
+
+$displayCategory = get_field('display_category');
+$customTaxonomy   = get_field('custom_taxonomy');
+
 $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
+
 ?>
+
+
 <div class="urbosa-block <?=$className?>">
   <?php 
     $posts =[];
@@ -187,9 +214,13 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
       );
       
 
-      if($catType == 'category' && !empty($autoCat)){
+      if($catType == 'category' && !empty($autoCat) || $displayCategory){
         $categories = array_map('trim', explode(',', $autoCat));
         $category['type'] = 'category';
+
+        if(!empty($customTaxonomy)){
+          $category['taxonomy'] = $customTaxonomy;
+        }
       }
       if($catType == 'taxonomy' && !empty($autoTax)){
         $taxonomies = array_map('trim', explode(',', $autoTax));
@@ -283,119 +314,38 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
       ?>
 
       <div class="columns is-multiline <?=$mainClass?> <?=$styleType?> <?=$styleSplitMode?>" <?=$mainAttr?>>
+      
 
-      <?php
-         if($styleDirection=='column' && $styleType=='split'){
-
-          for($n=0; $n < count($posts); $n++){
-
-
-            $post = $posts[$n];
-            $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
-            $title = $post['title'];
-            $low = $post['image']['low'];
-            $high = $post['image']['high'];
-            $rawLow = $low;
-            $placeHolderImage = $placeholder;
-            $postData = $post['post'];
-            $buttonLabel = $post['button_label'];
-
-            if($low && $is_progressive){
-              $low = encodeDataImage($low);
-            }
-            if($low){
-              $placeHolderImage = $low;
-            }
-            
-            
-            $link = $post['link'];
-
-
-            ?>
-            <div class="column is-12 columns is-vcentered ">
-              <?php 
-                if(!empty($overrideTemplate)){
-
-                  $template = str_replace('{title}',$title, $overrideTemplate);
-                  $template = str_replace('{excerpt}',$excerpt, $template);
-                  $template = str_replace('{content}',$post['excerpt'], $template);
-                  $template = str_replace('{image_url}',$high, $template);
-                  $template = str_replace('{permalink}',$link, $template);
-                  $template = str_replace('{category}',$post['terms'], $template);
-
-                  $pregGroup = pregMatchGrouping('/{(.*)?}/', $template);
-                  if(!empty($pregGroup)){
-                    foreach ($pregGroup as $acfField) {
-                      $fieldName = $acfField[1];
-                      if(isset($postData[$fieldName])){
-                        $template = str_replace($acfField[0], $postData[$fieldName], $template);
-                      }else{
-                        $template = str_replace($acfField[0], get_field($fieldName,$post['ID']), $template);
-
-                      }
-                    }
-                  }
-
-                  echo $template;
-
-                }else{
-                  ?>
-                    <div class="column pr-0 pl-0 pt-0 pb-0">
-                      <figure>
-                        <a href="<?=$link['url']?>" target="<?=$link['target']?>">
-                          <div class="image ratio square progressive <?=$block['id']?>" data-raw-low="<?=$rawLow?>" data-low="<?=$low?>" data-high="<?=$high?>" style="background-image:url(<?=$placeHolderImage?>)">
-                        </div>
-                        </a>
-                      </figure>
-                    </div>  
-                    <div class="column pr-0 pl-0">
-                      <div class="title"><?=$title?></div>
-                      <div class="desc pt-2 pb-4"><?=$excerpt?></div>
-                      <?php 
-                        if(!empty($buttonLabel)){
-                          ?>
-                          <a href="<?=$link?>" class="button"><?=$buttonLabel?></a>
-                          <?php
-                        }
-                      ?>
-                    </div> 
-                  <?php
-                }
-
-              ?>
-            </div>
-            <?php
-            
-
-          }
-
-
-        }else{
-
-          ?>
-
-          <?php
-            $columnClass = 'is-12';
-            if($styleDirection=='row'){
-              
-              $tmpColumn = 12/$columns;
-              $columnClass = 'is-'.$tmpColumn;
-            }
+      <?php 
 
             for($n=0; $n < count($posts); $n++){
 
-              $post = $posts[$n];
-              $excerpt = wp_trim_words($post['excerpt'], $wordsLimit);
-              $title = $post['title'];
-              $image = $post['image'];
-              
-              $high = $image['high'];
-              $alt  = $image['alt'];
+              //---------------------------
+              //      Prep variables
+              //---------------------------
 
-              $link = $post['link'];
-              $postData = $post['post'];
-              $buttonLabel = $post['button_label'];
-              
+              $post     = $posts[$n];
+              $excerpt  = wp_trim_words($post['excerpt'], $wordsLimit);
+
+              $title    = $post['title'];
+              $link     = $post['link'];
+              $low      = $post['image']['low'];
+              $high     = $post['image']['high'];
+              $alt      = $post['image']['alt'];
+
+              $rawLow   = $low;
+
+              $placeHolderImage = $placeholder;
+              $postData     = $post['post'];
+              $buttonLabel  = $post['button_label'];
+
+              if($low && $isProgressive){
+                $low = encodeDataImage($low);
+              }
+              if($low){
+                $placeHolderImage = $low;
+              }
+
               if(empty($high)){
                 $high = $placeholder;
               }
@@ -404,77 +354,93 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
               if(is_admin()){
                 $imgAttr  = "src='$high'";
               }
+              //---------------------------
+              //     Gather template
+              //---------------------------
 
+              $template = '';
+              if(!empty($overrideTemplate)){
 
-
-              ?>
-                <div class="column <?=$columnClass?>">
-                  <?php 
-                    if(!empty($overrideTemplate)){
-
-                      $template = str_replace('{title}',$title, $overrideTemplate);
-                      $template = str_replace('{excerpt}',$excerpt, $template);
-                      $template = str_replace('{content}',$post['excerpt'], $template);
-                      $template = str_replace('{image_url}',$high, $template);
-                      $template = str_replace('{permalink}',$link['url'], $template);
-                      $template = str_replace('{category}',$post['terms'], $template);
-
-                      $pregGroup = pregMatchGrouping('/{(.*)?}/', $template);
-                      if(!empty($pregGroup)){
-                        foreach ($pregGroup as $acfField) {
-                          $fieldName  = $acfField[1];
-                          $toReplace  = $acfField[0];
-                          $func       = explode(':', $fieldName); 
-                          $value      = '';
-
-                          // -----------------------------------
-                          if(!empty($fieldName)){
-                            if(isset($postData[$fieldName])){
-                              $value = $postData[$fieldName];
-                            }else{
-                              $value = get_field($fieldName,$post['ID']);
-                            }
-                            if(!empty($func) && count($func)>1){ // check for function name
-                              $funcName = $func[1];
-                              if(function_exists($funcName)){
-                                $value = $funcName($value, $post);
-                              }
-                            }
+                  $template = str_replace('{title}',$title, $overrideTemplate);
+                  $template = str_replace('{excerpt}',$excerpt, $template);
+                  $template = str_replace('{content}',$post['excerpt'], $template);
+                  $template = str_replace('{image_url}',$high, $template);
+                  $template = str_replace('{image_alt}',$alt, $template);
+                  $template = str_replace('{permalink}',$link['url'], $template);
+                  $template = str_replace('{category}',$post['terms'], $template);
+                
+                  if(is_admin()){
+                    $imgTag   = "<img src='$high' style='width: 100%; height:auto;'/>";
+                    $template = str_replace('{image_for_admin}', $imgTag, $template);
+                  }else{
+                    $template = str_replace('{image_for_admin}', '', $template);
+                
+                  }
+                
+                  $pregGroup = pregMatchGrouping('/{(.*)?}/', $template);
+                  if(!empty($pregGroup)){
+                    foreach ($pregGroup as $acfField) {
+                      $fieldName  = $acfField[1];
+                      $toReplace  = $acfField[0];
+                      $func       = explode(':', $fieldName); 
+                      $value      = '';
+                
+                      // -----------------------------------
+                      if(!empty($fieldName)){
+                        if(isset($postData[$fieldName])){
+                          $value = $postData[$fieldName];
+                        }else{
+                          if(count($func)>0){
+                            $fieldName = $func[0];
                           }
-                          // -----------------------------------
-
-                          $template = str_replace($toReplace, $value , $template);
-
+                          $value = get_field($fieldName,$post['ID']);
+                        }
+                
+                        if(!empty($func) && count($func)>1){ // check for function name
+                          $funcName = $func[1];
+                          if(function_exists($funcName)){
+                            
+                            // check for additional pass data
+                            $extraData = null;
+                            if(isset($func[2])){
+                              $extraData = $func[2];
+                            }
+                
+                            $value = $funcName($value, $post, $extraData);
+                          }
                         }
                       }
+                      // -----------------------------------
+                
+                      $template = str_replace($toReplace, $value , $template);
+                
+                    }
+                  }
+              }
 
-                      echo $template;
-    
-                    } else{
-                      ?>
-                      <div class="card">
-                        <?php 
-                          if($styleType=='center'){
-                            ?>
-                          <div class="title pt-4"><a href="<?=$link['url']?>" target="<?=$link['target']?>"><?=$title?></a></div>
-                            <?php
-                          }
-                        ?>
-                        <figure class="ratio tv force">
+
+              //---------------------------
+              //        Render
+              //---------------------------
+              
+              if($styleDirection=='column' && $styleType=='split'){
+                if(!empty($template)){
+                  echo $template;
+                }else{
+
+                  ?>
+                  <div class="column is-12 columns is-vcentered ">
+                      <div class="column pr-0 pl-0 pt-0 pb-0">
+                        <figure>
                           <a href="<?=$link['url']?>" target="<?=$link['target']?>">
-                            <div class="img-bg cover">
-                              <img class="urbosa-lazy-load" data-src="<?=$high?>" alt="<?=$alt?>" <?=$imgAttr?>/>
-                            </div>
+                            <div class="image ratio square progressive <?=$block['id']?>" data-raw-low="<?=$rawLow?>" data-low="<?=$low?>" data-high="<?=$high?>" style="background-image:url(<?=$placeHolderImage?>)">
+                          </div>
                           </a>
                         </figure>
-                        <?php 
-                          if($styleType!=='center'){
-                            ?>
-                            <div class="title pt-4"><a href="<?=$link['url']?>" target="<?=$link['target']?>"><?=$title?></a></div>
-                            <?php
-                          }
-                        ?>
-                        <div class="desc pt-4 pb-4"><?=$excerpt?></div>
+                      </div>  
+                      <div class="column pr-0 pl-0">
+                        <div class="title"><?=$title?></div>
+                        <div class="desc pt-2 pb-4"><?=$excerpt?></div>
                         <?php 
                           if(!empty($buttonLabel)){
                             ?>
@@ -482,24 +448,84 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
                             <?php
                           }
                         ?>
-                      </div>
-                      <?php
-                    }
-                  ?>
-                </div>
+                      </div> 
+                  </div>
+                  <?php
+                }
+              
+              
+              }else{
+
+                $columnClass = 'is-12';
+                if($styleDirection=='row'){
+                  
+                  $totalCol = 12;
+                  $tmpColumn = $totalCol/$columns;
+                  $columnClass = 'is-'.$tmpColumn;
+
+                  // if the column in question is not divisible by 12 make it auto.
+                  if($totalCol % $columns  !=0 ){
+                    $columnClass = '';
+                  }
+                }
+
+              ?>
+              <div class="column <?=$columnClass?> is-centered">
+                <?php 
+                  if(!empty($template)){
+                    echo $template;
+                  }else{
+                    ?>
+                    <div class="card">
+                      <?php 
+                        if($styleType=='center'){
+                          ?>
+                        <div class="title pt-4"><a href="<?=$link['url']?>" target="<?=$link['target']?>"><?=$title?></a></div>
+                          <?php
+                        }
+                      ?>
+                      <figure class="ratio tv force">
+                        <a href="<?=$link['url']?>" target="<?=$link['target']?>">
+                          <div class="img-bg cover">
+                            <img class="urbosa-lazy-load" data-src="<?=$high?>" alt="<?=$alt?>" <?=$imgAttr?>/>
+                          </div>
+                        </a>
+                      </figure>
+                      <?php 
+                        if($styleType!=='center'){
+                          ?>
+                          <div class="title pt-4"><a href="<?=$link['url']?>" target="<?=$link['target']?>"><?=$title?></a></div>
+                          <?php
+                        }
+                      ?>
+                      <div class="desc pt-4 pb-4"><?=$excerpt?></div>
+                      <?php 
+                        if(!empty($buttonLabel)){
+                          ?>
+                          <a href="<?=$link?>" class="button"><?=$buttonLabel?></a>
+                          <?php
+                        }
+                      ?>
+                    </div>
+                    <?php
+                  }
+                ?>
+              </div>
               <?php
-            }
-          ?>
+              
+                // Correct missing column
+                if(empty($columnClass) && $fillEmpty){
+                  $count = count($posts);
+                  if($columns>$count){
+                    $sub = $columns-$count;
+                    echo str_repeat('<div class="column"></div>', $sub);
+                  }
+                }
+              }
+            } // for (posts)
 
-          <?php
 
-        }
 
-      ?>
-
-      </div>
-
-      <?php
     } else {
       cb_no_resource_set('Repeater posts block', 'No posts/object found.');
 
@@ -517,3 +543,4 @@ $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
     <?php
   }
 ?>
+</div>

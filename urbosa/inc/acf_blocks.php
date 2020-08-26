@@ -245,8 +245,12 @@ function cb_search_block_content($data){
 
             // -----------------------------------
             if(!empty($fieldName)){
+              
+              if(count($func)>0){
+                $fieldName = $func[0];
+              }
+              $value = get_field($fieldName,$post['ID']);    
 
-              $value = get_field($fieldName,$post['ID']);      
               if(!empty($func) && count($func)>1){ // check for function name
                 $funcName = $func[1];
                 if(function_exists($funcName)){
@@ -259,7 +263,7 @@ function cb_search_block_content($data){
 
                   $value = $funcName($value, $post, $extraData);
 
-                  
+
                 }
               }
             }
