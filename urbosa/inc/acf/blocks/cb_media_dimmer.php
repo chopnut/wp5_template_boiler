@@ -30,7 +30,7 @@ $image = get_field('initial_image');
       $youtubeID = getYoutubeIdFromUrl($link);
       if($isDimmer){
         $content = "<img src='$imgSrc' alt='$alt' />";
-        $ytSrc = 'https://www.youtube.com/embed/'.$youtubeID.'?autoplay=1&controls=0&html5=1&loop=1&mute=1&rel=0';
+        $ytSrc = 'https://www.youtube.com/embed/'.$youtubeID.'?autoplay=1&controls=1&html5=1&loop=0&mute=1&rel=0&playlist='.$youtubeID;
         
         if($youtubeID){
           $content = '<div class="video-container">

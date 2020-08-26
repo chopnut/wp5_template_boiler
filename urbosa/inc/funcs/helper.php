@@ -460,7 +460,7 @@ if(!function_exists('youtubeEmbed')){
       $yID = getYoutubeIdFromUrl($src);
       $tmp['id'] = $yID;
 
-      $srcquery .= '&playlist='.$yID; // this allow it to loop
+      $srcquery .= '&playlist='.$yID; // this allow it to loop and show no relative video.
 
       $src = substr($src,0,-1);
       $src = $src.$srcquery.'"';

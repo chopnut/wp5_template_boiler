@@ -250,7 +250,16 @@ function cb_search_block_content($data){
               if(!empty($func) && count($func)>1){ // check for function name
                 $funcName = $func[1];
                 if(function_exists($funcName)){
-                  $value = $funcName($value, $post);
+
+                  // check for additional pass data
+                  $extraData = null;
+                  if(isset($func[2])){
+                    $extraData = $func[2];
+                  }
+
+                  $value = $funcName($value, $post, $extraData);
+
+                  
                 }
               }
             }
