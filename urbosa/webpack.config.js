@@ -27,8 +27,8 @@ module.exports = env => {
             './',  
             '!./assets/dist/js/*.js',
             '!**/*.scss',
-            '!**/*.map',
             '!**/*.sass',
+            '!**/*.map',
             '!./node_modules/',
             '!./inc/acf/json'
           ],
@@ -42,16 +42,12 @@ module.exports = env => {
                 console.log('CSS changed...', file);
                 bs.reload("*.css");
 
-              } else if (extension=='php') {
-
-                console.log('PHP changed...', file);
-                bs.reload();
-
-              } else{
+              } else {
 
                 console.log('Others changed...', file);
                 bs.reload();
-              }
+
+              } 
 
             }
           }
