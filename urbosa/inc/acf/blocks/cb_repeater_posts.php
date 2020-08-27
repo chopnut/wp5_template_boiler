@@ -16,152 +16,154 @@ if(!function_exists('cb_normalise_posts')){
   function cb_normalise_posts($posts, $viewButton = '',$category = null){
     $isProgressive = function_exists('urbosa_progressive');
     $tmp = [];
-    foreach($posts as $post){
-      $type='post';
-      if(isset($post['object_type']) && $post['object_type']== 'cta'){
-        $type = 'cta';
-        $ctaPost = $post['object_cta'];
-      }
-
-      switch($type){
-        case 'cta':
-          $lowImage = $highImage = $alt = '';
-          $ctaImage = $ctaPost['cta_image'];
-          if($ctaImage){
-            
-            $lowImage = $ctaImage['sizes']['progressive_landscape'];
-            $highImage = $ctaImage['sizes']['large'];
-            $alt = $ctaImage['alt'];
-
+    if(!empty($posts)){
+      foreach($posts as $post){
+        $type='post';
+        if(isset($post['object_type']) && $post['object_type']== 'cta'){
+          $type = 'cta';
+          $ctaPost = $post['object_cta'];
+        }
+  
+        switch($type){
+          case 'cta':
+            $lowImage = $highImage = $alt = '';
+            $ctaImage = $ctaPost['cta_image'];
+            if($ctaImage){
+              
+              $lowImage = $ctaImage['sizes']['progressive_landscape'];
+              $highImage = $ctaImage['sizes']['large'];
+              $alt = $ctaImage['alt'];
+  
+              if(!$isProgressive){
+                $lowImage = $highImage;
+              }
+            }
+            $data = [
+              'ID' => 0,
+              'title' => $ctaPost['cta_title'],
+              'excerpt' => $ctaPost['cta_description'],
+              'image' => array(
+                'high'=> $highImage,
+                'low' => $lowImage,
+                'alt' => $alt,
+              ),
+              'link' => ($ctaPost['cta_link']?$ctaPost['cta_link']: array(
+                'url'=>'',
+                'target' => '_self',
+                'title'=> ''
+              )),
+              'date' => '',
+              'post' => $ctaPost,
+              'button_label' => $post['object_button_label'],
+              'terms' => '',
+            ];
+            $tmp[]= $data;
+          break;
+          default: 
+            $theID = $theTitle = $theExcerpt = $theDate =  $theContent = $terms = '' ;
+  
+  
+            if(isset($post['object_type']) && $post['object_type']== 'post'){
+              $thePost = $post['object_post'];
+  
+              if($thePost){
+                $theID = $thePost->ID; 
+                $theTitle = $thePost->post_title;
+                $theExcerpt = $thePost->post_excerpt;
+                $theDate = $thePost->post_date;
+                $theContent = $thePost->post_content;
+              }
+  
+            }else{
+  
+              $theID = $post['ID']; 
+              $theTitle = $post['post_title'];
+              $theExcerpt = $post['post_excerpt']; 
+              $theDate = $post['post_date'];
+              $theContent = $post['post_content'];
+  
+            }
+  
+            if(empty($theExcerpt)){
+              $theExcerpt = $theContent;
+            }
+  
+            $lowImage = $highImage = $alt = '';
+            $gatewayImage = get_field('gateway_image', $theID);
+  
+            if($gatewayImage){
+  
+              $lowImage = $gatewayImage['sizes']['progressive_landscape'];
+              $highImage = $gatewayImage['sizes']['large'];
+              $alt = $gatewayImage['alt'];
+  
+            }else{
+              $lowImage = getFeaturedImage($theID,'progressive_landscape');
+              $highImage = getFeaturedImage($theID,'large',$alt);
+            }
+  
             if(!$isProgressive){
               $lowImage = $highImage;
             }
-          }
-          $data = [
-            'ID' => 0,
-            'title' => $ctaPost['cta_title'],
-            'excerpt' => $ctaPost['cta_description'],
-            'image' => array(
-              'high'=> $highImage,
-              'low' => $lowImage,
-              'alt' => $alt,
-            ),
-            'link' => ($ctaPost['cta_link']?$ctaPost['cta_link']: array(
-              'url'=>'',
-              'target' => '_self',
-              'title'=> ''
-            )),
-            'date' => '',
-            'post' => $ctaPost,
-            'button_label' => $post['object_button_label'],
-            'terms' => '',
-          ];
-          $tmp[]= $data;
-        break;
-        default: 
-          $theID = $theTitle = $theExcerpt = $theDate =  $theContent = $terms = '' ;
-
-
-          if(isset($post['object_type']) && $post['object_type']== 'post'){
-            $thePost = $post['object_post'];
-
-            if($thePost){
-              $theID = $thePost->ID; 
-              $theTitle = $thePost->post_title;
-              $theExcerpt = $thePost->post_excerpt;
-              $theDate = $thePost->post_date;
-              $theContent = $thePost->post_content;
-            }
-
-          }else{
-
-            $theID = $post['ID']; 
-            $theTitle = $post['post_title'];
-            $theExcerpt = $post['post_excerpt']; 
-            $theDate = $post['post_date'];
-            $theContent = $post['post_content'];
-
-          }
-
-          if(empty($theExcerpt)){
-            $theExcerpt = $theContent;
-          }
-
-          $lowImage = $highImage = $alt = '';
-          $gatewayImage = get_field('gateway_image', $theID);
-
-          if($gatewayImage){
-
-            $lowImage = $gatewayImage['sizes']['progressive_landscape'];
-            $highImage = $gatewayImage['sizes']['large'];
-            $alt = $gatewayImage['alt'];
-
-          }else{
-            $lowImage = getFeaturedImage($theID,'progressive_landscape');
-            $highImage = getFeaturedImage($theID,'large',$alt);
-          }
-
-          if(!$isProgressive){
-            $lowImage = $highImage;
-          }
-
-          $tmpTerms = [];
-          if($category){
-            
-            switch($category['type']){
-              case 'category':
-                // If taxonomy is set and not empty that means , we are forcing using custom taxonomy
-                if(isset($category['taxonomy']) && !empty($category['taxonomy'])){
+  
+            $tmpTerms = [];
+            if($category){
+              
+              switch($category['type']){
+                case 'category':
+                  // If taxonomy is set and not empty that means , we are forcing using custom taxonomy
+                  if(isset($category['taxonomy']) && !empty($category['taxonomy'])){
+                    $tmpTerms = get_the_terms($theID, $category['taxonomy']);
+  
+                  }else{
+                    $tmpTerms = get_the_category($theID);
+                  }
+  
+                break;
+                default;
                   $tmpTerms = get_the_terms($theID, $category['taxonomy']);
-
-                }else{
-                  $tmpTerms = get_the_category($theID);
-                }
-
-              break;
-              default;
-                $tmpTerms = get_the_terms($theID, $category['taxonomy']);
-
+  
+              }
             }
-          }
-
-          if(!empty($tmpTerms)){
-
-            $tmpArrTerms  = array();
-            foreach($tmpTerms as $term){
-              $tmpArrTerms[] = $term->name;
+  
+            if(!empty($tmpTerms)){
+  
+              $tmpArrTerms  = array();
+              foreach($tmpTerms as $term){
+                $tmpArrTerms[] = $term->name;
+              }
+              $terms = implode(',',$tmpArrTerms);
             }
-            $terms = implode(',',$tmpArrTerms);
-          }
-          
-          // Add uncategorized
-          if(
-            $category['type'] == 'category' &&
-            isset($category['taxonomy']) && 
-            !empty($category['taxonomy']) && 
-            empty($tmpTerms)){
-            $terms = 'Uncategorised';
-          }
-          $data = [
-            'ID' => $theID,
-            'title' =>   $theTitle,
-            'excerpt' => $theExcerpt,
-            'image' => array(
-              'high'=> $highImage,
-              'low' => $lowImage,
-              'alt' => $alt,
-            ),
-            'link' => array(
-              'title'=> $theTitle,
-              'url'=> get_permalink($theID),
-              'target'=> '_self'
-            ),
-            'date' =>  $theDate,
-            'post' => $post,
-            'button_label' => $viewButton,
-            'terms' => $terms
-          ];
-          $tmp[]= $data;
+            
+            // Add uncategorized
+            if(
+              $category['type'] == 'category' &&
+              isset($category['taxonomy']) && 
+              !empty($category['taxonomy']) && 
+              empty($tmpTerms)){
+              $terms = 'Uncategorised';
+            }
+            $data = [
+              'ID' => $theID,
+              'title' =>   $theTitle,
+              'excerpt' => $theExcerpt,
+              'image' => array(
+                'high'=> $highImage,
+                'low' => $lowImage,
+                'alt' => $alt,
+              ),
+              'link' => array(
+                'title'=> $theTitle,
+                'url'=> get_permalink($theID),
+                'target'=> '_self'
+              ),
+              'date' =>  $theDate,
+              'post' => $post,
+              'button_label' => $viewButton,
+              'terms' => $terms
+            ];
+            $tmp[]= $data;
+        }
       }
     }
     return $tmp;
