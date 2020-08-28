@@ -21,10 +21,23 @@ a{
   }
 }
 p{ line-height: 1.25rem;}
-button, input[type=submit]{
-  /* your default styling here */
+
+
+a.wp-block-button__link, 
+button, 
+.gform_button.button,
+a.button,
+input[type=submit] {
+
+  padding: .8rem 1.2rem;
+  text-transform: uppercase;
+  transition: all 300ms linear;
+  opacity: 1;
+  text-decoration: none;
+  cursor: pointer;
+
   &:hover{
-    
+    opacity: .8;
   }
 }
 input[type=text],

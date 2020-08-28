@@ -363,6 +363,9 @@ function urbosa_theme_init(){
       $slider->disable_editor();
       $slider->init();
     }
+
+    add_theme_shortcodes();
+
 }
 
 function urbosa_setup_options(){

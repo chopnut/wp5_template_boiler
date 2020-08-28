@@ -1,0 +1,32 @@
+/* social icons */
+ul.the_social_icons {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0rem;
+
+  >* a{
+    padding: 0 1rem;
+  }
+  >*:first-child{
+    a{
+
+      padding-left: 0!important;
+    }
+    
+  }
+  >*:last-child{
+    a{
+      padding-right: 0!important;
+    }
+  }
+
+  &.reversed{
+    i {
+      background-color: white;
+    }
+  }
+  &.left{
+    justify-content: flex-start;
+  }
+  
+}
