@@ -37,6 +37,7 @@ $blockData = array(
   'post_taxonomies'   => !empty($postTaxonomies)?explode(',' , $postTaxonomies):array(),
   'tax_main' => $taxMain,
   'tax_field' => $taxField,
+  'enable_placeholder' => get_field('enable_placeholder')
 );
 
 $postData = ajaxContent('cb_search_results', $contentSelector, $loadMoreSelector, $blockData);
@@ -125,6 +126,9 @@ if($postData['initial_page']){
 
             // Change url
             Helper.replacePageURL(opt.page);
+
+            initLazyLoadImage();
+
           }
         })
         

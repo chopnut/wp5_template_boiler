@@ -178,7 +178,7 @@ $fillEmpty     = get_field('fill_in_empty');
 $displayCategory = get_field('display_category');
 $customTaxonomy   = get_field('custom_taxonomy');
 
-$placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
+$placeholder   = cb_get_placeholder_image();
 
 ?>
 

@@ -3,7 +3,7 @@
 if(function_exists('acf_register_block')){
   //----------------------------------------------
   function register_blocks(){
-    $acfBlocksLocation = '../inc/acf/blocks/';
+    $acfBlocksLocation = 'inc/acf/blocks/';
     /* 
       Instruction: Copy the acf_register_block , 1 per each block set the render template.
       Create the template php file in the blocks folder. Icon should be dashicon of wordpress without the 'dashicons'
@@ -106,6 +106,10 @@ function cb_no_resource_set($head,$body){
   </div>
   <?php
 }
+function cb_get_placeholder_image(){
+  $placeholder   = get_stylesheet_directory_uri().'/assets/img/placeholder.jpg';
+  return $placeholder;
+}
 /* search blocks */
 function cb_search_block_content($data){
 
@@ -122,6 +126,7 @@ function cb_search_block_content($data){
     $taxMain        = $data['post']['tax_main'];
     $taxField       = $data['post']['tax_field'];
     $displayCategory= $data['post']['display_category'];
+    $enablePlaceholder = $data['post']['enable_placeholder'];
 
   
     $tmpTaxonomies  = array();
@@ -189,10 +194,14 @@ function cb_search_block_content($data){
 
           $img    = $post['featured_image']['normal'];
           $imgAlt = $post['featured_image']['alt'];
+        } else if($enablePlaceholder){
+          
+          $img   = cb_get_placeholder_image();
+          $imgAlt= $post['post_title'];
         }
 
         if(!empty($img)){
-          $imgTag = '<img src="'.$img.'" alt="'.$imgAlt.'" />';
+          $imgTag = '<img data-src="'.$img.'" alt="'.$imgAlt.'" class="urbosa-lazy-load" />';
         }
         
         $template = $rawTemplate;
