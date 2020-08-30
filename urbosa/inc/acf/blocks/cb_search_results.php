@@ -31,13 +31,13 @@ $taxField       = $taxOption['tax_comparison'];
 
 $blockData = array(
   'template' => get_field('template'),
+  'enable_placeholder' => get_field('enable_placeholder'),
   'display_category' => (get_field('display_category')?1:0),
   'search_post_types' => explode(',' , get_field('search_post_types')),
   'post_categories'   => !empty($postCategories)?explode(',' , $postCategories):array(),
   'post_taxonomies'   => !empty($postTaxonomies)?explode(',' , $postTaxonomies):array(),
   'tax_main' => $taxMain,
   'tax_field' => $taxField,
-  'enable_placeholder' => get_field('enable_placeholder')
 );
 
 $postData = ajaxContent('cb_search_results', $contentSelector, $loadMoreSelector, $blockData);
@@ -64,7 +64,7 @@ if($postData['initial_page']){
       <div class="cb-heading" id="<?=$headingSelector?>">
         <?=$heading?>
       </div>
-      <div class="cb-content" id="<?=$contentSelector?>">
+      <div class="cb-content <?=get_field('template_container_class')?>" id="<?=$contentSelector?>">
       <?php 
         if($foundPosts){
           echo $searchContents['render'];

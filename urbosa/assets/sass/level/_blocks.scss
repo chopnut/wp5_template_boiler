@@ -388,7 +388,9 @@ main>.urbosa-block.cb_theme_slider.alignfull{
         margin-top: 1rem;
       }
       img{
+        height: 100%;
         width: 100%;
+        object-fit: cover;
         padding-right: 1rem;
         
       }
