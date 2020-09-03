@@ -105,6 +105,7 @@ if(!function_exists('__cb_theme_slider_video_mobile_poster')){
 //-------------------------------------------------------------------------
 // Acf fields
 $theme_slider           = get_field('selected_slider');
+
 $sliders                = get_field('sliders',$theme_slider);
 $slider_properties      = get_field('slider_properties',$theme_slider);
 $slider_feature         = get_field('feature', $theme_slider);
@@ -113,8 +114,22 @@ $testimonialTemplate    = get_field('testimonial_template', $theme_slider);
 $proportion             = get_field('container_proportion');
 $mobile_height_ratio    = get_field('mobile_height_ratio');
 $desktopRatio           = get_field('ratio');
+$theme_slider_id        = 'theme_slider_'.$block['id'];
 
-$theme_slider_id = 'theme_slider_'.$block['id'];
+
+// This is use for shortcode
+if(isset($scSlider)){
+  $sliderID = $scSlider['slider'];
+  $sliders                = get_field('sliders',$sliderID);
+  $slider_properties      = get_field('slider_properties',$sliderID);
+  $slider_feature         = get_field('feature', $sliderID);
+  $testimonialTemplate    = get_field('testimonial_template', $sliderID);
+
+  $proportion             = $scSlider['container_proportion'];
+  $mobile_height_ratio    = $scSlider['mobile_height_ratio'];
+  $desktopRatio           = $scSlider['desktop_ratio'];
+}
+
 
 //-------------------------------------------------------------------------
 // Slider
@@ -613,9 +628,10 @@ if(is_array($slider_feature)){
 
 
         })
-
+        
+ 
         $('#<?=$theme_slider_id?>_slick').slick(slickOptions);
-
+        
         <?php
       }
     ?>

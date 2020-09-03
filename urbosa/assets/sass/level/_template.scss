@@ -33,9 +33,12 @@
   padding: 0 $globalPadding;
   margin: 0 auto;
 }
+main>p{
+  margin: 0 auto!important;
+}
 main{
-  >.alignfull { max-width: 100%;}
-  >.alignwide { max-width: $contentCorridorMaxWidth;}
+  >.alignfull { max-width: 100%; padding: 0;}
+  >.alignwide { max-width: $contentCorridorMaxWidthWide;}
 }
 @media (max-width: 768px){
   main{

@@ -186,11 +186,17 @@ class Custom_Type
   }
   /* helpers */
   function _set_args($val,$key){
-    $argsName = 'args';
+    $tmpArgs = $this->args;
     if($this->type=='taxonomy'){
-      $argsName = 'tax_args';
+      $tmpArgs = $this->tax_args;
     }
-    $this->$argsName[$key]=$val;
+    $tmpArgs[$key]=$val;
+
+    if($this->type=='taxonomy'){
+      $this->tax_args = $tmpArgs;
+    }else{
+      $this->args = $tmpArgs;
+    }
   }
   function _prefix_disable_gutenberg($current_status, $post_type){
       // Use your post type key instead of 'product'
