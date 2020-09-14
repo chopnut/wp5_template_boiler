@@ -7,7 +7,7 @@ if(!function_exists('debug')){
    * @return void
    */
   function debug($data){
-    $html  = '<pre style="padding: 15px; font-family: \'courier new\'; font-size: 12px; border: 1px dashed #800">';
+    $html  = '<pre style="padding: 15px; font-family: \'courier new\'; font-size: 12px; border: 1px dashed #800;color: black;">';
     $html .= print_r($data, true);
     $html .= '</pre>';
     echo $html;
@@ -47,7 +47,8 @@ if(!function_exists('getPosts')){
    * @param  mixed $metaArray
    * @param  mixed $orderby
    * @param  mixed $order
-   * @param  mixed $withFeaturedImage (book)
+   * @param  mixed $withFeaturedImage 
+   * @param  mixed $overrideArgs 
    * @return void
    */
   function getPosts( 
@@ -61,7 +62,8 @@ if(!function_exists('getPosts')){
     $metaArray = array(),  
     $orderby = 'menu_order',  
     $order = 'DESC',
-    $withFeaturedImage= true
+    $withFeaturedImage= true,
+    $overrideArgs = array()
   )
   {
     $args = array(
@@ -97,16 +99,34 @@ if(!function_exists('getPosts')){
     }
   
     if (count($metaArray)) {
-      foreach ($metaArray as $meta) {
-        if ($meta['value'] != '') {
-          $args['meta_query'][] = array(
-            'key' => $meta['key'],
-            'value' => $meta['value'],
+      /* 
+        Example of metaArray:
+        array(
+            'relation'		=> 'AND',
+            array(
+              'key'	 	=> 'color',
+              'value'	  	=> array('red', 'orange'),
+              'compare' 	=> 'IN',
+            ),
+            array(
+              'key'	  	=> 'featured',
+              'value'	  	=> '1',
+              'compare' 	=> '=',
+            ),
           );
-        }
-      }
+        
+      */
+      $args['meta_query'] = $metaArray;
+
     }
     
+    /* use to override arguments */
+
+    if(!empty($overrideArgs)){
+      $args = array_merge($args, $overrideArgs);
+    }
+
+
     $dataItems = new WP_Query($args);
     $query     = $dataItems;
     $dataItems = objectToArray($dataItems->posts);
@@ -460,7 +480,7 @@ if(!function_exists('youtubeEmbed')){
       $yID = getYoutubeIdFromUrl($src);
       $tmp['id'] = $yID;
 
-      $srcquery .= '&playlist='.$yID; // this allow it to loop and show no relative video.
+      $srcquery .= '&playlist='.$yID; // this allow it to loop
 
       $src = substr($src,0,-1);
       $src = $src.$srcquery.'"';
@@ -523,6 +543,7 @@ if(!function_exists('getContentBlocks')){
     $blocks       = array();
     $parseBlocks =  parse_blocks($post_content);
 
+    
     foreach($parseBlocks as $parseBlock){
       $tmpBlock = $parseBlock;
       if(is_array($blockNames)){
@@ -747,7 +768,7 @@ if(!function_exists('ajaxContent')){
       $loadMoreSelector, 
       $postData = array(),
       $labels= array(
-        'label_load_more'=>'Load More',
+        'label_load_more'=>'Load more articles',
         'label_loading'=> 'Loading',
         'label_not_found'=> 'Nothing has been found',
       )){
@@ -886,5 +907,26 @@ if(!function_exists('getVideoExtMimeType')){
       ];
 
       return isset($mime_map[$ext]) ? $mime_map[$ext] : '';
+  }
+}
+if(!function_exists('do_sidebar')){
+  function do_sidebar($sidebarID) {
+    ob_start();
+    dynamic_sidebar( $sidebarID );
+    $content = ob_get_clean();
+    echo do_shortcode($content);
+  }
+}
+
+if(!function_exists('sortPostsBy')){
+  function sortPostsBy($posts,$fieldName='order',$asc=true){
+    $tmp     = $posts;
+    usort($tmp, function($x, $y) use($fieldName){
+      return $x[$fieldName] - $y[$fieldName];
+    });
+    if($asc){
+      return $tmp;
+    }
+    return array_reverse($tmp);
   }
 }

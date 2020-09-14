@@ -215,6 +215,7 @@ $placeholder   = cb_get_placeholder_image();
         'taxonomy' => ''
       );
       
+      $overrideArgs = array();
 
       if($catType == 'category' && !empty($autoCat) || $displayCategory){
         $categories = array_map('trim', explode(',', $autoCat));
@@ -240,6 +241,19 @@ $placeholder   = cb_get_placeholder_image();
           $orderBy = 'menu_order';
           $order = 'DESC';
         break;
+        case 'metafield':
+          $meta         = $autoOption['meta_fields_order'];
+          $metaOrderBy  = $meta['orderby'];   // meta_value_num | meta_value
+          $metaOrder    = $meta['order'];     //  ASC | DESC
+          $metaKey      = $meta['meta_key'];  // the fieldname
+
+          if(!empty($metaKey)){            
+            $overrideArgs['orderby']    = $metaOrderBy; 
+            $overrideArgs['order']      = $metaOrder; 
+            $overrideArgs['meta_key']   = $metaKey; 
+          }
+
+        break;
 
       }
 
@@ -261,15 +275,18 @@ $placeholder   = cb_get_placeholder_image();
       $res = getPosts(
         $postType,
         '', 
-        ['gateway_image'],// acf 
-        $categories,// categories
-        $tmpTaxonomies,// taxonomies
-        $count, //per_page
+        ['gateway_image'],    // acf 
+        $categories,          // categories
+        $tmpTaxonomies,       // taxonomies
+        $count,               // per_page
         0, 
         $metaArray,
         $orderBy, 
-        $order
+        $order,
+        true,
+        $overrideArgs
       );
+      
       
       $posts = cb_normalise_posts($res['posts'], $viewButton, $category);
 
@@ -364,6 +381,7 @@ $placeholder   = cb_get_placeholder_image();
               if(!empty($overrideTemplate)){
 
                   $template = str_replace('{title}',$title, $overrideTemplate);
+                  $template = str_replace('{id}',$post['ID'], $template);
                   $template = str_replace('{excerpt}',$excerpt, $template);
                   $template = str_replace('{content}',$post['excerpt'], $template);
                   $template = str_replace('{image_url}',$high, $template);
@@ -379,7 +397,8 @@ $placeholder   = cb_get_placeholder_image();
                 
                   }
                 
-                  $pregGroup = pregMatchGrouping('/{(.*)?}/', $template);
+                  $pregGroup = pregMatchGrouping('/{(.*?)}/', $template);
+
                   if(!empty($pregGroup)){
                     foreach ($pregGroup as $acfField) {
                       $fieldName  = $acfField[1];
@@ -446,7 +465,9 @@ $placeholder   = cb_get_placeholder_image();
                         <?php 
                           if(!empty($buttonLabel)){
                             ?>
-                            <a href="<?=$link?>" class="button"><?=$buttonLabel?></a>
+                            <div>
+                              <a href="<?=$link['url']?>" class="button"><?=$buttonLabel?></a>
+                             </div>
                             <?php
                           }
                         ?>
@@ -486,12 +507,14 @@ $placeholder   = cb_get_placeholder_image();
                           <?php
                         }
                       ?>
-                      <figure class="ratio tv force">
-                        <a href="<?=$link['url']?>" target="<?=$link['target']?>">
-                          <div class="img-bg cover">
-                            <img class="urbosa-lazy-load" data-src="<?=$high?>" alt="<?=$alt?>" <?=$imgAttr?>/>
-                          </div>
-                        </a>
+                      <figure>
+                        <div class="ratio tv">
+                          <a href="<?=$link['url']?>" target="<?=$link['target']?>">
+                            <div class="img-bg cover">
+                              <img class="urbosa-lazy-load" data-src="<?=$high?>" alt="<?=$alt?>" <?=$imgAttr?>/>
+                            </div>
+                          </a>
+                        </div>
                       </figure>
                       <?php 
                         if($styleType!=='center'){
@@ -504,7 +527,9 @@ $placeholder   = cb_get_placeholder_image();
                       <?php 
                         if(!empty($buttonLabel)){
                           ?>
-                          <a href="<?=$link?>" class="button"><?=$buttonLabel?></a>
+                          <div>
+                            <a href="<?=$link['url']?>" class="button"><?=$buttonLabel?></a>
+                          </div>
                           <?php
                         }
                       ?>

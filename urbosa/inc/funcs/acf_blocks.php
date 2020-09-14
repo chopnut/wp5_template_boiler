@@ -159,7 +159,6 @@ function cb_search_block_content($data){
       array(),
       'date',
       'DESC',
-      true,
       true
     );
     
