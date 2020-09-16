@@ -1,8 +1,6 @@
   
   
   </main>
-  
-  
   <footer>
     <div class="urbosa container">
  

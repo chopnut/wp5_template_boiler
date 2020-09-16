@@ -8,6 +8,7 @@ function helper () {
     if (!results[2]) return $default
     return decodeURIComponent(results[2].replace(/\+/g, ' '))
   }
+
   /*
     Modify Query URL Params
     $nameValues: array set to 
@@ -17,6 +18,7 @@ function helper () {
       )
     return string
    */
+
   this.setQueryParameter = function ($nameValues = []) {
     $url = new URL(window.location.href)
     $param = $url.searchParams
@@ -358,6 +360,37 @@ window.initLazyLoadImage = function () {
         duration: 1000
       })
     }
+}
+window.initMakeVidIframeCenter = function(){
+  window.videoCenterInterval = null;
+  window._makeVideoBackgroundCenter = function(){
+    $iframes = $('.video-foreground.ratio iframe');
+
+    if($(window).width()>768){
+      if($iframes.length){
+        $iframes.map(function(ind,item){
+          $item = $(item);
+          $vidC = $item.parent().parent().parent();
+          var fHeight    = $item.height() - $vidC.height();
+          
+          if(fHeight){
+            var top = '-'+ fHeight/2 + 'px';
+            $item.css('top', top);
+          }
+        })
+      }
+    }
+
+  }
+
+  _makeVideoBackgroundCenter();
+  $(window).resize(function(){
+    clearInterval(videoCenterInterval);
+    setTimeout(function(){
+      _makeVideoBackgroundCenter();
+    },1000)
+  })
+
 }
 window.initSimpleParallax = function () {
 

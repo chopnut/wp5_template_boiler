@@ -12,3 +12,5 @@
 <body <?php body_class(!empty($post)?'page-' . $post->post_name:''); ?>>
   
 <main>
+
+<header></header>

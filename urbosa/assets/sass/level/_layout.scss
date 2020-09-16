@@ -2,6 +2,8 @@
 @import './mixins';
 @import './woocommerce';
 @import './default';
-
+header{
+    height: $heightHeader;
+}
 @import './shortcodes';
 @import './responsive';
