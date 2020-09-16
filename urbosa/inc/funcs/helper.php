@@ -448,7 +448,12 @@ if(!function_exists('youtubeEmbed')){
    * @param  mixed $srcquery
    * @return void
    */
-  function youtubeEmbed($embed_video,$mode='normal',$srcquery="autoplay=1&controls=0&html5=1&loop=1&mute=1&rel=0"){
+  function youtubeEmbed(
+    $embed_video,
+    $mode='normal',
+    $foregroundClass='',
+    $srcquery="autoplay=1&controls=0&html5=1&loop=1&mute=1&rel=0"){
+
     $new_embed = $embed_video;
     $tmp = array(
       'render' => '',
@@ -491,7 +496,7 @@ if(!function_exists('youtubeEmbed')){
     if($mode=='background'){
 
       echo '<div class="video-background">';
-      echo '<div class="video-foreground ratio wide force">';
+      echo '<div class="video-foreground '.$foregroundClass.'">';
       echo $new_embed;
       echo '</div>';
       echo '</div>';

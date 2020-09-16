@@ -67,7 +67,11 @@ if(!function_exists('__cb_theme_slider_video_embed')){
   
   function __cb_theme_slider_video_embed($mode,$embedCode,$is_lightbox, $mobile_poster){
 
+
     $yt = youtubeEmbed($embedCode,'background'); 
+    if($mode=='desktop'){
+      $yt = youtubeEmbed($embedCode,'background','ratio force wide'); // usually for desktop only
+    }
 
     if($is_lightbox){
       ?>
