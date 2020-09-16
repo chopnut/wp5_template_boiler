@@ -491,7 +491,7 @@ if(!function_exists('youtubeEmbed')){
     if($mode=='background'){
 
       echo '<div class="video-background">';
-      echo '<div class="video-foreground">';
+      echo '<div class="video-foreground ratio wide force">';
       echo $new_embed;
       echo '</div>';
       echo '</div>';
