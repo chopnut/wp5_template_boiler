@@ -412,3 +412,82 @@ window.initSimpleParallax = function () {
   } 
 
 }
+
+// Slide out menus/page by page
+window.initSlideInMenu = function(containerSelector){
+  var startIndex   = 10;
+  var animation  = {
+    animation: 'slide left',
+    duration: 650
+  }
+  $menuContainer = $(containerSelector);
+  $mainUl = $menuContainer.find('ul:first');
+
+  window._slideRecursive = function($ul,level){
+    $lis = $ul.children();
+
+    $lis.map(function(key,item){
+
+      $li    = $(item);
+      $subUL = $li.find('ul:first');
+      if($subUL.length){
+        
+        var targetID = 'target_' + $li.attr('id');
+        $subUL.attr('id',targetID);         // set its parent index for referencing
+        $subUL.css('z-index', startIndex+level); // set stacking
+
+        // click parent link caret
+        $parentLink = $(`<span class="parent-link"></span>`)
+        $parentLink.click(function(e){
+          e.preventDefault();
+          $('#'+targetID).transition(animation)
+        })
+        $parentLink.appendTo($subUL.parent());
+
+
+        // back button
+        $backLi = $(`<li class="back-link"></li>`);
+        $backA  = $(`<a href="javascript:;">Back</a>`);
+        $backA.click(function(e){
+          $(this).closest('ul').transition(animation);
+        })
+        $backA.appendTo($backLi);
+        
+
+        // move the subul to the main container
+        $backLi.prependTo($subUL);
+        $subUL.appendTo($menuContainer);
+        $subUL.transition(animation);
+        
+        _slideRecursive($subUL, level + 1);
+      }
+    })
+
+  }
+  if($mainUl.length){
+    _slideRecursive($mainUl,0);
+    // Add body style
+    $('body').append(`<style>
+        ${containerSelector}{
+          display: grid;
+          grid-template-columns: 100%;
+        }
+        ${containerSelector}>*{
+          border: 1px solid black;
+          grid-row-start: 1;
+          grid-column-start: 1;
+          background: white;
+        }
+        ${containerSelector} .parent-link{
+          display: inline-block;
+          width: 1rem;
+          height: 1rem;
+          border: 1px solid black;
+          float: right;
+          cursor: pointer;
+        }
+      </style>
+    `);
+  }
+}
+

@@ -13,4 +13,8 @@
   
 <main>
 
-<header></header>
+<div class="myslidemenu">
+  <?php
+      wp_nav_menu( array('menu'=> 'Menu 1') );
+  ?>
+</div>
