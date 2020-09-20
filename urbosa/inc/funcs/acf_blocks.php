@@ -127,7 +127,7 @@ function cb_search_block_content($data){
     $taxField       = $data['post']['tax_field'];
     $displayCategory= $data['post']['display_category'];
     $enablePlaceholder = $data['post']['enable_placeholder'];
-
+    $excludes       = $data['post']['exclude_posts'];
   
     $tmpTaxonomies  = array();
     if(!empty($postTaxonomies)){
@@ -159,7 +159,10 @@ function cb_search_block_content($data){
       array(),
       'date',
       'DESC',
-      true
+      true,
+      array(
+        'post__not_in'=> explode(',',$excludes)
+      )
     );
     
     // Aggregate contents
@@ -217,6 +220,7 @@ function cb_search_block_content($data){
           $excerpt = wp_trim_words($post['post_content']);
         }
 
+        $excerpt  = strip_shortcodes( $excerpt );
         $template = str_replace('{excerpt}',$excerpt, $template);
 
         $time = strtotime($post['post_date']);

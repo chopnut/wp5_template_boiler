@@ -744,7 +744,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1600245957
+    "modified": 1598476119
 },
 {
     "key": "group_5f01059657403",
@@ -799,7 +799,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1600245957
+    "modified": 1598476119
 },
 {
     "key": "group_5f010daf8efcb",
@@ -1072,7 +1072,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1600245957
+    "modified": 1598476120
 },
 {
     "key": "group_5f013d8d4c6e0",
@@ -1228,7 +1228,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1600245957
+    "modified": 1598476120
 },
 {
     "key": "group_5f0251d442a87",
@@ -1693,7 +1693,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1600245957
+    "modified": 1598476120
 },
 {
     "key": "group_5f0e1b841cbf5",
@@ -2480,7 +2480,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1600245958
+    "modified": 1598476120
 },
 {
     "key": "group_5f1a2323a0f3d",
@@ -2563,7 +2563,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1600245958
+    "modified": 1598476120
 },
 {
     "key": "group_5f1f45a907a7b",
@@ -2800,7 +2800,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1600245958
+    "modified": 1598476120
 },
 {
     "key": "group_5f2871dfdf9a1",
@@ -2854,7 +2854,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "<section class=\"column\">\r\n   <div>{image}<\/div>\r\n   <div>\r\n       <div>\r\n          <h2>{title}<\/h2>\r\n          <p class=\"date\">{date}<\/p>\r\n          <p class=\"excerpt\">{excerpt}<\/p>\r\n       <\/div>\r\n   <\/div>\r\n<\/section>",
+            "default_value": "<section>\r\n   <div>{image}<\/div>\r\n   <div>\r\n       <div>\r\n          <h2>{title}<\/h2>\r\n          <p class=\"date\">{date}<\/p>\r\n          <p class=\"excerpt\">{excerpt}<\/p>\r\n       <\/div>\r\n   <\/div>\r\n<\/section>",
             "placeholder": "",
             "maxlength": "",
             "rows": "",
@@ -2904,7 +2904,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "",
                 "class": "",
                 "id": ""
             },
@@ -2915,6 +2915,63 @@
             "maxlength": ""
         },
         {
+            "key": "field_5f62a9e2409de",
+            "label": "Exclude Post IDs",
+            "name": "exclude_post_ids",
+            "type": "text",
+            "instructions": "Add IDs of post that you like to exclude from search.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5f44e50b2486b",
+            "label": "Display Category",
+            "name": "display_category",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5f4a3252764ee",
+            "label": "Enable Placeholder",
+            "name": "enable_placeholder",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
             "key": "field_5f379a906801d",
             "label": "Post categories",
             "name": "post_categories",
@@ -2923,7 +2980,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "",
                 "class": "",
                 "id": ""
             },
@@ -3020,63 +3077,6 @@
                     "placeholder": ""
                 }
             ]
-        },
-        {
-            "key": "field_5f44e50b2486b",
-            "label": "Display Category",
-            "name": "display_category",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "25",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 0,
-            "ui": 1,
-            "ui_on_text": "",
-            "ui_off_text": ""
-        },
-        {
-            "key": "field_5f4a2e8e8fe7a",
-            "label": "Enable Placeholder",
-            "name": "enable_placeholder",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "25",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 1,
-            "ui": 1,
-            "ui_on_text": "",
-            "ui_off_text": ""
-        },
-        {
-            "key": "field_5f4afa910d3d2",
-            "label": "Container Class (Optional)",
-            "name": "template_container_class",
-            "type": "text",
-            "instructions": "Set the class for the parent container of each individual entry.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
         }
     ],
     "location": [
@@ -3094,9 +3094,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": 1,
+    "active": true,
     "description": "",
-    "modified": 1600245958
+    "modified": 1600305708
 },
 {
     "key": "group_5f43b049743f2",
@@ -3179,5 +3179,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1600245958
+    "modified": 1598476121
 }]
