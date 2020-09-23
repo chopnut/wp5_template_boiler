@@ -43,7 +43,7 @@ $image2 = get_field('secondary_image');
         
         if($youtubeID){
           $content = '<div class="video-container">
-              <iframe src="'.$ytSrc.'" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
+              <iframe src="" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
             </div>';
 
             // Add playicon button
@@ -75,6 +75,7 @@ $image2 = get_field('secondary_image');
       <a href="<?=$link?>" 
         class="media-dimmer-trigger"
         data-dimmer-id="dimmer_<?=$blockID?>"
+        data-media-source="<?=$ytSrc?>"
       >
         <figure>
           <div class="image">

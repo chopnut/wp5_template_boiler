@@ -7,11 +7,28 @@ jQuery(document).ready(function($){
 
 function initMediaDimmer(){
   $('.media-dimmer-trigger').click(function(e){
-    var dimmerID = $(this).data('dimmer-id')
+    var dimmerID    = $(this).data('dimmer-id')
+    var mediaSource = $(this).data('media-source')
+
     if($('#'+dimmerID).length){
+
+
       var $dimmer = $('#'+dimmerID);
+
+      if(mediaSource){
+        $iframe = $dimmer.find('iframe');
+        var src    = $iframe.attr('src');
+        if(!src){
+          $dimmer.find('iframe').attr('src', mediaSource);
+        }
+      }
+
       e.preventDefault();
-      $dimmer.dimmer('toggle');
+      $dimmer
+        .dimmer({
+          useFlex: false
+        })
+        .dimmer('show');
     }
   })
 }
