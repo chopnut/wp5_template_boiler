@@ -5,5 +5,47 @@
 header{
     height: $heightHeader;
 }
+/* 
+  hamburger 
+  <button class="hamburger" id="hamburger">
+    <div class="bar1"></div>
+    <div class="bar2"></div>
+    <div class="bar3"></div>
+  </button>
+*/
+
+#hamburger{
+  padding: 0 .5rem;
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  background: transparent;
+  border: none;
+
+  div{
+    width: 35px;
+    height: 4px;
+    background-color: #333;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+  &:hover{
+    opacity: 1;
+  }
+}
+#hamburger.is-active{
+  .bar2 {
+    opacity: 0;
+  }
+  .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-6px, 6px) ;
+    transform: rotate(-45deg) translate(-6px, 6px) ;
+  }
+  .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
+    transform: rotate(45deg) translate(-8px, -8px) ;
+  }
+}
+
 @import './shortcodes';
 @import './responsive';

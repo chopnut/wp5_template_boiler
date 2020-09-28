@@ -12,9 +12,3 @@
 <body <?php body_class(!empty($post)?'page-' . $post->post_name:''); ?>>
   
 <main>
-
-<div class="myslidemenu">
-  <?php
-      wp_nav_menu( array('menu'=> 'Menu 1') );
-  ?>
-</div>

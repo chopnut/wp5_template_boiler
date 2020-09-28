@@ -473,7 +473,6 @@ window.initSlideInMenu = function(containerSelector){
           grid-template-columns: 100%;
         }
         ${containerSelector}>*{
-          border: 1px solid black;
           grid-row-start: 1;
           grid-column-start: 1;
           background: white;
