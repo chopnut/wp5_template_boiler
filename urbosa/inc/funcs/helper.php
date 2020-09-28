@@ -870,7 +870,7 @@ if(!function_exists('urbosa_custom_logo')){
     $logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );
     if(has_custom_logo()){
       if($is_src) return $logo[0]; 
-      return '<img src="' . esc_url( $logo) . '" alt="' . get_bloginfo( 'name' ) . '">';
+      return '<img src="' . esc_url( $logo[0]) . '" alt="' . get_bloginfo( 'name' ) . '">';
     }
     return '';
   }
