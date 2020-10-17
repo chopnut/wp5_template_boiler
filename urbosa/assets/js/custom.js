@@ -2,5 +2,8 @@ $(document).ready(function () {
   initLazyLoadImage();
   initSimpleParallax();
   initMakeVidIframeCenter();
-  initSlideInMenu('.myslidemenu');
+  $('.test-1').transition({
+    animation: 'slide',
+    interval: 500
+  });
 })
