@@ -39,7 +39,6 @@ function initBlockAccordion(){
     })
   }
 }
-
 function initBlockGoogleMap(){
   window.overlays    = []
   window.markerIcons = []

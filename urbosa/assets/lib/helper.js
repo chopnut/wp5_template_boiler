@@ -306,7 +306,6 @@ window.__transEndColumn = function (e) {
     $this.children('ul').removeClass('open')
   }
 }
-
 // Attach event to triggers
 window.__initTriggerSlideOut = function (opt) {
   $('.slide-out-trigger').on('mouseover', function (e) {
@@ -348,8 +347,6 @@ window.__initTriggerSlideOut = function (opt) {
   })
 }
 /* end slide-out */
-
-
 
 window.initLazyLoadImage = function () {
     if ($.fn.visibility) {
@@ -489,4 +486,38 @@ window.initSlideInMenu = function(containerSelector){
     `);
   }
 }
+// OnScroll animation
+window.initScrollAnimation = function(){
+  window.timeout = null;
 
+  $('.transition').visibility({
+
+    onTopVisible: function(){
+
+      if(!$(this).hasClass('in-view')){
+
+        $(this).addClass('in-view');
+        
+        if(!timeout){
+
+          timeout = setTimeout(() => {
+            
+            $('.transition.in-view.hidden').transition({
+              interval: 200, 
+              duration: 500
+            })
+
+            clearInterval(timeout);
+
+            timeout = null
+
+          }, 250);
+
+        }
+
+      }
+
+    }
+  });
+
+}
