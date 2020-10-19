@@ -95,7 +95,13 @@ if(!function_exists('getPosts')){
 
     }
     if(!empty($slug)){
-      $args['name'] = $slug;
+      if(is_numeric($slug)){
+        $args['p'] = $slug;
+      } else if(is_array($slug)){
+        $args['post__in'] = $slug;
+      }else{
+        $args['name'] = $slug;
+      }
     }
   
     if (count($metaArray)) {
