@@ -12,6 +12,8 @@ function theme_setup()
   wp_enqueue_script('lib', get_template_directory_uri() . "/assets/dist/js/bundle.js", array(), null, false);  
   wp_enqueue_style('template', get_template_directory_uri() . "/assets/dist/css/template.css$suffix"); 
   wp_enqueue_style('main', get_template_directory_uri() . "/assets/dist/css/layout.css$suffix");
+  wp_enqueue_style('other', get_template_directory_uri() . "/assets/dist/css/style.css$suffix"); // fonts/pages/single/blocks
+
   
   add_feature(array('parallax','font-awesome','google-map','lightbox'));
   // add_feature('debug');

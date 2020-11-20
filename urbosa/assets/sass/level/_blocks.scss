@@ -37,6 +37,16 @@
       padding-bottom: 0;
     }
   }
+  &.no-pl{
+    >.wp-block-group__inner-container{
+      padding-left: 0;
+    }
+  }
+  &.no-pr{
+    >.wp-block-group__inner-container{
+      padding-right: 0;
+    }
+  }
 }
 /* wp-block-image */
 .wp-block-image{
@@ -596,6 +606,17 @@ main>.urbosa-block.cb_theme_slider.alignfull{
     }
     &.cb_google_map{
       padding: 0;
+    }
+    &.cb_search_results{
+      .cb-content{
+        section {
+          flex-direction: column;
+          >div{
+            max-width: 100%!important;
+          }
+        }
+        img{padding:0 ;}
+      }
     }
   }
 

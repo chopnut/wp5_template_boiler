@@ -77,13 +77,13 @@ function add_style_sheet_attr($html, $handle){
     switch($handle){
       case 'main':
       case 'template':
+      case 'other':
         // Preload main critical layout
         $tempHtml  =str_replace("rel='stylesheet'","rel='preload' as='style'",$html);
         $tempHtml .=str_replace("rel='stylesheet'","rel='stylesheet' media='print' onload=\"this.media='all'\"",$html);
         $tempHtml  = str_replace("media=''",'',$tempHtml);
         return $tempHtml;
       break;
-      case 'other':
       case 'dashicons':
       case 'custom':
         // Async other CSS
@@ -109,7 +109,6 @@ function add_style_sheet_attr($html, $handle){
   add_filter('script_loader_tag', 'defer_js', 11, 2);
   function urbosa_add_custom_to_footer() {
     $suffix = get_theme_suffix();
-    wp_enqueue_style('other', get_template_directory_uri() . "/assets/dist/css/style.css$suffix"); // fonts/pages/single
     wp_enqueue_style('custom', get_template_directory_uri() . "/assets/css/custom.css$suffix" , array(), null, false);    // Custom CSS
     wp_enqueue_style('simplelightbox', get_template_directory_uri() . "/assets/lib/simpleLightBox/simpleLightBox.min.css$suffix" , array(), null, false);    // Custom CSS
   };

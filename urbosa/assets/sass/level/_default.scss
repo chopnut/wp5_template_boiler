@@ -56,3 +56,29 @@ input[type=week],
 textarea{ 
   /* your default styling here */
 }
+
+
+/* gform specific */
+.gform_wrapper{
+  .name_first input,
+  .name_last input
+  {
+    margin-bottom: 0!important;
+  }
+  
+  .validation_message{
+    color: $textColor!important;
+  }
+  div.validation_error, .gfield_error{
+    color: $textColor!important;
+    border-color: $textColor!important;
+  }
+  .gfield_error{
+    background-color: lighten($color: $textColor, $amount: 67)!important;
+  }
+}
+.gform_confirmation_wrapper {
+  text-align: center;
+  padding: 1rem;
+  font-weight: bold;
+}
