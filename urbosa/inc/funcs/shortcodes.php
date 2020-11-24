@@ -4,7 +4,6 @@
 function add_theme_shortcodes(){
   
   add_shortcode( 'the_social_icons', 'theme_social_icons' );
-  add_shortcode( 'the_slider', 'theme_the_slider' );
 
 }
 
@@ -52,32 +51,16 @@ function theme_social_icons($att){
   return ob_get_clean();
 }
 
-function theme_the_slider($att){
+add_action( 'admin_init', 'wpse_136058_debug_admin_menu' );
 
-  global $scSlider, $block;
-
-  // Prep variables
-  $sliderID   = (isset($att['slider'])?$att['slider']:0);
-  $className  = (isset($att['class'])?$att['class']:'');
-  $id         = (isset($att['id'])?$att['id']:'');
-  $align         = (isset($att['align'])?$att['align']:'full');
-  
-
-  $scSlider = array(
-    'slider' => $sliderID,
-    'container_proportion' => (isset($att['proportion'])?$att['proportion']:'wide'),
-    'desktop_ratio'        => (isset($att['ratio'])?$att['ratio']:''),
-    'mobile_height_ratio'  => (isset($att['mobile_ratio'])?$att['mobile_ratio']:''),
-  );
-
-  if($sliderID){
-    $block = array(
-      'className' => 'cb_theme_slider '.$className,
-      'id' => $id,
-      'align' => $align
-    );
-    require(__DIR__.'/../acf/blocks/cb_theme_slider.php');
-    
-  }
+function wpse_136058_debug_admin_menu() {
+  global $submenu;
+  // unset($submenu['#urbosa_resources'][0]);
+    // echo '<pre>' . print_r($submenu['#urbosa_resources']) . '</pre>';
+    // remove_submenu_page('#urbosa_resources','#urbosa_resources');
+    // exit;
 }
+
+
+
 ?>

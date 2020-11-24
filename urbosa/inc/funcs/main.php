@@ -254,9 +254,24 @@ add_action('wp_ajax_nopriv_urbosa_get_post', 'urbosa_get_post');//for users that
 // Adds reusable blocks menu to the admin
 function urbosa_theme_menu() {
   global $submenu; 
-  add_menu_page( 'Theme Resources', 'Theme Resources', 'edit_posts', '#urbosa_resources', '', 'dashicons-welcome-widgets-menus', 58 );
-  add_submenu_page( '#urbosa_resources', 'Reusable Blocks', 'Reusable Blocks', 'edit_posts','reusable_block','edit.php?post_type=wp_block',58 );
-  $submenu['#urbosa_resources'][count($submenu['#urbosa_resources'])-1][2] = 'edit.php?post_type=wp_block';
+  $mainMenuSlug = '#urbosa_resources';
+
+  add_menu_page( 'Theme Resources', 'Theme Resources', 'edit_posts', $mainMenuSlug, '', 'dashicons-welcome-widgets-menus', 58 );
+  add_submenu_page( $mainMenuSlug, 'Reusable Blocks', 'Reusable Blocks', 'edit_posts','reusable_block','edit.php?post_type=wp_block' );
+  $submenu[$mainMenuSlug][count($submenu[$mainMenuSlug])-1][2] = 'edit.php?post_type=wp_block';
+
+  // Fix quirks, remove main menu from sub menu
+  if(isset($submenu[$mainMenuSlug])){
+    $sMenu = $submenu[$mainMenuSlug];
+    for ($i=0; $i < count($sMenu); $i++) { 
+      $subItem = $sMenu[$i];
+      if($subItem[2] == $mainMenuSlug){
+        unset($submenu[$mainMenuSlug][$i]);
+        break;
+      }
+    }
+  }
+
 }
 add_action( 'admin_menu', 'urbosa_theme_menu' );
 add_action( 'admin_bar_menu', 'urbosa_add_items', 250 );
@@ -353,15 +368,17 @@ function urbosa_theme_init(){
 
     if(class_exists('Custom_Type')){
 
-      $slider = new Custom_Type('theme_slider');
-      $slider->set_label('Slider');
-      $slider->set_icon('dashicons-image-flip-horizontal');
-      $slider->set_menu_under('#urbosa_resources');
-      $slider->set_support(array('title'));
-      $slider->set_taxonomy();
-      $slider->set_tax_label('');
-      $slider->disable_editor();
-      $slider->init();
+      // How to add custom post type
+
+      // $slider = new Custom_Type('theme_slider');
+      // $slider->set_label('Slider');
+      // $slider->set_icon('dashicons-image-flip-horizontal');
+      // $slider->set_menu_under('#urbosa_resources');
+      // $slider->set_support(array('title'));
+      // $slider->set_taxonomy();
+      // $slider->set_tax_label('');
+      // $slider->disable_editor();
+      // $slider->init();
     }
 
     add_theme_shortcodes();

@@ -214,6 +214,8 @@ main>.urbosa-block.cb_theme_slider.alignfull{
           @include bg_cover;
           img {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
           }
           .simpleParallax{
             position: absolute;
