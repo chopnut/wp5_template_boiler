@@ -306,6 +306,8 @@ if(is_array($slider_feature)){
 
                   if($image){
                     
+                    // debug($image['height']);
+                    
 
                     $imageID = $image['ID'].'_id'.$ctr;
                     
@@ -319,11 +321,11 @@ if(is_array($slider_feature)){
 
                     if($is_parallax && !is_admin()){
 
-                      $innerContent = "<img class='parallax {class} $theme_slider_id' {progressive} alt='$alt'/>";
+                      $innerContent = "<img class='parallax {class} $theme_slider_id' {progressive} alt='$alt' style='{image_style}'/>";
 
                       if(!$is_lazy) {
 
-                        $innerContent = "<img class='parallax {class} $theme_slider_id' {progressive} alt='$alt' src='$hiRes' />";
+                        $innerContent = "<img class='parallax {class} $theme_slider_id' {progressive} alt='$alt' src='$hiRes' style='{image_style}'/>";
 
                       }
 
@@ -344,7 +346,7 @@ if(is_array($slider_feature)){
 
                     if($is_lazy && !is_admin()){
    
-                      $innerContent = "<img data-src='$hiRes' class='{parallax} urbosa-lazy-load $imageID'alt='$alt' data-id='$imageID'/>";
+                      $innerContent = "<img data-src='$hiRes' class='{parallax} urbosa-lazy-load $imageID'alt='$alt' data-id='$imageID' style='{image_style}'/>";
                       
                       $containerClass = $containerStyle = "";
                       if($is_parallax){
@@ -356,6 +358,14 @@ if(is_array($slider_feature)){
                       }
                     }
 
+                    /* check for content-aware , if it is do not let it go pass its actual content height*/
+                    $imgStyle = '';
+                    if($proportion=='content'){
+                      $imgStyle = "height: ".$image['height']."px;";
+                    }
+
+                    $innerContent = str_replace('{image_style}', $imgStyle,$innerContent);
+        
 
                     if($is_lightbox && !is_admin()){
                       
