@@ -390,6 +390,7 @@ if(is_array($slider_feature)){
                   
                   $photo          = $testimonial['photo'];
                   $attr           = '';
+                  $imageSrc       = '';
 
                   if($photo){
                     $alt = $photo['alt'];
@@ -397,19 +398,22 @@ if(is_array($slider_feature)){
                     if(is_admin()){
                       $attr = "src='$src'";
                     }
+                    $imageSrc = $src;
                     $photo =  "<div class='image-wrapper'><img data-src='$src' class='urbosa-lazy-load' $attr/></div>";
                   }
 
                   if(!empty($testimonialTemplate)){
                     $template = str_replace('{testimony}', $testimony, $testimonialTemplate);
-                    $template = str_replace('{image}', $testimonyName, $testimonialTemplate);
-                    $template = str_replace('{name}', $photo, $testimonialTemplate);
-                    $template = str_replace('{position}', $position, $testimonialTemplate);
+                    $template = str_replace('{image}', $photo, $template);
+                    $template = str_replace('{name}', $testimonyName, $template);
+                    $template = str_replace('{position}', $position, $template);
+                    $template = str_replace('{image_src}', $imageSrc, $template);
 
-                    echo $template;
+                    echo do_shortcode($template);
                   
                   }else{
 
+                    ob_start();
                     ?>
                     <div class="testimonial-content">
                       <p class="testimonial"><?=$testimony?></p>
@@ -422,6 +426,7 @@ if(is_array($slider_feature)){
                       </p>
                     </div>
                     <?php
+                    echo do_shortcode(ob_get_clean());
                   }
                 }
 

@@ -11,9 +11,12 @@ if( !empty($block['align']) ) {
 }
 //-------------------------------------------------------------------------
 // Acf fields
+$minimumHeight         = get_field('minimum_height');
+$font                  = get_field('color_font');
+$mainBG                = get_field('background_image');
+$mainBGColor           = get_field('color_background');
 
 $jumpID                = get_field('anchor_id');
-$minimumHeight         = get_field('minimum_height');
 $columns               = get_field('column_contents'); // repeater
 
 $imageLeft             = get_field('left_image');
@@ -35,6 +38,13 @@ $blockStyle         = '';
 $contentHolderStyle = '';
 $leftStyle          = '';
 $rightStyle         = '';
+
+
+
+if($mainBG) $blockStyle .= "background-image: url($mainBG);";
+if($mainBGColor) $blockStyle .= "background-color: $mainBGColor;";
+if($font) $blockStyle .= "color: $font;";
+
 
 if($minimumHeight) {  $contentHolderStyle .= "min-height: $minimumHeight;";  }
 if($imageLeft){ $leftStyle .= "background-image: url(".$imageLeft['url'].");"; }
@@ -60,9 +70,14 @@ if($imageRightWidth){ $rightStyle .= "width: $imageRightWidth;"; }
           <?php 
             if(!empty($columns)){
               foreach($columns as $column){
-                $content = $column['column_content'];
+
+                $content      = trim($column['column_content']);
+                $columnStyle  = ''; 
+                if(empty($content)){
+                  $columnStyle = 'is-hidden-mobile';
+                }
                 ?>
-                <div class="column">
+                <div class="column <?=$columnStyle?>">
                   <div class="content">
                     <?=wpautop($content)?>
                   </div>
