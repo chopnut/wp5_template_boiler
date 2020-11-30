@@ -239,7 +239,7 @@ $placeholder   = cb_get_placeholder_image();
         break;
         case 'menuorder': 
           $orderBy = 'menu_order';
-          $order = 'DESC';
+          $order = 'ASC';
         break;
         case 'metafield':
           $meta         = $autoOption['meta_fields_order'];
