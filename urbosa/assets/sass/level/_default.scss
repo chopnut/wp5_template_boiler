@@ -22,8 +22,8 @@ a{
   }
 }
 p{ margin: .5em 0;}
-.transition.hidden.block{ display: block; }
-.transition.hidden.inline-block{ display: inline-block; }
+.transition.hidden.block{ display: block!important; }
+.transition.hidden.inline{ display: inline-block!important; }
 
 a.wp-block-button__link, 
 button, 

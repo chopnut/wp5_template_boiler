@@ -8,7 +8,7 @@
   
         if($post404){
   
-          echo $post404->post_content;
+          echo do_shortcode(do_blocks($post404->post_content));
   
         } else {
           ?>

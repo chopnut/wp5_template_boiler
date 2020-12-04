@@ -42,6 +42,7 @@ $blockData = array(
   'exclude_posts' => $postExceptions
 );
 
+
 $postData = ajaxContent('cb_search_results', $contentSelector, $loadMoreSelector, $blockData);
 
 $searchContents = cb_search_block_content($postData);
@@ -62,18 +63,27 @@ if($postData['initial_page']){
 
   <?php 
     if(!is_admin()){
-      ?>
-      <div class="cb-heading" id="<?=$headingSelector?>">
-        <?=$heading?>
-      </div>
+
+      if($foundPosts){
+        ?>
+        <div class="cb-heading" id="<?=$headingSelector?>">
+          <?=$heading?>
+        </div>
+        <?php
+      }
+      ?>  
+
       <div class="cb-content" id="<?=$contentSelector?>">
-      <?php 
-        if($foundPosts){
-          echo $searchContents['render'];
-        }else{
-          echo get_field('template_no_result');
-        }
-      ?>
+
+        <?php 
+        
+          if($foundPosts){
+            echo $searchContents['render'];
+          }else{
+            echo get_field('template_no_result');
+          }
+        ?>
+        
       </div>
       <div class="cb-nav" id="<?=$loadMoreSelector?>">
         <?php 

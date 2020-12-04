@@ -128,7 +128,10 @@ function cb_search_block_content($data){
     $displayCategory= $data['post']['display_category'];
     $enablePlaceholder = $data['post']['enable_placeholder'];
     $excludes       = $data['post']['exclude_posts'];
-  
+
+
+    $s = isset($_GET['s'])?$_GET['s']:'';
+
     $tmpTaxonomies  = array();
     if(!empty($postTaxonomies)){
       $tmpTaxonomies[] = array(
@@ -161,10 +164,11 @@ function cb_search_block_content($data){
       'DESC',
       true,
       array(
-        'post__not_in'=> explode(',',$excludes)
+        'post__not_in'=> explode(',',$excludes),
+        's' => $s
       )
     );
-    
+
     // Aggregate contents
 
     $posts = $query['posts'];
