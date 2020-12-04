@@ -78,11 +78,13 @@ function add_style_sheet_attr($html, $handle){
       case 'main':
       case 'template':
       case 'other':
+        
         // Preload main critical layout
-        $tempHtml  =str_replace("rel='stylesheet'","rel='preload' as='style'",$html);
-        $tempHtml .=str_replace("rel='stylesheet'","rel='stylesheet' media='print' onload=\"this.media='all'\"",$html);
-        $tempHtml  = str_replace("media=''",'',$tempHtml);
-        return $tempHtml;
+        // $tempHtml  =str_replace("rel='stylesheet'","rel='preload' as='style'",$html);
+        // $tempHtml .=str_replace("rel='stylesheet'","rel='stylesheet' media='print' onload=\"this.media='all'\"",$html);
+        // $tempHtml  = str_replace("media=''",'',$tempHtml);
+
+        return $html;
       break;
       case 'dashicons':
       case 'custom':
