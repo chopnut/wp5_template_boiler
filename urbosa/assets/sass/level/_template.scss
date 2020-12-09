@@ -26,6 +26,7 @@
     background-color: green!important;
   }
 }
+.wp-block.is-reusable { max-width: 100%!important;}
 
 /* front-end */
 .urbosa.container, main>*{
@@ -45,3 +46,4 @@ main{
     >.alignwide { max-width: 100%;}
   }
 }
+
