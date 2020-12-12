@@ -20,7 +20,7 @@ module.exports = env => {
     new BrowserSyncPlugin({
       host: 'localhost',
       port: 3000,
-      proxy: `http://localhost:8191`,
+      proxy: `http://localhost:8192`,
       files: [
         {
           match: [
@@ -69,7 +69,8 @@ module.exports = env => {
       layout: __dirname + `/assets/sass/level/_layout.scss`,
       blocks: __dirname + `/assets/sass/level/_blocks.scss`,
       template: __dirname + `/assets/sass/level/_template.scss`,
-      admin: __dirname + `/assets/sass/level/_admin.scss`
+      admin: __dirname + `/assets/sass/level/_admin.scss`,
+      essentials: __dirname + `/assets/sass/level/_essentials.scss`
     },
     output: {
       path: __dirname + `/assets/dist/`,

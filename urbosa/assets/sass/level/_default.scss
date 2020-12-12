@@ -21,7 +21,10 @@ a{
 
   }
 }
-p{ margin: .5em 0;}
+p{ 
+  margin-top: .5em;
+  margin-bottom: .5em;
+}
 .transition.hidden.block{ display: block!important; }
 .transition.hidden.inline{ display: inline-block!important; }
 
