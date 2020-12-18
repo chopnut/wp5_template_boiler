@@ -148,11 +148,25 @@ if(!function_exists('getPosts')){
       }
       if($withFeaturedImage){
         $alt = '';
+        
+        $imgWidth  = 336;
+        $imgHeight = 224;
+
+        $imgSrc = getFeaturedImage($thisID,'large',$alt, $imgWidth,$imgHeight);
         $featImage = array(
-          'normal' => getFeaturedImage($thisID,'large',$alt),
+          'normal' => $imgSrc,
           'progressive' => (function_exists('urbosa_progressive')? getFeaturedImage($thisID,'progressive_landscape') :''),
-          'alt' => $alt
+          'alt' => $alt,
+          'width' => $imgWidth,
+          'height' => $imgHeight,
         );
+        
+        if(empty($imgSrc)){
+
+          $featImage['normal'] = cb_get_placeholder_image();
+          $featImage['alt'] = 'Placeholder';
+        }
+
         $data['featured_image'] = $featImage;
       }
       $dataArray[] = $data;
@@ -424,7 +438,7 @@ if(!function_exists('getFeaturedImage')){
    * @param  mixed $size eg: 'thumbnail','medium','large','full'
    * @return string
    */
-  function getFeaturedImage($postID=null, $size='medium', &$alt=NULL){
+  function getFeaturedImage($postID=null, $size='medium', &$alt=NULL,&$width=NULL, &$height=NULL){
     $pID = 0;
     if($postID){
       $pID = $postID;
@@ -437,13 +451,100 @@ if(!function_exists('getFeaturedImage')){
     $url = wp_get_attachment_image_src( $thumbID, $size );
 
     if($alt!==NULL) $alt = $alt;
+    
     if(is_array($url) && count($url)>0){
+
+      if($width!==NULL) $width = $url[1];
+      if($height!==NULL) $height = $url[2];
       return $url[0];
     }
     return '';
   }
 }
+if(!function_exists('getFeaturedImageSrc')){  
+  /**
+   * getFeaturedImageSrc of a post
+   *
+   * @param  mixed $postID
+   * @param  mixed $size eg: 'thumbnail','medium','large','full'
+   * @return array
+   */
+  function getFeaturedImageSrc($postID=null, $size='medium', $placeholderSrc= ''){
+    $img = array(
+      'src' => cb_get_placeholder_image(),
+      'width' => 336,
+      'height'=> 224,
+      'alt' => 'Placeholder'
+    );
+    if($placeholderSrc) $img = $placeholderSrc;
 
+
+    $pID = 0;
+    if($postID){
+      $pID = $postID;
+    } else {
+      $pID = get_the_ID();
+    }
+
+    $thumbID = get_post_thumbnail_id( $pID);
+    $alt = get_post_meta($thumbID, '_wp_attachment_image_alt', true); 
+    $url = wp_get_attachment_image_src( $thumbID, $size );
+
+    if(is_array($url) && count($url)>0){
+
+      $img['src']     = $url[0];
+      $img['width']   = $url[1];
+      $img['height']  = $url[2];
+      $img['alt']     =  $alt;
+    }
+    return $img;
+  }
+}
+if(!function_exists('getACFImageSrc')){
+  
+  function getACFImageSrc($acfImageField, $size='large', $placeholderSrc = null){
+    $img = array(
+      'src' => cb_get_placeholder_image(),
+      'width' => 336,
+      'height'=> 224,
+      'alt' => 'Placeholder'
+    );
+    if($placeholderSrc) $img = $placeholderSrc;
+    if($acfImageField && isset($acfImageField['sizes'][$size])){
+ 
+      $img['src']     = $acfImageField['sizes'][$size];
+      $img['width']   = $acfImageField['sizes'][$size.'-width'];
+      $img['height']  = $acfImageField['sizes'][$size.'-height'];
+      $img['alt']     = (!empty($acfImageField['alt'])?$acfImageField['alt']:$acfImageField['title']);
+    } 
+    return $img;
+  }  
+}
+if(!function_exists('getACFImage')){  
+  
+  /**
+   * Get the image and return default if acf is not available
+   *
+   * @param  mixed $acfField
+   * @param  mixed $postID
+   * @param  mixed $default
+   * @param  mixed $size
+   * @return void
+   */
+  function getACFImage($acfField,$postID=0,$default='',$size='large'){
+    $acfImage = ($postID)? get_field($acfField,$postID):get_field($acfField);
+    if(!$acfImage || !isset($acfImage['sizes']) || !isset($acfImage['url'])){
+      return $default;
+    }
+    if($size=='full' || $size=='url'){
+      return $acfImage['url'];
+    }
+    if(isset($acfImage['sizes'][$size])){
+      return $acfImage['sizes'][$size];
+    }
+    return $default;
+  }
+}
 if(!function_exists('youtubeEmbed')){
   
   /**
@@ -633,31 +734,7 @@ if(!function_exists('getVar')){
     return $default;
   }
 }
-if(!function_exists('getACFImage')){  
-  
-  /**
-   * Get the image and return default if acf is not available
-   *
-   * @param  mixed $acfField
-   * @param  mixed $postID
-   * @param  mixed $default
-   * @param  mixed $size
-   * @return void
-   */
-  function getACFImage($acfField,$postID=0,$default='',$size='large'){
-    $acfImage = ($postID)? get_field($acfField,$postID):get_field($acfField);
-    if(!$acfImage || !isset($acfImage['sizes']) || !isset($acfImage['url'])){
-      return $default;
-    }
-    if($size=='full' || $size=='url'){
-      return $acfImage['url'];
-    }
-    if(isset($acfImage['sizes'][$size])){
-      return $acfImage['sizes'][$size];
-    }
-    return $default;
-  }
-}
+
 if(!function_exists('doCurl')){
   function doCurl($path,$postParams= null){
     /* Prep-variables */

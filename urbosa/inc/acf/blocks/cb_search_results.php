@@ -30,6 +30,13 @@ $taxOption      = get_field('post_taxonomies_option');
 $taxMain        = $taxOption['taxonomy'];
 $taxField       = $taxOption['tax_comparison'];
 
+// override category or taxonomy
+global $overrideCategories,$overrideTaxonomies, $overrideTaxMain;
+
+if(isset($overrideCategories)){ $postCategories = $overrideCategories; }
+if(isset($overrideTaxonomies)){ $postTaxonomies = $overrideTaxonomies; }
+if(isset($overrideTaxMain)){    $taxMain = $overrideTaxMain; }
+
 $blockData = array(
   'template' => get_field('template'),
   'display_category' => (get_field('display_category')?1:0),
@@ -39,7 +46,8 @@ $blockData = array(
   'tax_main' => $taxMain,
   'tax_field' => $taxField,
   'enable_placeholder' => get_field('enable_placeholder'),
-  'exclude_posts' => $postExceptions
+  'exclude_posts' => $postExceptions,
+  'override_per_page' => get_field('override_per_page') 
 );
 
 
@@ -50,6 +58,7 @@ $foundPosts = $searchContents['found_posts'];
 $heading  = str_replace('{found_posts}',$foundPosts, get_field('template_heading'));
 $heading  = str_replace('{search_term}',$s, $heading);
 $noResult = get_field('template_no_result');
+$defaultClass = get_field('columns_default_class');
 
 $pages = ceil($foundPosts/$postData['per_page']);
 $currentPage = $postData['page'];
@@ -73,7 +82,7 @@ if($postData['initial_page']){
       }
       ?>  
 
-      <div class="cb-content" id="<?=$contentSelector?>">
+      <div class="cb-content <?=$defaultClass?>" id="<?=$contentSelector?>">
 
         <?php 
         

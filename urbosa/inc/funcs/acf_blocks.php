@@ -151,6 +151,48 @@ function cb_search_block_content($data){
       $offset = ($page - 1)*$perPage;
     }
 
+    $excludes = $tmpExcludes =  explode(',', $excludes);
+
+    // Check for skip negative value and only 1 is allowed to be negative
+    if(count($excludes)>0){
+      foreach($excludes as $eVal){
+        $ntVal = intval($eVal);
+        if($ntVal<0){
+          
+          $posVal = abs($ntVal);
+          
+          // Do initial query to grab first N postID
+          $query = getPosts(
+            $postTypes,
+            '',
+            array('gateway_image'),
+            $postCategories,
+            $tmpTaxonomies,
+            $perPage,
+            $offset,
+            array(),
+            'date',
+            'DESC',
+            true,
+            array(
+              'post__not_in'=> $tmpExcludes,
+              's' => $s
+            )
+          );
+
+          $posts = $query['posts'];
+          for ($i=0; $i < count($posts); $i++) {
+            if($posVal>$i){
+              // Include the ID to the exclude
+              $tmpExcludes[] = $posts[$i]['ID'];
+            } 
+          }
+          break;
+        }
+      
+      }
+    }
+
     $query = getPosts(
       $postTypes,
       '',
@@ -164,7 +206,7 @@ function cb_search_block_content($data){
       'DESC',
       true,
       array(
-        'post__not_in'=> explode(',',$excludes),
+        'post__not_in'=> $tmpExcludes,
         's' => $s
       )
     );

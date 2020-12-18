@@ -49,3 +49,17 @@ main{
   }
 }
 
+.limit {
+  &.wrap-300{
+    max-width: 300px;
+  }
+  &.wrap-350{
+    max-width: 350px;
+  }
+  &.wrap-400{
+    max-width: 400px;
+  }
+  &.wrap-500{
+    max-width: 500px;
+  }
+}

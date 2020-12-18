@@ -90,16 +90,21 @@ if(!function_exists('cb_normalise_posts')){
   
             $lowImage = $highImage = $alt = '';
             $gatewayImage = get_field('gateway_image', $theID);
-  
+
+            $imgWidth  = 0;
+            $imgHeight = 0;
+
             if($gatewayImage){
   
               $lowImage = $gatewayImage['sizes']['progressive_landscape'];
               $highImage = $gatewayImage['sizes']['large'];
               $alt = $gatewayImage['alt'];
+              $imgWidth  = $gatewayImage['sizes']['large-width'];
+              $imgHeight = $gatewayImage['sizes']['large-height'];
   
             }else{
               $lowImage = getFeaturedImage($theID,'progressive_landscape');
-              $highImage = getFeaturedImage($theID,'large',$alt);
+              $highImage = getFeaturedImage($theID,'large',$alt,$imgWidth,$imgHeight);
             }
   
             if(!$isProgressive){
@@ -151,6 +156,8 @@ if(!function_exists('cb_normalise_posts')){
                 'high'=> $highImage,
                 'low' => $lowImage,
                 'alt' => $alt,
+                'width' => $imgWidth,
+                'height' => $imgHeight,
               ),
               'link' => array(
                 'title'=> $theTitle,
@@ -170,14 +177,14 @@ if(!function_exists('cb_normalise_posts')){
   }
 }
 //--------------------------------------------------------------------------
-$repeaterType = get_field('repeater_type');
-$manual       = get_field('manual_objects');
-$isProgressive = function_exists('urbosa_progressive');
-$fillEmpty     = get_field('fill_in_empty');
-
-$displayCategory = get_field('display_category');
+$repeaterType     = get_field('repeater_type');
+$manual           = get_field('manual_objects');
+$autoOption       = get_field('auto_post_options');
+$fillEmpty        = get_field('fill_in_empty');
+$displayCategory  = get_field('display_category');
 $customTaxonomy   = get_field('custom_taxonomy');
 
+$isProgressive = function_exists('urbosa_progressive');
 $placeholder   = cb_get_placeholder_image();
 
 ?>
@@ -190,7 +197,6 @@ $placeholder   = cb_get_placeholder_image();
 
     if($repeaterType == 'auto'){ 
       
-      $autoOption     = get_field('auto_post_options');
 
       // default
       $metaArray= [];
@@ -200,11 +206,11 @@ $placeholder   = cb_get_placeholder_image();
       $taxonomies = [];
       $tmpTaxonomies = [];
 
-      $postType = $autoOption['auto_post_type'];
-      $count    = $autoOption['auto_display_count'];
-      $orderBy  = $autoOption['auto_order_by'];
-      $catOption = $autoOption['auto_cat_option'];
+      $postType   = $autoOption['auto_post_type'];
+      $count      = $autoOption['auto_display_count'];
+      $orderBy    = $autoOption['auto_order_by'];
       $viewButton = $autoOption['button_label'];
+      $catOption  = $autoOption['auto_cat_option'];
 
       $catType   = $catOption['auto_cat_type'];
       $autoCat   = $catOption['auto_categories'];
@@ -215,9 +221,20 @@ $placeholder   = cb_get_placeholder_image();
         'taxonomy' => ''
       );
       
+      // Override category and taxonomy
+      global $overrideCategories,$overrideTaxonomies, $overrideTaxMain;
+
+      if(isset($overrideCategories)){ $autoCat = $overrideCategories; }
+      if(isset($overrideTaxMain)){    $$catOption['auto_taxonomy_option']['main_taxonomy'] = $overrideTaxMain; }
+      if(isset($overrideTaxonomies)){ $autoTax = $overrideTaxonomies; }
+
+
       $overrideArgs = array();
 
       if($catType == 'category' && !empty($autoCat) || $displayCategory){
+
+
+
         $categories = array_map('trim', explode(',', $autoCat));
         $category['type'] = 'category';
 
@@ -263,6 +280,8 @@ $placeholder   = cb_get_placeholder_image();
         $category['type'] = 'taxonomy';
         $category['taxonomy'] = $customTaxGroup['main_taxonomy'];
 
+
+
         $tmpTaxonomies[] = array(
           'taxonomy' => $customTaxGroup['main_taxonomy'],
           'field' => $customTaxGroup['tax_comparison'],
@@ -298,41 +317,36 @@ $placeholder   = cb_get_placeholder_image();
     }
 
 
-    $styleDirection = get_field('style_direction');
-    $columns        = get_field('style_columns');
-    $wordsLimit     = get_field('style_words_limit');
-    $styleType      = get_field('style_type');
-    $styleSplitMode = get_field('style_split_mode');
+    $styleDirection   = get_field('style_direction');
+    $columns          = get_field('style_columns');
+    $wordsLimit       = get_field('style_words_limit');
+    $defaultClass     = get_field('columns_default_class');
+    $styleType        = get_field('style_type');
+    $styleSplitMode   = get_field('style_split_mode');
     $overrideTemplate = get_field('override_template');
 
     if(!empty($posts)){
 
       // Root properties
-      $mainClasses = array();
-      $mainAttr  = '';
-      
-
-      if(
-        $styleType=='default' || 
-        $styleType=='center'  ||
-        ($styleType=='split' && $styleDirection=='row')
-        ){
-          
-        // Do nothing
-        $mainClasses[] = 'mt-0';
-        $mainClasses[] = 'mb-0';
-      }else{
-
-        $mainClasses[] ='is-vcentered';
-        $mainClasses[] ='is-gapless';
-
+      if(empty($defaultClass)){
+        $defaultClass = 'columns is-multiline';
       }
 
-      $mainClass = implode(' ', $mainClasses);
-
+      if(trim($defaultClass)=='columns is-multiline'){
+        if(
+          $styleType=='default' || 
+          $styleType=='center'  ||
+          ($styleType=='split' && $styleDirection=='row')
+          ){
+          // Do nothing
+          $defaultClass .= ' mt-0 mb-0';
+        }else{
+          $defaultClass .= ' is-vcentered is-gapless';
+        }
+      }
       ?>
 
-      <div class="columns is-multiline <?=$mainClass?> <?=$styleType?> <?=$styleSplitMode?>" <?=$mainAttr?>>
+      <div class="<?=$defaultClass?> <?=$styleType?> <?=$styleSplitMode?>">
       
 
       <?php 
@@ -383,7 +397,7 @@ $placeholder   = cb_get_placeholder_image();
                   $template = str_replace('{title}',$title, $overrideTemplate);
                   $template = str_replace('{id}',$post['ID'], $template);
                   $template = str_replace('{excerpt}',$excerpt, $template);
-                  $template = str_replace('{content}',$post['excerpt'], $template);
+                  $template = str_replace('{content}',$post['post_content'], $template);
                   $template = str_replace('{image_url}',$high, $template);
                   $template = str_replace('{image_alt}',$alt, $template);
                   $template = str_replace('{permalink}',$link['url'], $template);
@@ -422,12 +436,20 @@ $placeholder   = cb_get_placeholder_image();
                           if(function_exists($funcName)){
                             
                             // check for additional pass data
-                            $extraData = null;
+                            $extraData = array();
                             if(isset($func[2])){
-                              $extraData = $func[2];
+                              $extraData['template_data'] = $func[2];
                             }
+
+                            $extraData['title'] = $title;
+                            $extraData['ID'] = $post['ID'];
+                            $extraData['excerpt'] = $excerpt;
+                            $extraData['image_url'] = $high;
+                            $extraData['image_alt'] = $alt;
+                            $extraData['category'] = $post['terms'];
+                            $extraData['permalink'] = $link['url'];
                 
-                            $value = $funcName($value, $post, $extraData);
+                            $value = $funcName($value, $post, $extraData, $block);
                           }
                         }
                       }

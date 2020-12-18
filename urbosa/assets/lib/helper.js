@@ -354,7 +354,13 @@ window.initLazyLoadImage = function () {
       $('img.urbosa-lazy-load').visibility({
         type: 'image',
         transition: 'fade in',
-        duration: 1000
+        duration: 1000,
+        onLoad: function(){
+          var finalHeight = $(this).data('final-height');
+          if(finalHeight){
+            $(this).css('height', finalHeight);
+          }
+        }
       })
     }
 }
@@ -489,35 +495,36 @@ window.initSlideInMenu = function(containerSelector){
 // OnScroll animation
 window.initScrollAnimation = function(){
   window.timeout = null;
-
-  $('.transition').visibility({
-
+  $('.transition.on-scroll').visibility({
+    onUpdate: function(calc){
+      // console.log(calc)
+    },
     onTopVisible: function(){
-
-      if(!$(this).hasClass('in-view')){
-
-        $(this).addClass('in-view');
-        
-        if(!timeout){
-
-          timeout = setTimeout(() => {
-            
-            $('.transition.in-view.hidden').transition({
-              interval: 200, 
-              duration: 500
-            })
-
-            clearInterval(timeout);
-
-            timeout = null
-
-          }, 250);
-
-        }
-
-      }
-
+      initScrollAnimQueue(this);
+    },
+    onBottomVisible: function(){
+      initScrollAnimQueue(this);
     }
   });
 
+}
+window.initScrollAnimQueue = function(obj){
+  if(!$(obj).hasClass('in-view')){
+    $(obj).addClass('in-view');
+    if(!timeout){
+      timeout = setTimeout(() => {
+        
+        $('.transition.on-scroll.in-view.hidden').transition({
+          queue: false,
+          interval: 500, 
+          duration: 500
+        })
+        clearInterval(timeout);
+        timeout = null
+
+      }, 500);
+
+    }
+
+  }
 }

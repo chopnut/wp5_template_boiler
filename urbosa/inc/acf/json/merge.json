@@ -2198,7 +2198,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -2226,7 +2226,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -2253,7 +2253,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "33",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -2264,6 +2264,25 @@
             "min": "",
             "max": "",
             "step": ""
+        },
+        {
+            "key": "field_5fdbc1b766fc0",
+            "label": "Columns Default Class",
+            "name": "columns_default_class",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "columns is-multiline",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         },
         {
             "key": "field_5f14b0a0eaa57",
@@ -2426,9 +2445,9 @@
     "label_placement": "top",
     "instruction_placement": "label",
     "hide_on_screen": "",
-    "active": true,
+    "active": 1,
     "description": "",
-    "modified": 1606212714
+    "modified": 1608267218
 },
 {
     "key": "group_5f1a2323a0f3d",
@@ -2864,10 +2883,10 @@
         },
         {
             "key": "field_5f62a9e2409de",
-            "label": "Exclude Post IDs",
+            "label": "Exclude Post IDs \/ Skip",
             "name": "exclude_post_ids",
             "type": "text",
-            "instructions": "Add IDs of post that you like to exclude from search.",
+            "instructions": "Add IDs of post that you like to exclude from search separated by comma.\r\nEnter single negative number value to skip last N posts.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -2890,7 +2909,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -2909,7 +2928,7 @@
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "25",
                 "class": "",
                 "id": ""
             },
@@ -2918,6 +2937,46 @@
             "ui": 1,
             "ui_on_text": "",
             "ui_off_text": ""
+        },
+        {
+            "key": "field_5fdbde4563d84",
+            "label": "Override Per Page",
+            "name": "override_per_page",
+            "type": "number",
+            "instructions": "Return number of entry per page separately from the main settings.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_5fdbd6c98d962",
+            "label": "Columns Wrapper Default Class",
+            "name": "columns_default_class",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         },
         {
             "key": "field_5f379a906801d",
@@ -3044,7 +3103,7 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1606212714
+    "modified": 1608266857
 },
 {
     "key": "group_5f43b049743f2",
