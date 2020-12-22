@@ -257,7 +257,7 @@ function cb_search_block_content($data){
 
         // title, permalink, excerpt
         $permalink = get_permalink( $post['ID']);
-        $titleLink = '<a href="'.$permalink.'">'.$post['post_title'].'</a>';
+        $titleLink = $post['post_title'];
         $template = str_replace('{title}', $titleLink, $template);
         $template = str_replace('{permalink}',$permalink, $template);
         

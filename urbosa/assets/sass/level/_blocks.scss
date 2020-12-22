@@ -68,6 +68,12 @@
     }
   }
 }
+/* wp-block-gallery */
+main>.wp-block-gallery{
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+/* wp-block-search */
 .wp-block-search{
   .wp-block-search__label{ display: none;}
   .wp-block-search__input{
