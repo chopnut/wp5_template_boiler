@@ -30,7 +30,7 @@ if(!function_exists('cb_normalise_posts')){
             $ctaImage = $ctaPost['cta_image'];
             if($ctaImage){
               
-              $lowImage = $ctaImage['sizes']['progressive_landscape'];
+              $lowImage  = $ctaImage['sizes']['thumb'];
               $highImage = $ctaImage['sizes']['large'];
               $alt = $ctaImage['alt'];
   
@@ -96,14 +96,14 @@ if(!function_exists('cb_normalise_posts')){
 
             if($gatewayImage){
   
-              $lowImage = $gatewayImage['sizes']['progressive_landscape'];
+              $lowImage = $gatewayImage['sizes']['thumb'];
               $highImage = $gatewayImage['sizes']['large'];
               $alt = $gatewayImage['alt'];
               $imgWidth  = $gatewayImage['sizes']['large-width'];
               $imgHeight = $gatewayImage['sizes']['large-height'];
   
             }else{
-              $lowImage = getFeaturedImage($theID,'progressive_landscape');
+              $lowImage = getFeaturedImage($theID,'thumb');
               $highImage = getFeaturedImage($theID,'large',$alt,$imgWidth,$imgHeight);
             }
   

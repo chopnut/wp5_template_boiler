@@ -20,7 +20,7 @@ module.exports = env => {
     new BrowserSyncPlugin({
       host: 'localhost',
       port: 3000,
-      proxy: `http://localhost:8192`,
+      proxy: `http://localhost:8191`,
       files: [
         {
           match: [

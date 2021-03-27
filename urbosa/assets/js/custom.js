@@ -1,6 +1,3 @@
 $(document).ready(function () {
-  initLazyLoadImage();
-  initSimpleParallax();
-  initMakeVidIframeCenter();
-  initScrollAnimation();
+  // Write your own code here
 })

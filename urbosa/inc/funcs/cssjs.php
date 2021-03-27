@@ -15,7 +15,8 @@ function theme_setup()
   wp_enqueue_style('other', get_template_directory_uri() . "/assets/dist/css/style.css$suffix"); // fonts/pages/single/blocks
 
   
-  add_feature(array('parallax','font-awesome','google-map','lightbox'));
+  add_feature('font-awesome');
+  add_feature('google-map');
   // add_feature('debug');
 
   wp_enqueue_script('blocks', get_template_directory_uri() . "/assets/js/blocks.js$suffix" , array(), null, true);

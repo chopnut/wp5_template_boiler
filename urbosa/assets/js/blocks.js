@@ -2,7 +2,9 @@ jQuery(document).ready(function($){
   initMediaDimmer();
   initBlockAccordion();
   initBlockGoogleMap();
-
+  initLazyLoadImage();
+  initSimpleParallax();
+  initMakeVidIframeCenter();
 })
 
 function initMediaDimmer(){
@@ -281,4 +283,63 @@ function initBlockGoogleMap(){
   $('.acf-map').each(function () {
     map = new_map($(this))
   })
+}
+function initLazyLoadImage() {
+  if ($.fn.visibility) {
+    $('img.urbosa-lazy-load').visibility({
+      type: 'image',
+      transition: 'fade in',
+      duration: 1000,
+      onLoad: function(){
+
+        var finalHeight = $(this).data('final-height');
+        if(finalHeight){
+          $(this).css('height', finalHeight);
+        }
+      }
+    })
+
+  } else if($('img.urbosa-lazy-load').length){
+    console.log('Warning: Lazy load is not available.');
+  }
+}
+function initMakeVidIframeCenter(){
+  window.videoCenterInterval = null;
+  window._makeVideoBackgroundCenter = function(){
+    $iframes = $('.video-foreground.ratio iframe');
+
+    if($(window).width()>768){
+      if($iframes.length){
+        $iframes.map(function(ind,item){
+          $item = $(item);
+          $vidC = $item.parent().parent().parent();
+          var fHeight    = $item.height() - $vidC.height();
+          
+          if(fHeight){
+            var top = '-'+ fHeight/2 + 'px';
+            $item.css('top', top);
+          }
+        })
+      }
+    }
+
+  }
+
+  _makeVideoBackgroundCenter();
+  $(window).resize(function(){
+    clearInterval(videoCenterInterval);
+    setTimeout(function(){
+      _makeVideoBackgroundCenter();
+    },1000)
+  })
+
+}
+function initSimpleParallax() {
+  var parallaxClass = 'parallax'
+  if ($('.' + parallaxClass).length) {
+    if(typeof simpleParallax === 'function'){
+      var image = document.getElementsByClassName(parallaxClass)
+      new simpleParallax(image)
+    }
+  } 
 }

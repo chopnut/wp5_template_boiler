@@ -94,7 +94,7 @@ if(!function_exists('__cb_theme_slider_video_mobile_poster')){
 
     if($mobile_poster){
       
-      $lowRes = $mobile_poster['sizes']['progressive_landscape'];
+      $lowRes = $mobile_poster['sizes']['thumb'];
       $hiRes  = $mobile_poster['url'];
 
       $containerAttr = "data-high='$hiRes' ";
@@ -284,7 +284,7 @@ if(is_array($slider_feature)){
                 }else if($background_type=='image'){ // Image
 
          
-                  $lowRes = $image['sizes']['progressive_landscape'];
+                  $lowRes = $image['sizes']['thumb'];
                   $hiRes  = $image['url'];
                   $alt    = $image['alt'];
                 
@@ -484,73 +484,84 @@ if(is_array($slider_feature)){
   jQuery(document).ready(function($){
     <?php 
 
-      if($is_progressive && !is_admin()){
-        ?>
-    
-        initProgressive('<?=$theme_slider_id?>');
-        <?php
+      if($is_progressive){
 
-      }else if(!is_admin()){
-        ?>
-        initProgressive();
-        <?php
-      }
-      if($is_parallax && !is_admin()){
-        ?>
-      
-      initSimpleParallax();
-        <?php
-      }
-
-      if($is_lightbox && !is_admin()){
-        ?>
-
-        if($.fn.simpleLightbox){
-          $('.youtube-lightbox').simpleLightbox()
-        var <?=$lightboxInstance?> = new SimpleLightbox({
-          items: <?=$lightBoxCollection?>
-        })
-        window.<?=$lightboxFunc?> = function(pos){
-          if(<?=$triggerLightBoxVar?>){
-
-            SimpleLightbox.defaults = {
-                elementClass: '',
-                elementLoadingClass: 'slbLoading',
-                htmlClass: 'slbActive',
-                closeBtnClass: '',
-                nextBtnClass: '',
-                prevBtnClass: '',
-                loadingTextClass: '',
-                // customize / localize controls captions
-                closeBtnCaption: 'Close',
-                nextBtnCaption: 'Next',
-                prevBtnCaption: 'Previous',
-                loadingCaption: 'Loading...',
-                bindToItems: true, // set click event handler to trigger lightbox on provided $items
-                closeOnOverlayClick: true,
-                closeOnEscapeKey: true,
-                nextOnImageClick: true,
-                showCaptions: true,
-                captionAttribute: 'title', // choose data source for library to glean image caption from
-                urlAttribute: 'href', // where to expect large image
-                startAt: pos, // start gallery at custom index
-                loadingTimeout: 100, // time after loading element will appear
-                appendTarget: 'body', // append elsewhere if needed
-                beforeSetContent: null, // convenient hooks for extending library behavoiur
-                beforeClose: null,
-                beforeDestroy: null,
-                videoRegex: new RegExp(/youtube.com|vimeo.com/) // regex which tests load url for iframe content
-            };
-
-           SimpleLightbox.open(<?=$lightboxInstance?>)
+        if(!is_admin()){
+          ?>
+          if(typeof initProgressive === 'function'){
+            initProgressive('<?=$theme_slider_id?>');
+          }else{
+            console.log('ThemeSliderWarning: Progressive is disabled in this template.');
           }
+          <?php
+        }
+      }
+
+      if($is_parallax){
+        if(!is_admin()){
+          ?>
+          if(typeof simpleParallax === 'function'){
+            initSimpleParallax();
+          } else{
+            console.log('ThemeSliderWarning: Parallax is disabled in this template.');
+          }
+          <?php
+        }
+      }
+
+      if($is_lightbox){
+        if(!is_admin()){
+          ?>
+          if($.fn.simpleLightbox){
+            $('.youtube-lightbox').simpleLightbox()
+            var <?=$lightboxInstance?> = new SimpleLightbox({
+              items: <?=$lightBoxCollection?>
+            })
+
+            window.<?=$lightboxFunc?> = function(pos){
+              if(<?=$triggerLightBoxVar?>){
+
+                  SimpleLightbox.defaults = {
+                      elementClass: '',
+                      elementLoadingClass: 'slbLoading',
+                      htmlClass: 'slbActive',
+                      closeBtnClass: '',
+                      nextBtnClass: '',
+                      prevBtnClass: '',
+                      loadingTextClass: '',
+                      // customize / localize controls captions
+                      closeBtnCaption: 'Close',
+                      nextBtnCaption: 'Next',
+                      prevBtnCaption: 'Previous',
+                      loadingCaption: 'Loading...',
+                      bindToItems: true, // set click event handler to trigger lightbox on provided $items
+                      closeOnOverlayClick: true,
+                      closeOnEscapeKey: true,
+                      nextOnImageClick: true,
+                      showCaptions: true,
+                      captionAttribute: 'title', // choose data source for library to glean image caption from
+                      urlAttribute: 'href', // where to expect large image
+                      startAt: pos, // start gallery at custom index
+                      loadingTimeout: 100, // time after loading element will appear
+                      appendTarget: 'body', // append elsewhere if needed
+                      beforeSetContent: null, // convenient hooks for extending library behavoiur
+                      beforeClose: null,
+                      beforeDestroy: null,
+                      videoRegex: new RegExp(/youtube.com|vimeo.com/) // regex which tests load url for iframe content
+                  };
+
+                SimpleLightbox.open(<?=$lightboxInstance?>)
+              }
+            }
+          
+          } else{
+            console.log('ThemeSliderWarning: SimpleLightbox not enabled in this template')
+          }
+
+
+          <?php
         }
         
-      } else{
-        console.log('Warning: Lightbox is disabled in the template.');
-      }
-
-        <?php
       }
       
     ?>

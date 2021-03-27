@@ -347,75 +347,6 @@ window.__initTriggerSlideOut = function (opt) {
   })
 }
 /* end slide-out */
-
-window.initLazyLoadImage = function () {
-    if ($.fn.visibility) {
-    
-      $('img.urbosa-lazy-load').visibility({
-        type: 'image',
-        transition: 'fade in',
-        duration: 1000,
-        onLoad: function(){
-          var finalHeight = $(this).data('final-height');
-          if(finalHeight){
-            $(this).css('height', finalHeight);
-          }
-        }
-      })
-    }
-}
-window.initMakeVidIframeCenter = function(){
-  window.videoCenterInterval = null;
-  window._makeVideoBackgroundCenter = function(){
-    $iframes = $('.video-foreground.ratio iframe');
-
-    if($(window).width()>768){
-      if($iframes.length){
-        $iframes.map(function(ind,item){
-          $item = $(item);
-          $vidC = $item.parent().parent().parent();
-          var fHeight    = $item.height() - $vidC.height();
-          
-          if(fHeight){
-            var top = '-'+ fHeight/2 + 'px';
-            $item.css('top', top);
-          }
-        })
-      }
-    }
-
-  }
-
-  _makeVideoBackgroundCenter();
-  $(window).resize(function(){
-    clearInterval(videoCenterInterval);
-    setTimeout(function(){
-      _makeVideoBackgroundCenter();
-    },1000)
-  })
-
-}
-window.initSimpleParallax = function () {
-
-  var parallaxClass = 'parallax'
-
-  if ($('.' + parallaxClass).length) {
-
-    if(typeof simpleParallax === 'function'){
-
-      var image = document.getElementsByClassName(parallaxClass)
-      new simpleParallax(image)
-
-    }else{
-      
-      console.log('Warning: Parallax is not enabled on this template.')
-
-    }
-    
-  } 
-
-}
-
 // Slide out menus/page by page
 window.initSlideInMenu = function(containerSelector){
   var startIndex   = 10;
@@ -490,41 +421,5 @@ window.initSlideInMenu = function(containerSelector){
         }
       </style>
     `);
-  }
-}
-// OnScroll animation
-window.initScrollAnimation = function(){
-  window.timeout = null;
-  $('.transition.on-scroll').visibility({
-    onUpdate: function(calc){
-      // console.log(calc)
-    },
-    onTopVisible: function(){
-      initScrollAnimQueue(this);
-    },
-    onBottomVisible: function(){
-      initScrollAnimQueue(this);
-    }
-  });
-
-}
-window.initScrollAnimQueue = function(obj){
-  if(!$(obj).hasClass('in-view')){
-    $(obj).addClass('in-view');
-    if(!timeout){
-      timeout = setTimeout(() => {
-        
-        $('.transition.on-scroll.in-view.hidden').transition({
-          queue: false,
-          interval: 500, 
-          duration: 500
-        })
-        clearInterval(timeout);
-        timeout = null
-
-      }, 500);
-
-    }
-
   }
 }
