@@ -42,6 +42,13 @@ function _add_feature($feature, $option=''){
       case 'dashicons':
         add_action( 'get_footer', '_add_dashicons_footer');
       break;
+      case 'aos':
+        wp_enqueue_script('aosjs', "https://unpkg.com/aos@2.3.1/dist/aos.js" , array(), null, false);       
+        wp_enqueue_style('aoscss', "https://unpkg.com/aos@2.3.1/dist/aos.css");
+        break;
+      case 'anime': 
+        wp_enqueue_script('animejs', get_template_directory_uri() . "/assets/lib/anime.min.js" , array('lib'), null, true);       
+        break;
     default;
   }
 }

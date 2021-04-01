@@ -10,5 +10,5 @@
 </head>
 
 <body <?php body_class(!empty($post)?'page-' . $post->post_name:''); ?>>
-  
 <main>
+

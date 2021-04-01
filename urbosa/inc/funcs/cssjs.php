@@ -17,10 +17,13 @@ function theme_setup()
   
   add_feature('font-awesome');
   add_feature('google-map');
-  // add_feature('debug');
+  add_feature('aos');
+  add_feature('anime');
 
-  wp_enqueue_script('blocks', get_template_directory_uri() . "/assets/js/blocks.js$suffix" , array(), null, true);
+  wp_enqueue_script('blocks', get_template_directory_uri() . "/assets/js/blocks.js" , array(), null, true);
   wp_enqueue_script('custom', get_template_directory_uri() . "/assets/js/custom.js$suffix" , array('lib'), null, true);       
+  
+
 
   // local object
   wp_localize_script('custom', 'websiteData', array( 
