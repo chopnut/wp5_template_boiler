@@ -333,7 +333,7 @@ if(is_array($slider_feature)){
 
                     if($is_lazy && !is_admin()){
    
-                      $innerContent = "<img data-src='$hiRes' class='{parallax} urbosa-lazy-load $imageID'alt='$alt' data-id='$imageID' style='{image_style}'/>";
+                      $innerContent = "<img data-src='$hiRes' class='{parallax} $imageID urbosa-lazy-load'alt='$alt' data-id='$imageID' style='{image_style}'/>";
                       
                       $containerClass = $containerStyle = "";
                       if($is_parallax){
@@ -568,7 +568,8 @@ if(is_array($slider_feature)){
 
     var slickOptions = {
       slideToShow: 1,
-      rows: 0
+      rows: 0,
+      lazyLoad: 'ondemand',
     }
 
     <?php 
@@ -643,7 +644,9 @@ if(is_array($slider_feature)){
 
           <?=$fixImageClones?>();
 
-
+          // initLazyLoadImage();
+          // console.log($('.urbosa-lazy-load'));
+          
         })
         
  

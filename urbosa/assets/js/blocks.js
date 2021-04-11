@@ -285,13 +285,26 @@ function initBlockGoogleMap(){
   })
 }
 function initLazyLoadImage() {
+
   if ($.fn.visibility) {
+    $('img.urbosa-lazy-load').each(function(){
+      $img = $(this);
+      $dataSrc = $img.data('src');
+
+      if($img.scrollTop()==0 && $dataSrc){
+        $img.addClass('ui transition hidden')
+        $img.prop('src', $dataSrc);
+        setTimeout(() => {
+          $(this).transition('fade')
+        }, 100);
+      }
+     
+    })
     $('img.urbosa-lazy-load').visibility({
       type: 'image',
       transition: 'fade in',
       duration: 1000,
       onLoad: function(){
-
         var finalHeight = $(this).data('final-height');
         if(finalHeight){
           $(this).css('height', finalHeight);
